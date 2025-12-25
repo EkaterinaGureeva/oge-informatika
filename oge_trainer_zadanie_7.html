@@ -1,0 +1,1944 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>Учебный тренажёр ОГЭ по информатике — Задание 7</title>
+<style>
+:root{--blue:#0b5bd3;--blue2:#1a78ff;--sky:#eaf3ff;--ink:#0f1b2d;--muted:#5b6b82;--card:#ffffff;--line:#dbe7ff;--shadow:0 10px 30px rgba(15,27,45,.10);--radius:16px;}
+*{box-sizing:border-box}
+body{margin:0;font-family:system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(180deg,var(--sky),#fff 40%);color:var(--ink)}
+.container{max-width:1200px;margin:0 auto;padding:16px}
+.topbar{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+.topbar-inner{max-width:1200px;margin:0 auto;padding:10px 16px;display:flex;align-items:center;gap:10px;flex-wrap:nowrap;overflow:hidden}
+.badge{flex:0 0 auto;width:40px;height:40px;border-radius:999px;background:radial-gradient(circle at 30% 30%, #ffffff, #cfe4ff);border:1px solid var(--line);display:grid;place-items:center;box-shadow:0 6px 18px rgba(11,91,211,.18)}
+.badge span{font-size:18px;color:var(--blue);font-weight:700}
+.brand{flex:1 1 auto;min-width:180px;display:flex;flex-direction:column;line-height:1.15}
+.brand .title{font-size:18px;color:var(--blue);font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.brand .subtitle{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.actions{flex:0 0 auto;display:flex;gap:8px;flex-wrap:nowrap;align-items:center}
+.btn{appearance:none;border:1px solid var(--line);background:#fff;border-radius:12px;padding:9px 12px;font-size:13px;color:var(--ink);cursor:pointer;white-space:nowrap;box-shadow:0 2px 10px rgba(15,27,45,.06)}
+.btn:hover{border-color:#b9d3ff}
+.btn.primary{background:linear-gradient(180deg,#1a78ff,#0b5bd3);border-color:transparent;color:#fff}
+.btn.danger{border-color:#ffd1d1;background:#fff}
+.btn:disabled{opacity:.55;cursor:not-allowed}
+.select{border:1px solid var(--line);border-radius:12px;padding:9px 10px;font-size:13px;background:#fff;white-space:nowrap;max-width:220px}
+.main{display:grid;grid-template-columns:1fr 320px;gap:16px;align-items:start;margin-top:14px}
+@media (max-width: 980px){.main{grid-template-columns:1fr} .side{order:-1}}
+.notice{background:#ffffff;border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;box-shadow:0 2px 12px rgba(15,27,45,.06)}
+.notice b{color:var(--blue);font-weight:600}
+.cards{display:flex;flex-direction:column;gap:12px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden}
+.card-h{padding:12px 14px;display:flex;justify-content:space-between;gap:10px;align-items:flex-start;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#ffffff,#f7fbff)}
+.card-h .left{display:flex;gap:10px;align-items:center;min-width:0}
+.num{width:34px;height:34px;border-radius:12px;background:rgba(11,91,211,.08);display:grid;place-items:center;color:var(--blue);font-weight:700;flex:0 0 auto}
+.meta{min-width:0}
+.meta .h{font-size:14px;color:var(--blue);font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.meta .code{font-size:12px;color:var(--muted)}
+.card-b{padding:12px 14px}
+.prompt{white-space:pre-wrap;line-height:1.45;color:var(--ink);font-size:14px}
+.fragwrap{margin-top:10px;border:1px dashed #b9d3ff;border-radius:14px;padding:10px;background:#fbfdff}
+.fragtitle{font-size:12px;color:var(--muted);margin:0 0 8px 0}
+.fragtbl{width:100%;border-collapse:separate;border-spacing:0;overflow:hidden}
+.fragtbl th,.fragtbl td{border:1px solid var(--line);padding:8px 10px;font-size:13px;text-align:left}
+.fragtbl th{background:#f1f7ff;color:var(--blue);font-weight:600}
+.fragtbl td.k{width:60px;color:var(--muted);font-weight:700}
+.answer{margin-top:10px;display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.answer input{flex:1 1 220px;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px;outline:none}
+.answer input:focus{border-color:#9cc2ff;box-shadow:0 0 0 4px rgba(26,120,255,.12)}
+.pill{font-size:12px;padding:6px 10px;border-radius:999px;border:1px solid var(--line);background:#fff;color:var(--muted)}
+.pill.ok{border-color:#bfe8c8;background:#f2fbf4;color:#1f7a34}
+.pill.bad{border-color:#ffd1d1;background:#fff6f6;color:#b42318}
+.side{position:sticky;top:70px}
+.sidecard{background:linear-gradient(180deg,#ffffff,#f7fbff);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:14px}
+.sidecard h3{margin:0 0 10px 0;font-size:14px;color:var(--blue);font-weight:600}
+.kpi{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.kpi .box{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff}
+.kpi .lbl{font-size:12px;color:var(--muted)}
+.kpi .val{font-size:22px;color:var(--blue);font-weight:700;margin-top:4px}
+.scale{margin-top:10px;border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff}
+.scale .row{display:flex;justify-content:space-between;gap:10px;font-size:13px;color:var(--ink);padding:6px 0;border-bottom:1px dashed #e7f0ff}
+.scale .row:last-child{border-bottom:none}
+.scale .g{color:var(--muted)}
+.footerline{margin-top:10px;font-size:12px;color:var(--muted)}
+dialog{border:none;border-radius:18px;box-shadow:0 24px 80px rgba(15,27,45,.25);width:min(860px, calc(100vw - 32px))}
+dialog::backdrop{background:rgba(15,27,45,.35)}
+.modal{padding:14px 16px}
+.modalhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.modalhead h2{margin:0;font-size:16px;color:var(--blue);font-weight:600}
+.close{border:1px solid var(--line);background:#fff;border-radius:12px;padding:8px 10px;cursor:pointer}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:12px}
+@media (max-width:900px){.grid2{grid-template-columns:1fr}}
+.field{border:1px solid var(--line);border-radius:14px;padding:10px;background:#fff}
+.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:6px}
+.field input{width:100%;border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
+.teacherlist{margin-top:12px;max-height:55vh;overflow:auto;border:1px solid var(--line);border-radius:14px;background:#fff}
+.trow{display:grid;grid-template-columns:62px 1fr 180px;gap:10px;padding:10px;border-bottom:1px solid #eef5ff;align-items:center}
+.trow:last-child{border-bottom:none}
+.trow .tidx{font-weight:700;color:var(--blue);text-align:center}
+.trow .tq{font-size:12px;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.trow input{border:1px solid var(--line);border-radius:12px;padding:8px 10px;font-size:13px}
+</style>
+</head>
+<body>
+<div class="topbar">
+  <div class="topbar-inner">
+    <div class="badge" aria-hidden="true"><span>7</span></div>
+    <div class="brand">
+      <div class="title">Учебный тренажёр ОГЭ по информатике</div>
+      <div class="subtitle">Задание 7 • Работа с адресами и фрагментами</div>
+    </div>
+    <select id="categorySelect" class="select" title="Категория заданий"></select>
+    <div class="actions">
+      <button class="btn" id="btnTeacher">Учитель</button>
+      <button class="btn primary" id="btnCheck">Проверить</button>
+      <button class="btn" id="btnShowGrade">Оценка</button>
+      <button class="btn danger" id="btnReset">Сбросить</button>
+      <button class="btn" id="btnPrint">Печать / PDF</button>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="notice">
+    <b>Важно:</b> проверку лучше выполнять после завершения работы с тренажёром. После нажатия «Проверить» ответы фиксируются — изменить уже введённые ответы и добавить новые будет нельзя. После проверки тренажёр покажет итоговую оценку.
+  </div>
+
+  <div class="main">
+    <div>
+      <div class="cards" id="cards"></div>
+    </div>
+
+    <div class="side">
+      <div class="sidecard">
+        <h3>Оценка и баллы</h3>
+        <div class="kpi">
+          <div class="box">
+            <div class="lbl">Баллы</div>
+            <div class="val" id="scoreVal">0</div>
+          </div>
+          <div class="box">
+            <div class="lbl">Выполнено</div>
+            <div class="val" id="doneVal">0</div>
+          </div>
+        </div>
+        <div class="scale" aria-label="Шкала оценивания">
+          <div class="row"><span class="g">80–100%</span><span>5</span></div>
+          <div class="row"><span class="g">60–79%</span><span>4</span></div>
+          <div class="row"><span class="g">40–59%</span><span>3</span></div>
+          <div class="row"><span class="g">0–39%</span><span>2</span></div>
+        </div>
+        <div class="footerline" id="summaryLine">Итог по выполненным заданиям: —</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<dialog id="teacherDlg">
+  <div class="modal">
+    <div class="modalhead">
+      <h2>Режим учителя</h2>
+      <button class="close" id="btnCloseTeacher">Закрыть</button>
+    </div>
+
+    <div class="grid2">
+      <div class="field">
+        <label>PIN-код (для входа в режим учителя)</label>
+        <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="Введите PIN-код"/>
+        <div style="margin-top:8px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn primary" id="btnUnlock">Открыть</button>
+          <button class="btn" id="btnChangePin">Изменить PIN</button>
+        </div>
+        <div style="margin-top:6px;font-size:12px;color:var(--muted)">Ответы видны только в режиме учителя.</div>
+      </div>
+
+      <div class="field">
+        <label>Служебные настройки</label>
+        <div style="font-size:13px;color:var(--ink);line-height:1.4">
+          Здесь можно редактировать ответы и сохранять их на этом устройстве (localStorage).<br/>
+          <span style="color:var(--muted)">Ответы ученика не сохраняются и при новом открытии страницы будут пустыми.</span>
+        </div>
+        <div style="margin-top:10px;display:flex;gap:8px;flex-wrap:wrap">
+          <button class="btn" id="btnSaveTeacher">Сохранить ответы учителя</button>
+          <button class="btn danger" id="btnRestoreDefaults">Сбросить ответы к исходным</button>
+        </div>
+      </div>
+    </div>
+
+    <div id="teacherBody" style="display:none">
+      <div class="teacherlist" id="teacherList"></div>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const TASKS = [
+  {
+    "idx": 1,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "082939",
+    "prompt": "Доступ к файлу com.htm, находящемуся на сервере big.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "big",
+      "2": "ftp",
+      "3": "://",
+      "4": ".com",
+      "5": "com.",
+      "6": "htm",
+      "7": "/"
+    },
+    "answer": "2314756",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 2,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "3E59C2",
+    "prompt": "Доступ к файлу spis.xml, находящемуся на сервере book.net, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".net",
+      "2": "/",
+      "3": "ftp",
+      "4": "spis",
+      "5": "://",
+      "6": "book",
+      "7": ".xml"
+    },
+    "answer": "3561247",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 3,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "508115",
+    "prompt": "Доступ к файлу color.gif, находящемуся на сервере box.net, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "ftp",
+      "2": "/",
+      "3": "box.",
+      "4": "color",
+      "5": "net",
+      "6": ".gif",
+      "7": "://"
+    },
+    "answer": "1735246",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 4,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "7D6892",
+    "prompt": "Доступ к файлу htm.net, находящемуся на сервере com.edu, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "com",
+      "3": ".edu",
+      "4": "://",
+      "5": ".net",
+      "6": "htm",
+      "7": "ftp"
+    },
+    "answer": "7423165",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 5,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "6AA42F",
+    "prompt": "Доступ к файлу bye.doc, находящемуся на сервере doc.info, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "info",
+      "2": ".doc",
+      "3": "ftp",
+      "4": "bye",
+      "5": "/",
+      "6": "doc.",
+      "7": "://"
+    },
+    "answer": "3761542",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 6,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "529483",
+    "prompt": "Доступ к файлу hi.jpg, находящемуся на сервере dom.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "hi",
+      "2": "ftp",
+      "3": ".jpg",
+      "4": "://",
+      "5": "dom.",
+      "6": "/",
+      "7": "com"
+    },
+    "answer": "2457613",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 7,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "B140AA",
+    "prompt": "Доступ к файлу foto.jpg, находящемуся на сервере foto.ru, осуществляется по протоколу ftp. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "foto.ru",
+      "2": ":",
+      "3": "ftp",
+      "4": "//",
+      "5": ".jpg",
+      "6": "foto",
+      "7": "/"
+    },
+    "answer": "3241765",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 8,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "EE55EB",
+    "prompt": "Доступ к файлу hello.jpg, находящемуся на сервере home.info, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "info",
+      "2": "://",
+      "3": "home.",
+      "4": "/",
+      "5": "hello",
+      "6": "ftp",
+      "7": ".jpg"
+    },
+    "answer": "6231457",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 9,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "C54868",
+    "prompt": "Доступ к файлу table.xls, находящемуся на сервере home.ru, осуществляется по протоколу ftp. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "table",
+      "2": "/",
+      "3": "://",
+      "4": ".ru",
+      "5": ".xls",
+      "6": "ftp",
+      "7": "home"
+    },
+    "answer": "6374215",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 10,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "4D059D",
+    "prompt": "Доступ к файлу bit.ru, находящемуся на сервере htm.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "bit",
+      "2": ".ru",
+      "3": "/",
+      "4": "://",
+      "5": ".com",
+      "6": "htm",
+      "7": "ftp"
+    },
+    "answer": "7465312",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 11,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "FD0C2E",
+    "prompt": "Доступ к файлу name.gif, находящемуся на сервере jour.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".com",
+      "2": "ftp",
+      "3": "jour",
+      "4": "/",
+      "5": "://",
+      "6": ".gif",
+      "7": "Name"
+    },
+    "answer": "2531476",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 12,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "E8785B",
+    "prompt": "Доступ к файлу ftp.xls, находящемуся на сервере mail.info, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "xls",
+      "2": "/",
+      "3": "ftp.",
+      "4": "ftp",
+      "5": ".info",
+      "6": "://",
+      "7": "mail"
+    },
+    "answer": "4675231",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 13,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "EA992C",
+    "prompt": "Доступ к файлу photo.jpg, находящемуся на сервере mysite.ru, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "photo",
+      "2": "ftp",
+      "3": "/",
+      "4": ".jpg",
+      "5": "mysite",
+      "6": "://",
+      "7": ".ru"
+    },
+    "answer": "2657314",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 14,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "EC6DD1",
+    "prompt": "Доступ к файлу GOA.png, находящемуся на сервере mytravel.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "GOA",
+      "2": "mytravel",
+      "3": "/",
+      "4": ".com",
+      "5": ".png",
+      "6": "ftp",
+      "7": "://"
+    },
+    "answer": "6724315",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 15,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "CF6FEC",
+    "prompt": "Доступ к файлу table.xls, находящемуся на сервере ofis.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "ftp",
+      "3": "com",
+      "4": "://",
+      "5": "table.",
+      "6": "ofis.",
+      "7": "xls"
+    },
+    "answer": "2463157",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 16,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "FB07ED",
+    "prompt": "Доступ к файлу lesson.xls, находящемуся на сервере personalsite.com, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "personalsite",
+      "2": "ftp",
+      "3": "/",
+      "4": ".com",
+      "5": "lesson",
+      "6": "://",
+      "7": ".xls"
+    },
+    "answer": "2614357",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 17,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "900D30",
+    "prompt": "Доступ к файлу ftp.doc, находящемуся на сервере pochta.net, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "ftp:",
+      "2": "ftp.",
+      "3": "doc",
+      "4": "//",
+      "5": "pochta",
+      "6": "/",
+      "7": ".net"
+    },
+    "answer": "1457623",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 18,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "E512A9",
+    "prompt": "Доступ к файлу cat.pptx, находящемуся на сервере presentation.edu, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "://",
+      "3": ".pptx",
+      "4": "cat",
+      "5": "presentation",
+      "6": "ftp",
+      "7": ".edu"
+    },
+    "answer": "6257143",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 19,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "E0DF67",
+    "prompt": "Доступ к файлу table.doc, находящемуся на сервере ru.ru, осуществляется по протоколу ftp. В таблице фрагменты адреса файла",
+    "fragments": {
+      "1": "ru.",
+      "2": ".doc",
+      "3": "table",
+      "4": "ru",
+      "5": "://",
+      "6": "/",
+      "7": "ftp"
+    },
+    "answer": "7514632",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 20,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "4AC676",
+    "prompt": "Доступ к файлу spis.htm, находящемуся на сервере sch.net, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "://",
+      "2": "spis",
+      "3": ".net",
+      "4": ".htm",
+      "5": "ftp",
+      "6": "sch",
+      "7": "/"
+    },
+    "answer": "5163724",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 21,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "702314",
+    "prompt": "Доступ к файлу test.xls, находящемуся на сервере school.org, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "test",
+      "2": "school",
+      "3": "/",
+      "4": "://",
+      "5": ".org",
+      "6": ".xls",
+      "7": "ftp"
+    },
+    "answer": "7425316",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 22,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "52561F",
+    "prompt": "Доступ к файлу user.doc, находящемуся на сервере school.ru, осуществляется по протоколу ftp. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "ftp",
+      "3": "user",
+      "4": "school",
+      "5": ".doc",
+      "6": "://",
+      "7": ".ru"
+    },
+    "answer": "2647135",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 23,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "4FDD0C",
+    "prompt": "Доступ к файлу inf.docx, находящемуся на сервере teach.ru, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "teach",
+      "2": "ftp",
+      "3": "inf",
+      "4": "/",
+      "5": "://",
+      "6": ".docx",
+      "7": ".ru"
+    },
+    "answer": "2517436",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 24,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "B982CA",
+    "prompt": "Доступ к файлу ftp.jpg, находящемуся на сервере text.net, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".net",
+      "2": "jpg",
+      "3": "ftp.",
+      "4": "://",
+      "5": "ftp",
+      "6": "/",
+      "7": "text"
+    },
+    "answer": "5471632",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 25,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "399572",
+    "prompt": "Доступ к файлу hello.txt, находящемуся на сервере txt.info, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "://",
+      "2": "txt.",
+      "3": "/",
+      "4": "hello",
+      "5": "ftp",
+      "6": ".txt",
+      "7": "info"
+    },
+    "answer": "5127346",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 26,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "084155",
+    "prompt": "Доступ к файлу summer.jpeg, находящемуся на сервере weather.info, осуществляется по протоколу ftp. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "://",
+      "2": "summer",
+      "3": "/",
+      "4": "weather",
+      "5": "ftp",
+      "6": ".jpeg",
+      "7": ".info"
+    },
+    "answer": "5147326",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 27,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "588C3B",
+    "prompt": "Доступ к файлу book.txt, находящемуся на сервере bibl.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "://",
+      "2": "book.",
+      "3": "bibl",
+      "4": "txt",
+      "5": ".ru",
+      "6": "http",
+      "7": "/"
+    },
+    "answer": "6135724",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 28,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "289E6A",
+    "prompt": "Доступ к файлу book1.htm, находящемуся на сервере biblio.ru, осуществляется по протоколу http. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "://",
+      "2": "biblio",
+      "3": "http",
+      "4": ".ru",
+      "5": ".htm",
+      "6": "book1",
+      "7": "/"
+    },
+    "answer": "3124765",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 29,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "B73035",
+    "prompt": "Доступ к файлу ftp.doc, находящемуся на сервере bit.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "bit",
+      "2": ".doc",
+      "3": "/",
+      "4": "://",
+      "5": ".ru",
+      "6": "http",
+      "7": "ftp"
+    },
+    "answer": "6415372",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 30,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "97AEB5",
+    "prompt": "Доступ к файлу http.txt, находящемуся на сервере book.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "http.",
+      "3": "//",
+      "4": "http:",
+      "5": ".com",
+      "6": "book",
+      "7": "txt"
+    },
+    "answer": "4365127",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 31,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "54DFDF",
+    "prompt": "Доступ к файлу page.htm, находящемуся на сервере book.ru, осуществляется по протоколу http. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "page",
+      "3": "://",
+      "4": ".ru",
+      "5": ".htm",
+      "6": "book",
+      "7": "http"
+    },
+    "answer": "7364125",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 32,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "4E9210",
+    "prompt": "Доступ к файлу lot.htm, находящемуся на сервере catalog.ru, осуществляется по протоколу http. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "://",
+      "3": "lot",
+      "4": "catalog",
+      "5": "http",
+      "6": ".htm",
+      "7": ".ru"
+    },
+    "answer": "5247136",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 33,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "E5C5B4",
+    "prompt": "Доступ к файлу slon.txt, находящемуся на сервере circ.org, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".txt",
+      "2": "://",
+      "3": "http",
+      "4": "circ",
+      "5": "/",
+      "6": ".org",
+      "7": "slon"
+    },
+    "answer": "3246571",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 34,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "D39E0D",
+    "prompt": "Доступ к файлу htm.txt, находящемуся на сервере com.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "com",
+      "3": ".txt",
+      "4": "://",
+      "5": ".ru",
+      "6": "htm",
+      "7": "http"
+    },
+    "answer": "7425163",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 35,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "2F09B2",
+    "prompt": "Доступ к файлу htm.txt, находящемуся на сервере com.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "com",
+      "3": ".txt",
+      "4": "://",
+      "5": ".ru",
+      "6": "htm",
+      "7": "http"
+    },
+    "answer": "7425163",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 36,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "05FD9D",
+    "prompt": "Доступ к файлу tasks.rar, находящемуся на сервере contest.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "tasks",
+      "2": ".rar",
+      "3": "://",
+      "4": "contest",
+      "5": "http",
+      "6": ".ru",
+      "7": "/"
+    },
+    "answer": "5346712",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 37,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "60E7D0",
+    "prompt": "Доступ к файлу ciao.doc, находящемуся на сервере doc.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "doc.",
+      "2": ".doc",
+      "3": "ciao",
+      "4": "http",
+      "5": "://",
+      "6": "/",
+      "7": "com"
+    },
+    "answer": "4517632",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 38,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "56AF74",
+    "prompt": "Доступ к файлу game.doc, находящемуся на сервере doc.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "//",
+      "2": "/",
+      "3": "http:",
+      "4": "ru",
+      "5": "doc.",
+      "6": "game",
+      "7": ".doc"
+    },
+    "answer": "3154267",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 39,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "B94434",
+    "prompt": "Доступ к файлу foto.jpg, находящемуся на сервере email.ru, осуществляется по протоколу http. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "foto",
+      "2": "email",
+      "3": ".ru",
+      "4": "://",
+      "5": "http",
+      "6": "/",
+      "7": ".jpg"
+    },
+    "answer": "5423617",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 40,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "5915E2",
+    "prompt": "Доступ к файлу matem.html, находящемуся на сервере exam.ru, осуществляется по протоколу http. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".ru",
+      "2": ".html",
+      "3": "://",
+      "4": "exam",
+      "5": "matem",
+      "6": "http",
+      "7": "/"
+    },
+    "answer": "6341752",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 41,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "0BC60E",
+    "prompt": "Доступ к файлу index.htm, находящемуся на сервере foto.ru, осуществляется по протоколу http. В таблице фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "http",
+      "2": ".htm",
+      "3": "foto",
+      "4": "://",
+      "5": "/",
+      "6": "index",
+      "7": ".ru"
+    },
+    "answer": "1437562",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 42,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "811AC6",
+    "prompt": "Доступ к файлу txt.ru, находящемуся на сервере ftp.org, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": ".org",
+      "3": "ftp",
+      "4": "://",
+      "5": ".ru",
+      "6": "txt",
+      "7": "http"
+    },
+    "answer": "7432165",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 43,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "9F9291",
+    "prompt": "Доступ к файлу start.exe, находящемуся на сервере game.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "start",
+      "2": "/",
+      "3": ".exe",
+      "4": "http",
+      "5": "game",
+      "6": ".com",
+      "7": "://"
+    },
+    "answer": "4756213",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 44,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "3D5966",
+    "prompt": "Доступ к файлу ru.txt, находящемуся на сервере htm.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "http",
+      "3": ".com",
+      "4": "://",
+      "5": "ru",
+      "6": ".txt",
+      "7": "htm"
+    },
+    "answer": "2473156",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 45,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "1B7E4A",
+    "prompt": "Доступ к файлу edu.txt, находящемуся на сервере htm.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "htm",
+      "2": "://",
+      "3": "/",
+      "4": "http",
+      "5": ".ru",
+      "6": ".txt",
+      "7": "edu"
+    },
+    "answer": "4215376",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 46,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "52F11C",
+    "prompt": "Доступ к файлу ru.txt, находящемуся на сервере html.net, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "html",
+      "2": "/",
+      "3": "http",
+      "4": ".txt",
+      "5": "://",
+      "6": "ru",
+      "7": ".net"
+    },
+    "answer": "3517264",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 47,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "D82F60",
+    "prompt": "оступ к файлу net.txt, находящемуся на сервере html.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".ru",
+      "2": "://",
+      "3": "html",
+      "4": "net",
+      "5": "/",
+      "6": "http",
+      "7": ".txt"
+    },
+    "answer": "6231547",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 48,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "E8EA9F",
+    "prompt": "Доступ к файлу http.doc, находящемуся на сервере letter.net, осуществляется по протоколу http. Фрагменты адреса файла",
+    "fragments": {
+      "1": "http.",
+      "2": "http",
+      "3": "doc",
+      "4": "/",
+      "5": "letter",
+      "6": "://",
+      "7": ".net"
+    },
+    "answer": "2657413",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 49,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "D05F73",
+    "prompt": "Доступ к файлу hello.ppt, находящемуся на сервере message.org, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "hello",
+      "3": "org",
+      "4": "message.",
+      "5": ".ppt",
+      "6": "://",
+      "7": "http"
+    },
+    "answer": "7643125",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 50,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "E23600",
+    "prompt": "Доступ к файлу org.txt, находящемуся на сервере net.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "org",
+      "2": ".ru",
+      "3": "/",
+      "4": "://",
+      "5": "http",
+      "6": "net",
+      "7": ".txt"
+    },
+    "answer": "5462317",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 51,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "DA7D6A",
+    "prompt": "Доступ к файлу txt.com, находящемуся на сервере net.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "net",
+      "3": ".com",
+      "4": "://",
+      "5": ".ru",
+      "6": "http",
+      "7": "txt"
+    },
+    "answer": "6425173",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 52,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "4FA6A1",
+    "prompt": "Доступ к файлу txt.org, находящемуся на сервере net.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "http",
+      "3": ".org",
+      "4": "://",
+      "5": ".ru",
+      "6": "net",
+      "7": "txt"
+    },
+    "answer": "2465173",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 53,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "D08B4B",
+    "prompt": "Доступ к файлу tests.rar, находящемуся на сервере olympiada.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "tests",
+      "2": "http",
+      "3": "/",
+      "4": ".ru",
+      "5": "olympiada",
+      "6": "://",
+      "7": ".rar"
+    },
+    "answer": "2654317",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 54,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "D6B794",
+    "prompt": "Доступ к файлу net.txt, находящемуся на сервере org.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "http",
+      "3": "org",
+      "4": "://",
+      "5": ".ru",
+      "6": "net",
+      "7": ".txt"
+    },
+    "answer": "2435167",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 55,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "0AAD64",
+    "prompt": "Доступ к файлу http.exe, находящемуся на сервере page.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "page",
+      "3": "exe",
+      "4": "://",
+      "5": "http",
+      "6": ".com",
+      "7": "http."
+    },
+    "answer": "5426173",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 56,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "FA288E",
+    "prompt": "Доступ к файлу img.bmp, находящемуся на сервере pic.kz, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "img",
+      "2": "/",
+      "3": "kz",
+      "4": "://",
+      "5": "http",
+      "6": ".bmp",
+      "7": "pic."
+    },
+    "answer": "5473216",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 57,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "528D98",
+    "prompt": "Доступ к файлу txt.html, находящемуся на сервере ru.net, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "http",
+      "2": "://",
+      "3": ".html",
+      "4": "txt",
+      "5": "/",
+      "6": "ru",
+      "7": ".net"
+    },
+    "answer": "1267543",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 58,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "EAC605",
+    "prompt": "Доступ к файлу olymp.htm, находящемуся на сервере school.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "://",
+      "2": "school",
+      "3": ".htm",
+      "4": "olymp",
+      "5": ".ru",
+      "6": "/",
+      "7": "http"
+    },
+    "answer": "7125643",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 59,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "CE2EBF",
+    "prompt": "Доступ к файлу happy.htm, находящемуся на сервере sibline.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "sibline",
+      "3": ".htm",
+      "4": "://",
+      "5": ".ru",
+      "6": "happy",
+      "7": "http"
+    },
+    "answer": "7425163",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 60,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "C3447E",
+    "prompt": "Доступ к файлу doc.htm, находящемуся на сервере site.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "site",
+      "2": "://",
+      "3": "doc",
+      "4": "/",
+      "5": ".htm",
+      "6": ".com",
+      "7": "http"
+    },
+    "answer": "7216435",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 61,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "F0DA3E",
+    "prompt": "Доступ к файлу privet.xls, находящемуся на сервере text.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "com",
+      "2": ".xls",
+      "3": "text.",
+      "4": "http",
+      "5": "privet",
+      "6": "/",
+      "7": "://"
+    },
+    "answer": "4731652",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 62,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "7EE3E1",
+    "prompt": "Доступ к файлу com.xls, находящемуся на сервере tt.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "com",
+      "2": "xls",
+      "3": "com.",
+      "4": "http",
+      "5": "tt.",
+      "6": "/",
+      "7": "://"
+    },
+    "answer": "4751632",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 63,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "385985",
+    "prompt": "Доступ к файлу privet.txt, находящемуся на сервере txt.com, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".txt",
+      "2": "txt.",
+      "3": "http",
+      "4": "privet",
+      "5": "/",
+      "6": "://",
+      "7": "com"
+    },
+    "answer": "3627551",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 64,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "5F44E5",
+    "prompt": "Доступ к файлу com.htm, находящемуся на сервере txt.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "txt",
+      "2": "http",
+      "3": "/",
+      "4": "сom",
+      "5": ".ru",
+      "6": "://",
+      "7": ".htm"
+    },
+    "answer": "2615347",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 65,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "BCD9F9",
+    "prompt": "Доступ к файлу net.html, находящемуся на сервере txt.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".html",
+      "2": "/",
+      "3": ".ru",
+      "4": "net",
+      "5": "://",
+      "6": "http",
+      "7": "txt"
+    },
+    "answer": "6573241",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 66,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "9B939A",
+    "prompt": "Доступ к файлу net.com, находящемуся на сервере www.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".com",
+      "2": ".ru",
+      "3": "net",
+      "4": "http",
+      "5": "/",
+      "6": "://",
+      "7": "www"
+    },
+    "answer": "4672531",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 67,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "3BC258",
+    "prompt": "Доступ к файлу tiger.doc, находящемуся на сервере zoo.org, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".doc",
+      "2": "zoo",
+      "3": "/",
+      "4": "://",
+      "5": "tiger",
+      "6": ".org",
+      "7": "http"
+    },
+    "answer": "7426351",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 68,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "71E618",
+    "prompt": "Доступ к файлу pupil.pdf, находящемуся на сервере class.ru, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "https",
+      "2": ".ru",
+      "3": ".pdf",
+      "4": "pupil",
+      "5": "://",
+      "6": "/",
+      "7": "class"
+    },
+    "answer": "1572643",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 69,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "5876B3",
+    "prompt": "Доступ к файлу poka.doc, находящемуся на сервере doc.ru, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".doc",
+      "2": "doc.",
+      "3": "://",
+      "4": "/",
+      "5": "poka",
+      "6": "https",
+      "7": "ru"
+    },
+    "answer": "6327451",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 70,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "7280F1",
+    "prompt": "Доступ к файлу ru.gif, находящемуся на сервере last.ru, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "/",
+      "2": "://",
+      "3": "last.",
+      "4": "gif",
+      "5": "https",
+      "6": "ru.",
+      "7": "ru"
+    },
+    "answer": "5237164",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 71,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "99209D",
+    "prompt": "Доступ к файлу rus.doc, находящемуся на сервере obr.org, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "obr.",
+      "2": "/",
+      "3": "org",
+      "4": "://",
+      "5": "doc",
+      "6": "rus.",
+      "7": "https"
+    },
+    "answer": "7413265",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 72,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "12BB94",
+    "prompt": "Доступ к файлу math.doc, находящемуся на сервере obr.ru, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "obr",
+      "2": "/",
+      "3": ".ru",
+      "4": ".doc",
+      "5": "://",
+      "6": "math",
+      "7": "https"
+    },
+    "answer": "7513264",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 73,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "57B3C6",
+    "prompt": "Доступ к файлу sotr.pdf, находящемуся на сервере org.net, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": ".pdf",
+      "2": "sotr",
+      "3": "://",
+      "4": ".net",
+      "5": "org",
+      "6": "https",
+      "7": "/"
+    },
+    "answer": "6354721",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 74,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "B16B99",
+    "prompt": "Доступ к файлу hi.gif, находящемуся на сервере past.ru, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "ru",
+      "2": "://",
+      "3": "past.",
+      "4": ".gif",
+      "5": "https",
+      "6": "hi",
+      "7": "/"
+    },
+    "answer": "5231764",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 75,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "1D27FA",
+    "prompt": "Доступ к файлу https.txt, находящемуся на сервере smile.ru, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "https",
+      "2": "/",
+      "3": "smile",
+      "4": "https.",
+      "5": ".ru",
+      "6": "txt",
+      "7": "://"
+    },
+    "answer": "1735246",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 76,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "23C35E",
+    "prompt": "Доступ к файлу https.ppt, находящемуся на сервере smtp.org, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "https",
+      "2": "smtp",
+      "3": "/",
+      "4": "https.",
+      "5": ".org",
+      "6": "://",
+      "7": "ppt"
+    },
+    "answer": "1625347",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 77,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "183280",
+    "prompt": "Доступ к файлу https.doc, находящемуся на сервере top.net, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "https",
+      "2": "/",
+      "3": ".net",
+      "4": "doc",
+      "5": "top",
+      "6": "https.",
+      "7": "://"
+    },
+    "answer": "1753264",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 78,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "164236",
+    "prompt": "Доступ к файлу hi.txt, находящемуся на сервере txt.ru, осуществляется по протоколу https. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "://",
+      "2": "txt.",
+      "3": ".txt",
+      "4": "https",
+      "5": "hi",
+      "6": "/",
+      "7": "ru"
+    },
+    "answer": "4127653",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 79,
+    "category": "Восстановление адреса файла по фрагментам",
+    "code": "A6EC51",
+    "prompt": "Доступ к файлу klara.htm, находящемуся на сервере march.ru, осуществляется по протоколу http. Фрагменты адреса файла закодированы цифрами от 1 до 7. Запишите последовательность этих цифр, кодирующую адрес указанного файла в сети Интернет.",
+    "fragments": {
+      "1": "klara",
+      "2": "/",
+      "3": "march",
+      "4": ".htm",
+      "5": ".ru",
+      "6": "://",
+      "7": "http"
+    },
+    "answer": "7635214",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 80,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Файл may.jpeg был выложен в интернете по адресу http://spring.info/may.jpeg. Потом на этом сайте создали подкаталог months и файл переместили в этот подкаталог. Укажите новый адрес указанного файла.",
+    "fragments": {},
+    "answer": "http://spring.info/months/may.jpeg",
+    "answerKind": "text"
+  },
+  {
+    "idx": 81,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Файл winter.jpg был выложен в интернете по адресу ftp://weather.info/winter.jpg. Потом на сайте создали подкаталог foto, а в нём – подкаталог 2019, и файл переместили в подкаталог 2019. Укажите новый адрес указанного файла.",
+    "fragments": {},
+    "answer": "ftp://weather.info/foto/2019/winter.jpg",
+    "answerKind": "text"
+  },
+  {
+    "idx": 82,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Файл dog.pptx был выложен в интернете по адресу ftp://mydogs.ru/dog.pptx. Потом его переместили в каталог work на сайте presentation.edu, доступ к которому осуществляется по протоколу http. Имя файла не изменилось. Укажите новый адрес указанного файла.",
+    "fragments": {},
+    "answer": "http://presentation.edu/work/dog.pptx",
+    "answerKind": "text"
+  },
+  {
+    "idx": 83,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Файл pig.pdf был выложен в интернете по адресу http://mypigs.ru/pig.pdf. Потом его переместили в каталог work на сайте presentation.edu, доступ к которому осуществляется по протоколу ftp. Имя файла не изменилось. Укажите новый адрес указанного файла.",
+    "fragments": {},
+    "answer": "ftp://presentation.edu/work/pig.pdf",
+    "answerKind": "text"
+  },
+  {
+    "idx": 84,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Учитель информатики сказал ученику 9 класса, что материал для подготовки к контрольной работе выложен в Интернете по адресу http://edu.dockontr.ru/samrab/KontrRab2.pdf. Но в результате настройки школьного сервера на следующий день, учителю пришлось переместить этот материал в корневой каталог на сайте rabotadom.net, доступ к которому осуществляется по протоколу https. Само имя файла не изменилось. Определить новый адрес файла подготовки к контрольной работе.",
+    "fragments": {},
+    "answer": "https://rabotadom.net/KontrRab2.pdf",
+    "answerKind": "text"
+  },
+  {
+    "idx": 85,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Учитель информатики сказал ученику 9 класса, что материал для подготовки к итоговому тестированию выложен в Интернете по адресу ftp://tests.edu/itogtest/ItogRab3.rtf. Но в результате настройки школьного сервера на следующий день, учителю пришлось переместить этот материал в корневой каталог на сайте schoolkontr.ru, доступ к которому осуществляется по протоколу http. Само имя файла не изменилось. Определить новый адрес файла подготовки к итоговому тестированию.",
+    "fragments": {},
+    "answer": "ftp://tests.edu/itogtest/ItogRab3.rtf",
+    "answerKind": "text"
+  },
+  {
+    "idx": 86,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Файл rose.gif был выложен в Интернете по адресу http://color.net/red/rose.gif. Потом его переместили в корневой каталог на сайте box.net, доступ к которому осуществляется по протоколу ftp. Имя файла не изменилось. Фрагменты нового и старого адресов файла закодированы цифрами от 1 до 9. Запишите последовательность этих цифр, кодирующую адрес файла в сети Интернет после перемещения.",
+    "fragments": {},
+    "answer": "1234567 ftp://box.net/rose.gif",
+    "answerKind": "text"
+  },
+  {
+    "idx": 87,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Файл rose.gif был выложен в Интернете по адресу http://color.net/red/rose.gif. Потом его переместили в корневой каталог на сайте box.net, доступ к которому осуществляется по протоколу ftp. Имя файла не изменилось. Фрагменты нового и старого адресов файла закодированы цифрами от 1 до 9. Запишите последовательность этих цифр, кодирующую адрес файла в сети Интернет после перемещения.",
+    "fragments": {},
+    "answer": "6725748 ftp://box.net/rose.gif Заметим, что символ номер 7 («/») использован в адресе дважды.",
+    "answerKind": "text"
+  },
+  {
+    "idx": 88,
+    "category": "Восстановление адреса файла после перемещения",
+    "code": null,
+    "prompt": "Файл tulip.gif был выложен в Интернете по адресу http://box.net/tulip.gif. Потом его переместили в каталог red на сайте flowers.net, доступ к которому осуществляется по протоколу ftp. Имя файла не изменилось.",
+    "fragments": {},
+    "answer": "679573748 ftp://flowers.net/red/tulip.gif",
+    "answerKind": "text"
+  },
+  {
+    "idx": 89,
+    "category": "Восстановление почтового адреса",
+    "code": null,
+    "prompt": "Почтовый ящик mama.5 находится на сервере dom.ru. В таблице фрагменты адреса электронной почты закодированы цифрами от 1 до 6. Запишите последовательность цифр, кодирующую этот адрес.",
+    "fragments": {
+      "1": ".",
+      "2": ".ru",
+      "3": "dom",
+      "4": "@",
+      "5": "5",
+      "6": "mama"
+    },
+    "answer": "615432",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 90,
+    "category": "Восстановление почтового адреса",
+    "code": null,
+    "prompt": "Почтовый ящик RE находится на сервере dis.cur.ru В таблице фрагменты адреса электронной почты закодированы цифрами от 1 до 6. Запишите последовательность цифр, кодирующую этот адрес.",
+    "fragments": {
+      "1": "RE",
+      "2": "dis",
+      "3": ".ru",
+      "4": "cur",
+      "5": "@",
+      "6": "."
+    },
+    "answer": "152643",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 91,
+    "category": "Восстановление почтового адреса",
+    "code": null,
+    "prompt": "Почтовый ящик Marta находится на сервере sleep.day.ru. В таблице фрагменты адреса электронной почты закодированы цифрами от 1 до 6. Запишите последовательность цифр, кодирующую этот адрес.",
+    "fragments": {
+      "1": "Marta",
+      "2": "@",
+      "3": "day",
+      "4": ".ru",
+      "5": "sleep",
+      "6": "."
+    },
+    "answer": "125634",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 92,
+    "category": "Восстановление почтового адреса",
+    "code": null,
+    "prompt": "Почтовый ящик teacher находится на сервере shkola1.mos.ru. В таблице фрагменты адреса электронной почты закодированы цифрами от 1 до 6. Запишите последовательность цифр, кодирующую этот адрес.",
+    "fragments": {
+      "1": "@",
+      "2": ".ru",
+      "3": "shkola1",
+      "4": ".",
+      "5": "teacher",
+      "6": "mos"
+    },
+    "answer": "513462",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 93,
+    "category": "Восстановление почтового адреса",
+    "code": null,
+    "prompt": "Почтовый ящик yasam находится на сервере raboty.mos.ru. В таблице фрагменты адреса электронной почты закодированы цифрами от 1 до 6. Запишите последовательность цифр, кодирующую этот адрес.",
+    "fragments": {
+      "1": "@",
+      "2": ".ru",
+      "3": "raboty",
+      "4": ".",
+      "5": "yasam",
+      "6": "mos"
+    },
+    "answer": "513462",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 94,
+    "category": "Восстановление почтового адреса",
+    "code": null,
+    "prompt": "Почтовый ящик votyakov находится на сервере shk.mos.ru. В таблице фрагменты адреса электронной почты закодированы цифрами от 1 до 6. Запишите последовательность цифр, кодирующую этот адрес.",
+    "fragments": {
+      "1": "@",
+      "2": ".ru",
+      "3": "shk",
+      "4": ".",
+      "5": "votyakov",
+      "6": "mos"
+    },
+    "answer": "513462",
+    "answerKind": "digits"
+  },
+  {
+    "idx": 95,
+    "category": "Восстановление почтового адреса",
+    "code": null,
+    "prompt": "Почтовый ящик oge s-ms находится на сервере shk.mos.ru. В таблице фрагменты адреса электронной почты закодированы цифрами от 1 до 6. Запишите последовательность цифр, кодирующую этот адрес.",
+    "fragments": {
+      "1": ".ru",
+      "2": "@",
+      "3": "shk",
+      "4": "mos",
+      "5": "oge-s ms",
+      "6": "."
+    },
+    "answer": "523641",
+    "answerKind": "digits"
+  }
+];
+
+const LS_PIN_KEY = "oge7_teacher_pin";
+const LS_ANS_KEY = "oge7_teacher_answers_v1";
+
+function normAns(s){
+  return (s ?? "").toString().trim().replace(/\s+/g," ");
+}
+function defaultPin(){ return "1234"; }
+
+function getPin(){ return localStorage.getItem(LS_PIN_KEY) || defaultPin(); }
+function setPin(p){ localStorage.setItem(LS_PIN_KEY, p); }
+
+function getTeacherAnswers(){
+  const raw = localStorage.getItem(LS_ANS_KEY);
+  if(!raw) return null;
+  try{ return JSON.parse(raw); }catch(e){ return null; }
+}
+function setTeacherAnswers(obj){ localStorage.setItem(LS_ANS_KEY, JSON.stringify(obj)); }
+
+function buildDefaultTeacherAnswers(){
+  const map={};
+  for(const t of TASKS){ map[t.idx] = t.answer ?? ""; }
+  return map;
+}
+
+let teacherUnlocked = false;
+let locked = false;
+let studentAnswers = {};
+let results = {};
+
+function ensureTeacherStore(){
+  let cur = getTeacherAnswers();
+  if(!cur) setTeacherAnswers(buildDefaultTeacherAnswers());
+}
+
+function gradeFromPercent(p){
+  if(p >= 80) return 5;
+  if(p >= 60) return 4;
+  if(p >= 40) return 3;
+  return 2;
+}
+
+function calcStats(){
+  const done = Object.keys(results).length;
+  const score = Object.values(results).filter(Boolean).length;
+  const denom = TASKS.length;
+  const pct = denom ? Math.round(score/denom*100) : 0;
+  return {done, score, pct, grade: gradeFromPercent(pct)};
+}
+
+function renderCategorySelect(){
+  const sel = document.getElementById("categorySelect");
+  const cats = ["Все задания", ...Array.from(new Set(TASKS.map(t=>t.category)))];
+  sel.innerHTML = cats.map(c=>`<option value="${c}">${c}</option>`).join("");
+}
+
+function escapeHtml(s){
+  return (s??"").toString()
+    .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+    .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+function fragmentsTableHTML(frags){
+  const keys = Object.keys(frags||{}).sort((a,b)=>Number(a)-Number(b));
+  if(!keys.length) return "";
+  const rows = keys.map(k=>`<tr><td class="k">${k}</td><td>${escapeHtml(frags[k])}</td></tr>`).join("");
+  return `
+    <div class="fragwrap">
+      <p class="fragtitle">Фрагменты (используйте их для составления адреса):</p>
+      <table class="fragtbl" role="table">
+        <thead><tr><th style="width:60px">№</th><th>Фрагмент</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+  `;
+}
+
+function renderTasks(){
+  const wrap = document.getElementById("cards");
+  const sel = document.getElementById("categorySelect").value;
+  const list = (sel && sel !== "Все задания") ? TASKS.filter(t=>t.category===sel) : TASKS;
+
+  wrap.innerHTML = list.map(t=>{
+    const st = results[t.idx];
+    const pill = (st===true) ? `<span class="pill ok">✅ Верно</span>` : (st===false ? `<span class="pill bad">❌ Неверно</span>` : `<span class="pill">Не проверено</span>`);
+    const codeLine = t.code ? `Код: ${t.code}` : `Категория: ${t.category}`;
+    const val = studentAnswers[t.idx] ?? "";
+    const disabled = locked ? "disabled" : "";
+    return `
+      <div class="card" id="task-${t.idx}">
+        <div class="card-h">
+          <div class="left">
+            <div class="num">${t.idx}</div>
+            <div class="meta">
+              <div class="h">${escapeHtml(t.category)}</div>
+              <div class="code">${escapeHtml(codeLine)}</div>
+            </div>
+          </div>
+          <div>${pill}</div>
+        </div>
+        <div class="card-b">
+          <div class="prompt">${escapeHtml(t.prompt)}</div>
+          ${fragmentsTableHTML(t.fragments)}
+          <div class="answer">
+            <input ${disabled} data-idx="${t.idx}" class="ans" placeholder="Введите ответ" value="${escapeHtml(val)}" />
+          </div>
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  for(const inp of document.querySelectorAll("input.ans")){
+    inp.addEventListener("input", (e)=>{
+      const idx = Number(e.target.getAttribute("data-idx"));
+      studentAnswers[idx] = e.target.value;
+    });
+  }
+}
+
+function updateSide(){
+  const st = calcStats();
+  document.getElementById("scoreVal").textContent = st.score.toString();
+  document.getElementById("doneVal").textContent = st.done.toString();
+  document.getElementById("summaryLine").textContent = `Итог по выполненным заданиям: ${st.score} / ${TASKS.length} • ${st.pct}% • оценка ${st.grade}`;
+}
+
+function checkAll(){
+  if(locked) return;
+  ensureTeacherStore();
+  const ansMap = getTeacherAnswers() || buildDefaultTeacherAnswers();
+
+  results = {};
+  for(const t of TASKS){
+    const student = normAns(studentAnswers[t.idx] || "");
+    if(!student) continue;
+    const correct = normAns(ansMap[t.idx] ?? "");
+    const ok = student.toLowerCase() === correct.toLowerCase();
+    results[t.idx] = ok;
+  }
+  locked = true;
+  renderTasks();
+  updateSide();
+}
+
+function resetAll(){
+  locked = false;
+  studentAnswers = {};
+  results = {};
+  renderTasks();
+  updateSide();
+}
+
+function openTeacher(){ document.getElementById("teacherDlg").showModal(); }
+function closeTeacher(){ document.getElementById("teacherDlg").close(); }
+
+function renderTeacherList(){
+  ensureTeacherStore();
+  const ansMap = getTeacherAnswers() || buildDefaultTeacherAnswers();
+  const list = document.getElementById("teacherList");
+  list.innerHTML = TASKS.map(t=>{
+    const qshort = t.prompt.length>70 ? t.prompt.slice(0,70)+"…" : t.prompt;
+    const v = ansMap[t.idx] ?? "";
+    return `
+      <div class="trow">
+        <div class="tidx">${t.idx}</div>
+        <div class="tq" title="${escapeHtml(t.prompt)}">${escapeHtml(qshort)}</div>
+        <input data-tidx="${t.idx}" value="${escapeHtml(v)}" />
+      </div>
+    `;
+  }).join("");
+}
+
+function unlockTeacher(){
+  const pin = document.getElementById("pinInput").value.trim();
+  if(pin !== getPin()) { alert("Неверный PIN-код."); return; }
+  teacherUnlocked = true;
+  document.getElementById("teacherBody").style.display = "block";
+  renderTeacherList();
+}
+
+function saveTeacherAnswers(){
+  if(!teacherUnlocked) return;
+  const map = getTeacherAnswers() || buildDefaultTeacherAnswers();
+  for(const inp of document.querySelectorAll("#teacherList input")){
+    const idx = Number(inp.getAttribute("data-tidx"));
+    map[idx] = inp.value;
+  }
+  setTeacherAnswers(map);
+  alert("Ответы учителя сохранены.");
+}
+
+function restoreDefaults(){
+  if(!teacherUnlocked) return;
+  setTeacherAnswers(buildDefaultTeacherAnswers());
+  renderTeacherList();
+  alert("Ответы восстановлены к исходным.");
+}
+
+function changePin(){
+  const old = prompt("Введите текущий PIN-код:");
+  if(old === null) return;
+  if(old.trim() !== getPin()){ alert("Текущий PIN неверный."); return; }
+  const p1 = prompt("Введите новый PIN-код (4–8 цифр):");
+  if(p1 === null) return;
+  if(!/^\d{4,8}$/.test(p1.trim())){ alert("PIN должен содержать 4–8 цифр."); return; }
+  setPin(p1.trim());
+  alert("PIN-код изменён.");
+}
+
+document.getElementById("btnTeacher").addEventListener("click", ()=>openTeacher());
+document.getElementById("btnCloseTeacher").addEventListener("click", ()=>closeTeacher());
+document.getElementById("btnUnlock").addEventListener("click", ()=>unlockTeacher());
+document.getElementById("btnSaveTeacher").addEventListener("click", ()=>saveTeacherAnswers());
+document.getElementById("btnRestoreDefaults").addEventListener("click", ()=>restoreDefaults());
+document.getElementById("btnChangePin").addEventListener("click", ()=>changePin());
+
+document.getElementById("btnCheck").addEventListener("click", ()=>checkAll());
+document.getElementById("btnReset").addEventListener("click", ()=>resetAll());
+document.getElementById("btnPrint").addEventListener("click", ()=>window.print());
+document.getElementById("btnShowGrade").addEventListener("click", ()=>{ updateSide(); alert(document.getElementById("summaryLine").textContent); });
+
+document.getElementById("categorySelect").addEventListener("change", ()=>renderTasks());
+
+(function init(){
+  ensureTeacherStore();
+  renderCategorySelect();
+  renderTasks();
+  updateSide();
+})();
+</script>
+</body>
+</html>

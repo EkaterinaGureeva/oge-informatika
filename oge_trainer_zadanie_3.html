@@ -1,0 +1,383 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Учебный тренажёр ОГЭ по информатике — Задание 3</title>
+<style>
+:root{
+  --stroke:rgba(37,99,235,.18);
+  --ink:rgba(7,18,37,.92); --muted:rgba(7,18,37,.68);
+  --blue:#2563eb; --blue2:#1d4ed8;
+  --shadow:0 18px 34px rgba(2,6,23,.08);
+  --mono:ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+  --sans:ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,"Noto Sans","Liberation Sans",sans-serif;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:var(--sans); color:var(--ink);
+  background:radial-gradient(1100px 700px at 15% 15%, #eaf2ff, transparent 55%),
+            radial-gradient(900px 600px at 85% 85%, #d6f2ff, transparent 55%),
+            linear-gradient(180deg,#f6fbff,#fff 60%);
+}
+.wrap{max-width:1180px;margin:0 auto;padding:18px 14px 26px}
+.topbar{
+  display:flex; align-items:center; gap:10px; padding:8px 10px;
+  border:1px solid var(--stroke); border-radius:22px;
+  background:linear-gradient(90deg,#ffffffdd,#f4fbffdd);
+  box-shadow:var(--shadow);
+  flex-wrap:nowrap; overflow:hidden;
+}
+.badge{
+  width:42px;height:42px;border-radius:999px;display:grid;place-items:center;
+  background:linear-gradient(180deg,#3b82f6,#2563eb); color:#fff; font-weight:700; font-size:18px;
+  flex:0 0 auto; box-shadow:0 10px 18px rgba(37,99,235,.22);
+}
+.title{font-size:16px;color:var(--blue);font-weight:500;white-space:nowrap;max-width:320px;overflow:hidden;text-overflow:ellipsis}
+.spacer{flex:1}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:nowrap}
+select,button{
+  height:34px;border-radius:999px;border:1px solid rgba(37,99,235,.22);
+  background:#fff;padding:0 10px;font-size:13px;color:var(--ink);cursor:pointer;white-space:nowrap;
+}
+button.primary{background:linear-gradient(180deg,#eaf2ff,#fff);color:var(--blue2);font-weight:600}
+#modeSel{width:260px;max-width:260px}
+
+.grid{display:grid;grid-template-columns:1fr 360px;gap:14px;margin-top:14px;align-items:start}
+.panel{border:1px solid var(--stroke);border-radius:18px;background:#ffffffcc;box-shadow:var(--shadow);padding:12px 12px 14px}
+.sidePanel{position:sticky;top:14px}
+.sideHeader{display:flex;gap:10px;align-items:center;padding:10px;border-radius:16px;border:1px solid rgba(37,99,235,.16);
+  background:linear-gradient(180deg,#eaf6ff,#fff)}
+.sideIcon{width:42px;height:42px;border-radius:14px;display:grid;place-items:center;background:linear-gradient(180deg,#3b82f6,#2563eb);color:#fff}
+.sideTitle .h{font-size:16px;font-weight:700;color:var(--blue)}
+.sideTitle .s{font-size:12.5px;color:var(--blue)}
+.kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.kpi{border:1px solid rgba(37,99,235,.16);border-radius:16px;background:linear-gradient(180deg,#f0f7ff,#fff);padding:10px}
+.kpi .n{font-size:22px;color:var(--blue2);font-weight:800;line-height:1}
+.kpi .t{font-size:12px;color:var(--muted);margin-top:6px}
+.barWrap{margin-top:10px;border:1px solid rgba(37,99,235,.16);border-radius:16px;padding:10px;background:linear-gradient(180deg,#f7fbff,#fff)}
+.barRow{display:flex;justify-content:space-between;font-size:12px;color:var(--muted)}
+.bar{height:10px;background:rgba(2,6,23,.08);border-radius:999px;overflow:hidden;margin-top:8px}
+.bar>div{height:100%;width:0%;background:linear-gradient(90deg,#60a5fa,#2563eb)}
+.scale{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:10px}
+.chip{border:1px solid rgba(37,99,235,.16);border-radius:14px;background:#fff;padding:8px;text-align:center}
+.chip .g{font-weight:800;color:var(--blue2);font-size:16px;line-height:1}
+.chip .r{font-size:12px;color:var(--muted);margin-top:4px}
+
+.sectionTitle{font-size:16px;font-weight:700;color:var(--blue);margin:2px 0 10px}
+.note{margin:6px 0 12px;padding:10px 12px;border:1px solid rgba(37,99,235,.16);border-radius:14px;
+  background:linear-gradient(180deg,#f0f7ff,#fff);color:rgba(7,18,37,.78);font-size:13px}
+.taskCard{border:1px solid rgba(37,99,235,.16);border-radius:18px;background:#fff;padding:12px;margin-bottom:12px}
+.taskTop{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.taskNo{font-weight:800;color:var(--blue2)}
+.taskCode{font-family:var(--mono);font-size:12px;color:rgba(2,6,23,.72)}
+.taskText{margin-top:10px;color:rgba(7,18,37,.88);line-height:1.42;white-space:pre-wrap}
+.answerRow{display:flex;gap:10px;align-items:center;margin-top:12px;flex-wrap:wrap}
+input[type="text"]{height:38px;border-radius:14px;border:1px solid rgba(37,99,235,.22);padding:0 12px;min-width:220px;font-size:14px}
+.mark{margin-left:auto;font-weight:800}
+.ok{color:#16a34a} .bad{color:#dc2626}
+.options{margin-top:10px;display:grid;gap:8px}
+.opt{display:flex;gap:10px;align-items:flex-start;border:1px solid rgba(37,99,235,.14);border-radius:14px;padding:10px;background:linear-gradient(180deg,#f7fbff,#fff)}
+.opt input{margin-top:2px}
+.opt .n{font-weight:800;color:var(--blue2);min-width:20px}
+.opt .v{white-space:pre-wrap}
+
+.modalBack{position:fixed; inset:0; background:rgba(2,6,23,.35); display:none; align-items:center; justify-content:center; padding:14px; z-index:50}
+.modal{width:min(880px,96vw); background:#fff; border-radius:22px; border:1px solid rgba(37,99,235,.18); box-shadow:var(--shadow)}
+.modalHead{display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border-bottom:1px solid rgba(37,99,235,.14)}
+.modalHead .h{color:var(--blue); font-weight:700}
+.modalBody{padding:12px 14px; max-height:70vh; overflow:auto}
+.row{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+.hint{color:var(--muted); font-size:13px}
+
+@media (max-width:980px){ .grid{grid-template-columns:1fr} .sidePanel{position:static} .title{max-width:220px} }
+@media (max-width:760px){ .topbar{flex-wrap:wrap} .spacer{display:none} .title{max-width:none;width:100%} .controls{width:100%;justify-content:flex-start;flex-wrap:wrap} #modeSel{width:100%;max-width:none} }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="topbar">
+    <div class="badge">3</div>
+    <div class="title">Учебный тренажёр ОГЭ по информатике</div>
+    <div class="spacer"></div>
+    <div class="controls">
+      <select id="modeSel">
+        <option value="all">Все задания</option>
+        <option value="base">Базовый вариант</option>
+        <option value="extra">Дополнительные задания</option>
+        <option value="input">Задания с ответом</option>
+        <option value="choice">Задания с выбором ответа</option>
+      </select>
+      <button id="teacherBtn">Учитель</button>
+      <button class="primary" id="checkBtn">Проверить</button>
+      <button id="scoreBtn">Оценка</button>
+      <button id="printBtn">Печать/PDF</button>
+      <button id="resetBtn">Сбросить</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel"><div id="tasksRoot"></div></div>
+
+    <div class="panel sidePanel">
+      <div class="sideHeader">
+        <div class="sideIcon">📊</div>
+        <div class="sideTitle">
+          <div class="h">Оценка и баллы</div>
+          <div class="s">Итог по выполненным заданиям</div>
+        </div>
+      </div>
+
+      <div class="kpis">
+        <div class="kpi"><div class="n" id="kDone">0</div><div class="t">выполнено</div></div>
+        <div class="kpi"><div class="n" id="kPts">0</div><div class="t">баллов</div></div>
+        <div class="kpi"><div class="n" id="kGrade">—</div><div class="t">оценка</div></div>
+      </div>
+
+      <div class="barWrap">
+        <div class="barRow"><span style="color:var(--blue); font-weight:700">Процент верных</span><span id="kPct">—</span></div>
+        <div class="bar"><div id="barFill"></div></div>
+      </div>
+
+      <div class="scale">
+        <div class="chip"><div class="g">5</div><div class="r">80–100%</div></div>
+        <div class="chip"><div class="g">4</div><div class="r">60–79%</div></div>
+        <div class="chip"><div class="g">3</div><div class="r">40–59%</div></div>
+        <div class="chip"><div class="g">2</div><div class="r">0–39%</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modalBack" id="modalBack">
+  <div class="modal">
+    <div class="modalHead">
+      <div class="h">Режим учителя</div>
+      <button id="closeModal">Закрыть</button>
+    </div>
+    <div class="modalBody" id="modalBody"></div>
+  </div>
+</div>
+
+<script id="tasks-data" type="application/json">[{"id": "1", "kind": "input", "prompt": "Найдите наибольшее натуральное число, удовлетворяющее условию:\nНЕ (Число оканчивается на 5) И НЕ (Число > 100)", "answer": "100", "group": "Базовый вариант"}, {"id": "2", "kind": "input", "prompt": "Найдите наименьшее целое число, удовлетворяющее условию:\n(Число > 27) И НЕ (Число <= 96)", "answer": "97", "group": "Базовый вариант"}, {"id": "3", "kind": "input", "prompt": "Найдите наибольшее целое значение A, для которого ложно высказывание:\n(A > 7) И (A >= 8)", "answer": "7", "group": "Базовый вариант"}, {"id": "4", "kind": "input", "prompt": "Найдите наибольшее трехзначное число, удовлетворяющее условию:\nНЕ (Цифра сотен больше цифры десятков И Число кратно 10)", "answer": "999", "group": "Базовый вариант"}, {"id": "5", "kind": "input", "prompt": "Найдите наибольшее целое число, удовлетворяющее условию:\nНЕ (Число четно) И (Число <= 20)", "answer": "19", "group": "Базовый вариант"}, {"id": "6", "kind": "input", "prompt": "Найдите наименьшее целое значение A, для которого ложно высказывание:\n(A < 98) ИЛИ (A >= 100)", "answer": "98", "group": "Базовый вариант"}, {"id": "7", "kind": "input", "prompt": "Найдите наибольшее целое число А, для которого истинно высказывание:\nНЕ(А > 16) ИЛИ (А < 22) И (А кратно 7)", "answer": "21", "group": "Базовый вариант"}, {"id": "8", "kind": "input", "prompt": "Найдите наименьшее натуральное число А, для которого истинно высказывание:\nНЕ(А > 25) ИЛИ (А четно) И (А кратно 7)", "answer": "1", "group": "Базовый вариант"}, {"id": "9", "kind": "input", "prompt": "Найдите наибольшее двузначное число, удовлетворяющее условию:\nНЕ (Первая цифра больше второй) И (Число кратно 5)", "answer": "55", "group": "Базовый вариант"}, {"id": "10", "kind": "input", "prompt": "Найдите наименьшее целое число, удовлетворяющее условию:\nНЕ (Число оканчивается на 5 ИЛИ Число <= 100)", "answer": "101", "group": "Базовый вариант"}, {"id": "11", "kind": "choice", "prompt": "Для какого из приведённых чисел ложно высказывание:\n(число >= 40) ИЛИ НЕ(число четное) ?", "options": ["63", "54", "31", "20"], "answer": "4", "group": "Базовый вариант"}, {"id": "12", "kind": "choice", "prompt": "Для какого из приведённых слов ложно высказывание:\nНЕ (первая буква согласная) ИЛИ (последняя буква гласная) ?", "options": ["СОВА", "СЛОН", "АИСТ", "АНАКОНДА"], "answer": "2", "group": "Базовый вариант"}, {"id": "13", "kind": "choice", "prompt": "Для какого из приведённых чисел истинно высказывание:\n(число < 20) И НЕ(число нечетное) ?", "options": ["9", "18", "35", "48"], "answer": "2", "group": "Базовый вариант"}, {"id": "14", "kind": "choice", "prompt": "Для какого из приведённых чисел истинно высказывание:\nНЕ (число >= 50) И НЕ(число нечетное) ?", "options": ["72", "19", "42", "61"], "answer": "3", "group": "Базовый вариант"}, {"id": "15", "kind": "choice", "prompt": "Для какого из приведённых чисел ЛОЖНО высказывание:\nНЕ ((первая цифра четная) И НЕ (последняя цифра нечетная)) ?", "options": ["9483", "2375", "4758", "7364"], "answer": "3", "group": "Базовый вариант"}, {"id": "16", "kind": "choice", "prompt": "Для какого из приведённых чисел ЛОЖНО высказывание:\nНЕ (НЕ (первая цифра нечетная) И (последняя цифра нечетная)) ?", "options": ["4632", "5627", "3658", "8537"], "answer": "4", "group": "Базовый вариант"}, {"id": "17", "kind": "choice", "prompt": "Для какого из приведённых чисел ИСТИННО высказывание:\nНЕ (НЕ (число <= 60) ИЛИ (число четное)) ?", "options": ["43", "60", "71", "84"], "answer": "1", "group": "Базовый вариант"}, {"id": "18", "kind": "choice", "prompt": "Для какого из приведённых слов верно высказывание:\n(первая буква гласная) И ((последняя буква согласная) ИЛИ (вторая буква согласная)) ?", "options": ["АИДА", "СЕРГЕЙ", "СТЕПАН", "АРТЕМ"], "answer": "4", "group": "Базовый вариант"}, {"id": "19", "kind": "choice", "prompt": "Для какого из приведённых слов верно высказывание:\n((последняя буква согласная) ИЛИ (вторая буква согласная)) И (первая буква согласная)", "options": ["МИХАИЛ", "ЕЛЕНА", "КЛАВДИЯ", "ИЛЬЯ"], "answer": "1", "group": "Базовый вариант"}, {"id": "20", "kind": "choice", "prompt": "Для какого из приведённых слов ложно высказывание:\n((последняя буква согласная) ИЛИ (вторая буква гласная)) ИЛИ (первая буква согласная)", "options": ["ЖИРАФ", "СТРАУС", "ИНДЮК", "АНТИЛОПА"], "answer": "4", "group": "Базовый вариант"}, {"id": "21", "kind": "input", "prompt": "Определите наименьшее трёхзначное число x, для которого истинно логическое выражение: (x оканчивается на 3) И НЕ (x < 230).", "answer": "233", "group": "Дополнительные задания"}, {"id": "22", "kind": "input", "prompt": "Напишите наименьшее натуральное число x, для которого истинно высказывание: ((x > 3) И НЕ (x < 4)) ИЛИ (x < 1).", "answer": "4", "group": "Дополнительные задания"}, {"id": "23", "kind": "input", "prompt": "Определите наименьшее натуральное число x, для которого логическое выражение истинно: (НЕ (x ≥ 15) И НЕ (x < 8)) И (x нечётное).", "answer": "9", "group": "Дополнительные задания"}, {"id": "24", "kind": "input", "prompt": "Напишите наименьшее натуральное число x, для которого истинно высказывание: (x > 2) И ((x < 4) ИЛИ (x > 4)).", "answer": "3", "group": "Дополнительные задания"}, {"id": "25", "kind": "input", "prompt": "Напишите наибольшее натуральное число x, для которого истинно высказывание: НЕ (x < 5) И (x < 6).", "answer": "5", "group": "Дополнительные задания"}, {"id": "26", "kind": "input", "prompt": "Определите количество натуральных двузначных чисел x, для которых ложно логическое выражение: НЕ (x чётное) И НЕ (x > 39).", "answer": "75", "group": "Дополнительные задания"}, {"id": "27", "kind": "input", "prompt": "Напишите наибольшее натуральное число x, для которого истинно высказывание: (x < 7) И НЕ (x < 6).", "answer": "6", "group": "Дополнительные задания"}, {"id": "28", "kind": "input", "prompt": "Определите наименьшее натуральное число x, для которого логическое выражение ложно: НЕ ((x < 8) И (x < 21)) ИЛИ (x нечётное).", "answer": "3", "group": "Дополнительные задания"}, {"id": "29", "kind": "input", "prompt": "Напишите количество натуральных двузначных чисел, для которых истинно высказывание: НЕ (Число < 88) И НЕ (Число нечётное).", "answer": "5", "group": "Дополнительные задания"}, {"id": "30", "kind": "input", "prompt": "Напишите натуральное число x, для которого ложно высказывание: НЕ (x < 8) ИЛИ (x < 7).", "answer": "2", "group": "Дополнительные задания"}, {"id": "31", "kind": "input", "prompt": "Напишите наименьшее натуральное число x, для которого ложно высказывание: (x ≥ 3) ИЛИ НЕ (x ≥ 2).", "answer": "6", "group": "Дополнительные задания"}, {"id": "32", "kind": "input", "prompt": "Дано четыре числа: 638, 442, 357, 123. Для какого из приведённых чисел истинно высказывание: НЕ (Первая цифра чётная) И НЕ (Сумма цифр чётная)? В ответе запишите это число.", "answer": "7", "group": "Дополнительные задания"}, {"id": "33", "kind": "input", "prompt": "Напишите наименьшее трёхзначное число, большее 121, для которого ложно высказывание: НЕ (Число > 50) ИЛИ (Число чётное).", "answer": "2", "group": "Дополнительные задания"}, {"id": "34", "kind": "input", "prompt": "Определите наименьшее натуральное число x, для которого истинно логическое выражение: НЕ ((x ≥ 15) ИЛИ (x < 7)).", "answer": "357", "group": "Дополнительные задания"}, {"id": "35", "kind": "input", "prompt": "Определите количество натуральных чисел x, для которых логическое выражение ложно: НЕ ((x < 8) И (x < 21)) ИЛИ (x нечётное).", "answer": "123", "group": "Дополнительные задания"}, {"id": "36", "kind": "input", "prompt": "Напишите наибольшее трёхзначное число x, для которого истинно высказывание: НЕ (Первая цифра нечётная) И (x делится на 3).", "answer": "7", "group": "Дополнительные задания"}, {"id": "37", "kind": "input", "prompt": "Определите наибольшее натуральное число x, для которого логическое выражение ложно: НЕ ((x < 8) И (x < 21)) ИЛИ (x нечётное).", "answer": "3", "group": "Дополнительные задания"}, {"id": "38", "kind": "input", "prompt": "Определите количество натуральных двузначных чисел x, для которых истинно логическое выражение: НЕ (x нечётное) И НЕ (x > 51).", "answer": "897", "group": "Дополнительные задания"}, {"id": "39", "kind": "input", "prompt": "Дано четыре числа: 648, 452, 357, 123. Для какого из приведённых чисел истинно высказывание: (Первая цифра чётная) И НЕ (Сумма цифр чётная)? В ответе запишите это число.", "answer": "6", "group": "Дополнительные задания"}, {"id": "40", "kind": "input", "prompt": "Напишите наименьшее натуральное число x, для которого ложно высказывание: (НЕ (x ≥ 6) И НЕ (x = 5)) ИЛИ (x ≤ 7).", "answer": "4", "group": "Дополнительные задания"}, {"id": "41", "kind": "input", "prompt": "Напишите наименьшее натуральное число x, для которого истинно высказывание: (x < 3) И НЕ (x < 2).", "answer": "9", "group": "Дополнительные задания"}, {"id": "42", "kind": "input", "prompt": "Напишите количество натуральных чисел, для которых истинно высказывание: НЕ (Число нечётное) И НЕ (Число > 14).", "answer": "21", "group": "Дополнительные задания"}, {"id": "43", "kind": "input", "prompt": "Напишите наибольшее натуральное число x, для которого истинно высказывание: (x  < 8) И НЕ (x  < 7).", "answer": "452", "group": "Дополнительные задания"}, {"id": "44", "kind": "input", "prompt": "Напишите количество натуральных чисел, для которых истинно высказывание: НЕ (Число > 19) И НЕ (Число чётное).", "answer": "102", "group": "Дополнительные задания"}, {"id": "45", "kind": "input", "prompt": "Определите количество натуральных двузначных чисел x, для которых истинно логическое выражение: НЕ (x чётное) И НЕ (x > 67).", "answer": "3", "group": "Дополнительные задания"}, {"id": "46", "kind": "input", "prompt": "Напишите наибольшее натуральное число x, для которого истинно высказывание: НЕ (x < 10) И (x < 11) И (x > 8).", "answer": "8", "group": "Дополнительные задания"}, {"id": "47", "kind": "input", "prompt": "Определите наибольшее трёхзначное число x, для которого истинно логическое выражение: НЕ (x оканчивается на 3) И НЕ (x > 115).", "answer": "2", "group": "Дополнительные задания"}, {"id": "48", "kind": "input", "prompt": "Дано четыре числа: 35, 4598, 54321, 24. Для какого из приведённых чисел истинно высказывание: (Число > 100) И НЕ (Число нечётное)?\nВ ответе запишите это число.", "answer": "7", "group": "Дополнительные задания"}, {"id": "49", "kind": "input", "prompt": "Напишите наибольшее трёхзначное число x, для которого истинно высказывание: НЕ (Первая цифра чётная) И (x делится на 3).", "answer": "4", "group": "Дополнительные задания"}, {"id": "50", "kind": "input", "prompt": "Определите количество натуральных трёхзначных чисел x, для которых истинно логическое выражение: (x оканчивается на 7) И НЕ (x > 119).", "answer": "13", "group": "Дополнительные задания"}, {"id": "51", "kind": "input", "prompt": "Напишите наименьшее натуральное число x, для которого истинно высказывание: (x > 4) И (x < 7) И (x < 6).", "answer": "7", "group": "Дополнительные задания"}, {"id": "52", "kind": "input", "prompt": "Напишите наибольшее трёхзначное число x, для которого истинно высказывание: (Первая цифра нечётная) И НЕ (x делится на 3).", "answer": "10", "group": "Дополнительные задания"}, {"id": "53", "kind": "input", "prompt": "Напишите наибольшее натуральное число x, для которого истинно высказывание: НЕ (x < 3) И (x < 4).", "answer": "5", "group": "Дополнительные задания"}]</script>
+<script>
+(function(){
+  const TASKS = JSON.parse(document.getElementById('tasks-data').textContent);
+  const $ = (id)=>document.getElementById(id);
+
+  let teacherPin = localStorage.getItem("oge3_teacher_pin") || "1234";
+  // restore teacher answers
+  try {
+    const raw = localStorage.getItem("oge3_teacher_answers");
+    if (raw) {
+      const map = JSON.parse(raw);
+      TASKS.forEach(t=>{ if (map[t.id]!=null) t.answer = map[t.id]; });
+    }
+  } catch(e){}
+
+  let checked = false;
+
+  function escapeHtml(s){
+    return (s??"").toString()
+      .replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;")
+      .replaceAll('"',"&quot;").replaceAll("'","&#039;");
+  }
+  function norm(s){ return (s??"").toString().trim().toUpperCase().replaceAll("Ё","Е").replace(/\s+/g,""); }
+  function gradeFromPct(p){ if(p===null) return "—"; if(p>=80) return "5"; if(p>=60) return "4"; if(p>=40) return "3"; return "2"; }
+
+  function getFilteredTasks(){
+    const m = $("modeSel").value;
+    if (m==="all") return TASKS;
+    if (m==="base") return TASKS.filter(t=>t.group==="Базовый вариант");
+    if (m==="extra") return TASKS.filter(t=>t.group==="Дополнительные задания");
+    if (m==="input") return TASKS.filter(t=>t.kind==="input");
+    if (m==="choice") return TASKS.filter(t=>t.kind==="choice");
+    return TASKS;
+  }
+
+  function renderTasks(){
+    checked=false; $("checkBtn").disabled=false;
+    const list=getFilteredTasks();
+    const root=$("tasksRoot");
+    root.innerHTML="";
+
+    const head=document.createElement("div");
+    head.className="sectionTitle";
+    head.textContent="Задание 3 — логические выражения";
+    root.appendChild(head);
+
+    const note=document.createElement("div");
+    note.className="note";
+    note.innerHTML="<span style='color:var(--blue);font-weight:700'>Важно:</span> выполняйте проверку после окончания работы. После нажатия «Проверить» исправление уже внесённых ответов и внесение новых будут недоступны. После проверки тренажёр покажет итоговую оценку.";
+    root.appendChild(note);
+
+    list.forEach((t, idx)=>{
+      const card=document.createElement("div");
+      card.className="taskCard";
+      card.innerHTML=`
+        <div class="taskTop">
+          <div class="taskNo">Задание ${idx+1}</div>
+          <div class="taskCode">№ ${escapeHtml(t.id)}</div>
+        </div>
+        <div class="taskText">${escapeHtml(t.prompt)}</div>
+      `;
+
+      if (t.kind==="input") {
+        const row=document.createElement("div");
+        row.className="answerRow";
+        row.innerHTML=`
+          <label style="font-size:13px;color:var(--muted)">Ответ:</label>
+          <input type="text" data-ans="${escapeHtml(t.id)}" placeholder="Введите ответ" autocomplete="off"/>
+          <span class="mark" data-mark="${escapeHtml(t.id)}"></span>
+        `;
+        card.appendChild(row);
+      } else {
+        const opts=document.createElement("div");
+        opts.className="options";
+        (t.options||[]).forEach((v,i)=>{
+          const n=i+1;
+          const el=document.createElement("label");
+          el.className="opt";
+          el.innerHTML=`
+            <input type="radio" name="q_${escapeHtml(t.id)}" value="${n}" data-ans="${escapeHtml(t.id)}"/>
+            <div class="n">${n})</div>
+            <div class="v">${escapeHtml(v)}</div>
+          `;
+          opts.appendChild(el);
+        });
+        card.appendChild(opts);
+
+        const row=document.createElement("div");
+        row.className="answerRow";
+        row.innerHTML=`<span class="hint">Выберите один вариант ответа.</span><span class="mark" data-mark="${escapeHtml(t.id)}"></span>`;
+        card.appendChild(row);
+      }
+
+      root.appendChild(card);
+    });
+
+    // reset score
+    $("kDone").textContent="0";
+    $("kPts").textContent="0";
+    $("kGrade").textContent="—";
+    $("kPct").textContent="—";
+    $("barFill").style.width="0%";
+  }
+
+  function checkAll(){
+    if (checked) return;
+    checked=true;
+
+    const list=getFilteredTasks();
+    let done=0, pts=0;
+
+    list.forEach(t=>{
+      if (t.kind==="input") {
+        const inp=document.querySelector(`input[data-ans="${CSS.escape(t.id)}"]`);
+        const val=inp?.value ?? "";
+        const has = norm(val).length>0;
+        if (has) done++;
+        const ok = has && (norm(val)===norm(t.answer));
+        if (ok) pts++;
+        if (inp) inp.disabled=true;
+
+        const m=document.querySelector(`[data-mark="${CSS.escape(t.id)}"]`);
+        if (m){ m.textContent = ok ? "✅ Верно" : (has ? "❌ Неверно" : ""); m.className="mark "+(ok?"ok":"bad"); }
+      } else {
+        const radios=[...document.querySelectorAll(`input[type="radio"][name="q_${CSS.escape(t.id)}"]`)];
+        const r = radios.find(x=>x.checked);
+        const has=!!r;
+        if (has) done++;
+        const ok = has && (norm(r.value)===norm(t.answer));
+        if (ok) pts++;
+        radios.forEach(x=>x.disabled=true);
+
+        const m=document.querySelector(`[data-mark="${CSS.escape(t.id)}"]`);
+        if (m){ m.textContent = ok ? "✅ Верно" : (has ? "❌ Неверно" : ""); m.className="mark "+(ok?"ok":"bad"); }
+      }
+    });
+
+    const pct = done>0 ? Math.round(pts/done*100) : null;
+    $("kDone").textContent=done;
+    $("kPts").textContent=pts;
+    $("kGrade").textContent=gradeFromPct(pct);
+    $("kPct").textContent=pct===null?"—":(pct+"%");
+    $("barFill").style.width=pct===null?"0%":(pct+"%");
+    $("checkBtn").disabled=true;
+  }
+
+  function resetAll(){ renderTasks(); }
+
+  function openTeacher(){
+    const pin = prompt("Введите PIN-код учителя:");
+    if (pin===null) return;
+    if (pin!==teacherPin){ alert("Неверный PIN-код."); return; }
+
+    const body=$("modalBody");
+    body.innerHTML = `
+      <div class="row" style="margin-bottom:10px">
+        <div style="font-weight:700;color:var(--blue)">PIN-код</div>
+        <input id="pinInput" type="text" value="${escapeHtml(teacherPin)}" style="min-width:160px" />
+        <button id="savePin" class="primary">Сохранить PIN</button>
+        <span class="hint">Правильные ответы видны только в режиме учителя.</span>
+      </div>
+      <div class="hint" style="margin:6px 0 12px">Можно редактировать ответы. Они сохраняются.</div>
+      <div id="ansList"></div>
+    `;
+
+    const listEl = body.querySelector("#ansList");
+    TASKS.forEach(t=>{
+      const row=document.createElement("div");
+      row.className="taskCard";
+      row.style.marginBottom="10px";
+      row.innerHTML=`
+        <div class="taskTop">
+          <div class="taskNo" style="font-size:14px">№ ${escapeHtml(t.id)}</div>
+          <div class="taskCode">${t.kind==="choice" ? "вариант (1–4)" : "ответ"}</div>
+        </div>
+        <div class="answerRow">
+          <label style="font-size:13px;color:var(--muted)">Правильный ответ:</label>
+          <input type="text" data-teach="${escapeHtml(t.id)}" value="${escapeHtml(t.answer)}" style="min-width:260px"/>
+        </div>
+      `;
+      listEl.appendChild(row);
+    });
+
+    body.querySelector("#savePin").onclick=()=>{
+      const v=body.querySelector("#pinInput").value.trim();
+      if (!v) return alert("PIN не может быть пустым.");
+      teacherPin=v;
+      localStorage.setItem("oge3_teacher_pin", teacherPin);
+      alert("PIN сохранён.");
+    };
+
+    body.querySelectorAll('input[data-teach]').forEach(inp=>{
+      inp.addEventListener("input", ()=>{
+        const id=inp.getAttribute("data-teach");
+        const t=TASKS.find(x=>x.id===id);
+        if (t) t.answer = inp.value;
+
+        const map={};
+        TASKS.forEach(x=>map[x.id]=x.answer);
+        localStorage.setItem("oge3_teacher_answers", JSON.stringify(map));
+      });
+    });
+
+    $("modalBack").style.display="flex";
+  }
+
+  $("closeModal").onclick=()=> $("modalBack").style.display="none";
+  $("modalBack").addEventListener("click",(e)=>{ if(e.target.id==="modalBack") $("modalBack").style.display="none"; });
+
+  $("teacherBtn").onclick=openTeacher;
+  $("checkBtn").onclick=checkAll;
+  $("scoreBtn").onclick=()=>window.scrollTo({top:0, behavior:"smooth"});
+  $("printBtn").onclick=()=>window.print();
+  $("resetBtn").onclick=resetAll;
+  $("modeSel").onchange=renderTasks;
+
+  renderTasks();
+})();
+</script>
+</body>
+</html>

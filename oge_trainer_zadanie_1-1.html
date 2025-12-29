@@ -42,7 +42,7 @@
   .lockNote{font-size:12px;color:var(--muted)}
   .mark{font-weight:700}
   .mark.ok{color:var(--ok)} .mark.bad{color:var(--bad)}
-  .sidebar{position: static;top:74px;align-self:start}
+  .sidebar{position:sticky;top:74px;align-self:start}
   .sideInner{padding:14px}
   .sideTitle{font-size:14px;color:var(--blue);font-weight:600;margin:0 0 10px 0}
   .scoreBox{display:grid;gap:10px}
@@ -65,40 +65,6 @@
   .pinRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
   .pinRow input{border:1px solid var(--line);border-radius:12px;padding:10px 12px;font-size:14px}
   .muted{color:var(--muted)}
-
-/* ===== GitHub Pages responsive fix ===== */
-border:1px solid var(--line);background:white;border-radius:10px;padding:8px 10px;font-size:13px;color:var(--ink);white-space:nowrap;max-width:260px}
-  .wrap {
-  display: grid;
-  gap: 20px;
-  align-items: start;
-}
-
-color:var(--bad)}
-  .sidebar {
-  position: static !important;
-  width: 100%;
-}
-
-@media (min-width: 1200px) {
-  color:var(--bad)}
-  .sidebar {
-    position: sticky !important;
-    top: 20px;
-  }
-}
-
-@media (max-width: 1100px) {
-  border:1px solid var(--line);background:white;border-radius:10px;padding:8px 10px;font-size:13px;color:var(--ink);white-space:nowrap;max-width:260px}
-  .wrap {
-    grid-template-columns: 1fr !important;
-  }
-  color:var(--bad)}
-  .sidebar {
-    margin-top: 16px;
-  }
-}
-
 </style>
 </head>
 <body>
@@ -166,30 +132,11 @@ color:var(--bad)}
       <button class="btn" id="btnCloseTeacher">Закрыть</button>
     </div>
     <div class="modalBody">
-      <div id="teacherLocked">
-        <div class="pinRow">
-          <div class="muted">Введите PIN-код:</div>
-          <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN"/>
-          <button class="btn primary" id="btnPinEnter">Войти</button>
-        </div>
-        <div class="muted" style="font-size:12px">По умолчанию PIN: <b>1234</b> (можно изменить после входа).</div>
-      </div>
+      <div id="teacherLocked" style="display:none"></div>
 
       <div id="teacherUnlocked" style="display:none">
-        <div class="pinRow">
-          <div class="muted">Новый PIN:</div>
-          <input id="newPin" type="password" inputmode="numeric" autocomplete="off" placeholder="Новый PIN (4–8 цифр)"/>
-          <button class="btn" id="btnSavePin">Сохранить PIN</button>
-          <span class="muted" style="font-size:12px">PIN хранится в браузере (localStorage).</span>
-        </div>
-        <div class="muted" style="font-size:12px;margin-bottom:10px">
-          Здесь можно редактировать правильные ответы. Изменения сохраняются и применяются при проверке.
-        </div>
+        <div class="muted" style="font-size:12px;margin-bottom:10px">Ответы доступны только для просмотра в режиме учителя.</div>
         <div class="grid" id="teacherGrid"></div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap">
-          <button class="btn" id="btnResetTeacherAnswers">Сбросить ответы к значениям из файла</button>
-          <button class="btn primary" id="btnSaveTeacherAnswers">Сохранить ответы</button>
-        </div>
       </div>
     </div>
   </div>
@@ -220,12 +167,9 @@ function defaultTeacherAnswers() {
   return m;
 }
 
-function getTeacherPin() {
-  return localStorage.getItem(LS_KEY_TEACHER_PIN) || "1234";
-}
-function setTeacherPin(pin) {
-  localStorage.setItem(LS_KEY_TEACHER_PIN, pin);
-}
+const teacherPin="1234";
+function getTeacherPin(){ return teacherPin; }
+function setTeacherPin(pin){ /* PIN change disabled */ }
 function getTeacherAnswers() {
   const raw = localStorage.getItem(LS_KEY_TEACHER_ANS);
   if (!raw) return defaultTeacherAnswers();
@@ -337,11 +281,12 @@ function resetAll() {
 }
 
 function openTeacher() {
-  // Каждый раз при открытии режима учителя заново запрашиваем PIN
-  document.getElementById("teacherLocked").style.display = "block";
-  document.getElementById("teacherUnlocked").style.display = "none";
-  document.getElementById("pinInput").value = "";
-  document.getElementById("newPin").value = "";
+  const pin = prompt("Введите PIN-код учителя:");
+  if (pin === null) return;
+  if (pin !== getTeacherPin()) { alert("Неверный PIN-код."); return; }
+  document.getElementById("teacherLocked").style.display = "none";
+  document.getElementById("teacherUnlocked").style.display = "block";
+  renderTeacherGrid();
   document.getElementById("teacherModal").classList.add("open");
   document.getElementById("teacherModal").setAttribute("aria-hidden","false");
 }
@@ -368,7 +313,7 @@ function renderTeacherGrid() {
         <div class="n">Задание ${t.idx}</div>
         <div class="c">Код: ${esc(t.code)}</div>
       </div>
-      <input id="tans-${t.idx}" value="${esc(teacherAnswers[t.idx]||"")}" placeholder="Правильный ответ"/>
+      <input id="tans-${t.idx}" value="${esc(teacherAnswers[t.idx]||"")}" placeholder="Правильный ответ" readonly/>
       <div class="muted" style="font-size:12px;margin-top:6px">Ответы доступны только учителю.</div>
     `;
     grid.appendChild(div);
@@ -377,34 +322,6 @@ function renderTeacherGrid() {
 
 document.getElementById("btnTeacher").addEventListener("click", openTeacher);
 document.getElementById("btnCloseTeacher").addEventListener("click", closeTeacher);
-document.getElementById("btnPinEnter").addEventListener("click", () => {
-  const pin=document.getElementById("pinInput").value.trim();
-  if (pin===getTeacherPin()) unlockTeacher();
-  else alert("Неверный PIN");
-});
-document.getElementById("btnSavePin").addEventListener("click", () => {
-  const np=document.getElementById("newPin").value.trim();
-  if (!/^\d{4,8}$/.test(np)) return alert("PIN должен содержать 4–8 цифр.");
-  setTeacherPin(np);
-  alert("PIN сохранён.");
-  document.getElementById("newPin").value="";
-});
-document.getElementById("btnSaveTeacherAnswers").addEventListener("click", () => {
-  const obj={};
-  for (const t of TASKS) {
-    const v=document.getElementById("tans-"+t.idx).value;
-    obj[t.idx]=String(v||"").trim();
-  }
-  setTeacherAnswers(obj);
-  teacherAnswers=getTeacherAnswers();
-  alert("Ответы сохранены.");
-});
-document.getElementById("btnResetTeacherAnswers").addEventListener("click", () => {
-  if (!confirm("Сбросить ответы к значениям из файла?")) return;
-  setTeacherAnswers(defaultTeacherAnswers());
-  teacherAnswers=getTeacherAnswers();
-  renderTeacherGrid();
-});
 
 document.getElementById("btnCheck").addEventListener("click", () => {
   if (!confirm("После проверки ответы нельзя будет изменить. Продолжить?")) return;

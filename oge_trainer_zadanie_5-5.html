@@ -21,6 +21,8 @@ body{
   background: radial-gradient(1200px 500px at 30% 0%, #d9ecff 0%, transparent 60%),
               radial-gradient(900px 500px at 80% 20%, #e8f4ff 0%, transparent 60%),
               linear-gradient(180deg, var(--bg1), var(--bg2));
+
+  overflow-x:hidden;
 }
 .container{max-width:1200px;margin:22px auto 40px;padding:0 16px}
 .topbar{
@@ -106,6 +108,17 @@ input[type="text"]{flex:1;min-width:220px;height:38px;border-radius:10px;border:
 .smallRow input{width:160px}
 
 .taskCard,.prompt{overflow-wrap:anywhere;word-break:break-word}
+
+@media (max-width: 900px){
+  .topbar{flex-wrap:wrap}
+  .title{white-space:normal;flex:1 1 260px;min-width:0}
+  .controls{margin-left:0;flex:1 1 100%;flex-wrap:wrap;white-space:normal}
+}
+@media (max-width: 520px){
+  .controls{gap:6px}
+  select,button{flex:1 1 auto}
+}
+
 </style>
 </head>
 <body>

@@ -71,7 +71,7 @@ input[type="text"]{flex:1;min-width:220px;height:38px;border-radius:10px;border:
 .result.ok{color:var(--ok)}
 .result.bad{color:var(--bad)}
 
-.side{padding:14px;min-width:0;position:static;top:auto;align-self:start}
+.side{padding:14px;min-width:0;position:sticky;top:14px;align-self:start}
 .sideHeader{display:flex;align-items:center;gap:10px;background:linear-gradient(135deg,#e7f3ff,#dff0ff);
   border:1px solid var(--stroke);border-radius:16px;padding:12px;}
 .icon{width:38px;height:38px;border-radius:12px;display:grid;place-items:center;
@@ -102,6 +102,29 @@ input[type="text"]{flex:1;min-width:220px;height:38px;border-radius:10px;border:
 .teacherCell input{width:100%;height:36px;border-radius:10px}
 .smallRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-bottom:12px}
 .smallRow input{width:160px}
+
+
+/* === GitHub Pages layout fix: prevent sidebar from covering tasks === */
+.grid{grid-template-columns:minmax(0,1fr) 360px;}
+.grid > *{min-width:0;}
+.tasks{min-width:0; position:relative; z-index:1;}
+/* ensure sidebar keeps its width and doesn't "stretch" oddly */
+.side{min-width:0; width:100%; max-width:100%; position:sticky; top:14px; align-self:start;}
+/* safe wrapping for long text fragments (URLs, long numbers, etc.) */
+.tasks, .task, .taskBody, .taskText, .prompt, .stem{overflow-wrap:anywhere; word-break:break-word;}
+/* if something is still too wide (tables/images), scroll inside the card instead of breaking layout */
+.taskBody{overflow-x:auto;}
+/* on narrow screens, put menu above and disable sticky so it never overlays content */
+@media (max-width:1100px){
+  .grid{grid-template-columns:1fr;}
+  .side{order:-1; position:static; top:auto;}
+}
+/* make top bar controls wrap on small screens so buttons stay visible */
+@media (max-width:600px){
+  .topbar{flex-wrap:wrap;}
+  .controls{width:100%; justify-content:flex-start;}
+}
+
 </style>
 </head>
 <body>

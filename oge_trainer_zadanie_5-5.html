@@ -26,7 +26,7 @@ body{
 }
 .container{max-width:1200px;margin:22px auto 40px;padding:0 16px}
 .topbar{
-  display:flex;align-items:center;gap:12px;flex-wrap:nowrap;
+  display:flex;align-items:flex-start;gap:12px;flex-wrap:wrap;
   background:rgba(255,255,255,.86);
   border:1px solid var(--stroke);
   border-radius:22px;
@@ -39,7 +39,7 @@ body{
   color:#fff;font-weight:800;
 }
 .title{white-space:nowrap;font-size:20px;color:var(--blue);font-weight:500;}
-.controls{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:nowrap;white-space:nowrap}
+.controls{margin-left:auto;display:flex;align-items:center;gap:8px;flex-wrap:wrap;white-space:normal}
 select,button{
   height:38px;border-radius:999px;border:1px solid var(--stroke);
   background:#fff;padding:0 12px;font-size:14px;color:var(--text);
@@ -53,7 +53,10 @@ button:disabled{opacity:.55;cursor:not-allowed}
 .grid{display:flex;gap:16px;margin-top:16px;align-items:flex-start}
 .tasks{flex:1 1 auto;min-width:0}
 .side{flex:0 0 360px;max-width:360px;min-width:280px}
-@media (max-width:1100px){.grid{flex-direction:column} .side{order:-1;position:static;max-width:none;min-width:0;flex:0 0 auto}}
+@media (max-width:1100px){
+  .grid{flex-direction:column}
+  .side{order:-1;position:static;max-width:none;min-width:0;flex:0 0 auto;width:100%}
+}
 
 .panel{background:rgba(255,255,255,.78);border:1px solid var(--stroke);border-radius:var(--radius);box-shadow:var(--shadow);}
 .tasks{padding:14px;min-width:0}

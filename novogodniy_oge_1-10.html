@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ОГЭ Информатика — Новогодний вариант (задания 1–10)</title>
+<style>
+:root{
+  --bg:#edf3fb; --card:#ffffff; --ink:#222639; --muted:#6b6f8c;
+  --accent:#4459c9; --ok:#1b8f4d; --bad:#c62828; --border:#d6ddf0; --focus:#d8e2ff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans";line-height:1.55}
+.container{max-width:980px;margin:28px auto;padding:0 16px 40px}
+header{background:linear-gradient(180deg,#f4f6ff 0%,#edf3fb 100%);
+  border:1px solid var(--border);border-radius:18px;padding:18px;
+  box-shadow:0 3px 8px rgba(0,0,0,.04)}
+h1{margin:0 0 6px;font-size:22px}
+.sub{color:var(--muted);font-size:14px}
+.footer{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;
+  border:1px solid #c5cef0;background:#fff;cursor:pointer;font-weight:600;font-size:14px}
+.btn.primary{background:#29335c;color:#fff;border-color:#29335c}
+.pill{font-size:12px;padding:3px 8px;border-radius:999px;border:1px solid #d3daf5;background:#fff;color:#555}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;
+  box-shadow:0 2px 6px rgba(0,0,0,.035);margin-top:18px}
+.q{margin-top:14px;padding-top:6px;border-top:1px dashed #d6ddf0}
+.q:first-of-type{border-top:none;padding-top:0;margin-top:0}
+.qid{font-weight:700;color:var(--accent)}
+.qtext{margin:8px 0 10px}
+.input{width:min(100%,32ch);padding:10px 12px;border:1px solid #cfd7f2;border-radius:12px;
+  background:#fff;outline:none;font-size:14px}
+.input:focus{box-shadow:0 0 0 3px var(--focus);border-color:#b5c3ff}
+.okborder{border-color:rgba(27,143,77,.9)!important;background:#f3fbf6}
+.badborder{border-color:rgba(198,40,40,.9)!important;background:#fdf4f4}
+table{border-collapse:collapse;width:100%;background:#fff;border:1px solid var(--border);
+  border-radius:8px;overflow:hidden}
+th,td{border:1px solid var(--border);padding:6px 8px;text-align:center;font-size:13px}
+code,pre{background:#fff;border:1px solid #dde3ff;border-radius:10px;padding:10px;display:block;overflow:auto;font-size:13px}
+</style>
+</head>
+<body>
+<div class="container">
+<header>
+  <h1>ОГЭ Информатика — Новогодний вариант (задания 1–10)</h1>
+  <div class="sub">Введите ответы и нажмите «Проверить работу».</div>
+  <div class="footer">
+    <button class="btn primary" id="checkBtn">Проверить работу</button>
+    <button class="btn" id="resetBtn">Сбросить</button>
+    <span class="pill" id="scorePill">Баллы: 0 / 10</span>
+  </div>
+</header>
+
+<section class="card">
+
+<div class="q"><div class="qid">1</div><div class="qtext">
+В кодировке <strong>UMS-2</strong> каждый символ кодируется <strong>16 битами</strong>.
+Васе надо написать текст (в нём нет лишних пробелов):<br><br>
+<em>«Гирлянды светят, снег идёт,<br>
+Звенит бокалов хоровод.<br>
+Пусть будет добрым Новый год,<br>
+Без бед, тревог и без забот.»</em><br><br>
+Одно из слов ученик случайно написал два раза (вместе с пробелом), поэтому размер написанного текста
+в данной кодировке оказался на <strong>18 байт</strong> больше, чем размер нужного текста.
+<strong>Напишите в ответе лишнее слово.</strong>
+</div><input class="input" id="q1"></div>
+
+<div class="q"><div class="qid">2</div><div class="qtext">
+От разведчика была получена следующая радиограмма, переданная с использованием азбуки Морзе:
+<code>— • • • • • — • — • • — • —</code><br><br>
+При передаче было потеряно разбиение на буквы, но известно, что использовались только буквы:
+Т, С, Л, Ю, А (см. таблицу в условии).
+<strong>Расшифруйте радиограмму и запишите полученное слово.</strong>
+</div><input class="input" id="q2"></div>
+
+<div class="q"><div class="qid">3</div><div class="qtext">
+Напишите <strong>наибольшее</strong> натуральное число <em>x</em>, для которого <strong>ЛОЖНО</strong> высказывание:
+<code>НЕ(x &lt; 17) И (x &gt; 98).</code>
+</div><input class="input" id="q3"></div>
+
+<div class="q"><div class="qid">4</div><div class="qtext">
+В новогоднюю ночь Дед Мороз выехал из пункта <strong>А</strong> и должен как можно быстрее добраться в пункт <strong>Г</strong>.
+Он может ехать только по дорогам, длины которых указаны в таблице.
+<strong>Определите длину кратчайшего пути из А в Г.</strong>
+</div><input class="input" id="q4"></div>
+
+<div class="q"><div class="qid">5</div><div class="qtext">
+У исполнителя две команды:<br>
+1) <strong>разделить число на 3</strong><br>
+2) <strong>приписать справа цифру 2</strong><br><br>
+Составьте программу (не более 5 команд), которая превратит число <strong>30</strong> в <strong>114</strong>.
+<strong>В ответе запишите последовательность цифр 1 и 2.</strong>
+</div><input class="input" id="q5"></div>
+
+<div class="q"><div class="qid">6</div><div class="qtext">
+Было проведено 9 запусков программы при различных значениях <em>s</em> и <em>t</em>.
+<strong>Укажите количество целых значений параметра A, при которых программа напечатает «YES» три раза.</strong>
+</div><input class="input" id="q6"></div>
+
+<div class="q"><div class="qid">7</div><div class="qtext">
+Костя отправил на сервер <strong>new_year.com</strong> файл <strong>elka.gif</strong> по протоколу <strong>http</strong>.
+<strong>Запишите последовательность русских заглавных букв, которая кодирует адрес файла.</strong>
+</div><input class="input" id="q7"></div>
+
+<div class="q"><div class="qid">8</div><div class="qtext">
+Найдите количество страниц (в тысячах), найденных по запросу
+<code>((Дед Мороз | Снеговик) &amp; Ёлка)</code> при известных значениях пересечений.
+</div><input class="input" id="q8"></div>
+
+<div class="q"><div class="qid">9</div><div class="qtext">
+Артём (А) идёт к Денису (Д), но пункт <strong>В</strong> посещать нельзя.
+<strong>Сколько различных путей существует из А в Д?</strong>
+</div><input class="input" id="q9"></div>
+
+<div class="q"><div class="qid">10</div><div class="qtext">
+Равенство истинно для натурального <em>x</em>:
+<code>120<sub>x+4</sub> − 37<sub>8</sub> = 17<sub>10</sub></code>.
+<strong>Определите x.</strong>
+</div><input class="input" id="q10"></div>
+
+</section>
+</div>
+
+<script>
+(function(){
+const A={q1:"гирлянды",q2:"салют",q3:"98",q4:"7",q5:"12121",q6:"2",q7:"гжавебд",q8:"100",q9:"7",q10:"2"};
+const n=s=>String(s||"").trim().toLowerCase().replace(/\s+/g," ");
+function b(i,s){i.classList.remove("okborder","badborder"); if(s==="ok")i.classList.add("okborder"); if(s==="bad")i.classList.add("badborder");}
+document.getElementById("checkBtn").onclick=()=>{let sc=0;
+for(let i=1;i<=10;i++){const inp=document.getElementById("q"+i);
+if(n(inp.value)===A["q"+i]){sc++;b(inp,"ok")}else b(inp,"bad")}
+document.getElementById("scorePill").textContent=`Баллы: ${sc} / 10`;};
+document.getElementById("resetBtn").onclick=()=>{for(let i=1;i<=10;i++){const inp=document.getElementById("q"+i);inp.value="";b(inp,null)}
+document.getElementById("scorePill").textContent="Баллы: 0 / 10";};
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>ОГЭ Информатика — Задание 8 (ученический режим)</title>
+<style>
+:root{
+  --bg:#edf3fb; --card:#ffffff; --ink:#222639; --muted:#6b6f8c;
+  --accent:#4459c9; --ok:#1b8f4d; --bad:#c62828; --border:#d6ddf0; --focus:#d8e2ff;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);
+  font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,"Noto Sans";line-height:1.55}
+.container{max-width:1200px;margin:28px auto;padding:0 16px 40px}
+header{background:linear-gradient(180deg,#f4f6ff 0%,#edf3fb 100%);
+  border:1px solid var(--border);border-radius:18px;padding:18px;
+  box-shadow:0 3px 8px rgba(0,0,0,.04)}
+h1{margin:0 0 6px;font-size:22px}
+.sub{color:var(--muted);font-size:14px}
+.footer{margin-top:12px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 14px;border-radius:12px;
+  border:1px solid #c5cef0;background:#fff;cursor:pointer;font-weight:600;font-size:14px}
+.btn.primary{background:#29335c;color:#fff;border-color:#29335c}
+.btn:disabled{opacity:.6;cursor:not-allowed}
+.select{border:1px solid #c5cef0;background:#fff;border-radius:12px;padding:10px 12px;font-size:14px;max-width:320px}
+.pill{font-size:12px;padding:3px 8px;border-radius:999px;border:1px solid #d3daf5;background:#fff;color:#555}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:16px;
+  box-shadow:0 2px 6px rgba(0,0,0,.035);margin-top:18px}
+.taskCard{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:14px;
+  box-shadow:0 2px 6px rgba(0,0,0,.03);margin-top:14px}
+.taskHead{display:flex;align-items:center;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.left{display:flex;align-items:center;gap:10px;min-width:0}
+.num{width:34px;height:34px;border-radius:999px;display:grid;place-items:center;background:#eff6ff;border:1px solid #dbeafe;color:var(--accent);font-weight:800}
+.variant{font-size:12px;color:var(--accent);background:#eff6ff;border:1px solid #dbeafe;border-radius:999px;padding:6px 10px;white-space:nowrap}
+.mark{font-weight:800}
+.mark.ok{color:var(--ok)}
+.mark.bad{color:var(--bad)}
+.taskBody{margin-top:10px}
+.taskText p{margin:8px 0}
+.tblWrap{overflow:auto;border:1px solid var(--border);border-radius:12px;background:#fbfdff;margin:10px 0 12px 0}
+table{border-collapse:collapse;width:100%;min-width:420px}
+th,td{border:1px solid var(--border);padding:8px 10px;font-size:13px;vertical-align:top}
+th{background:#f1f7ff;color:#0b3b9e;font-weight:700}
+.answerRow{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:8px}
+.in{flex:0 1 360px;max-width:100%;border:1px solid #cfd7f2;border-radius:12px;padding:10px 12px;font-size:14px;outline:none}
+.in:focus{box-shadow:0 0 0 3px var(--focus);border-color:#b5c3ff}
+.okborder{border-color:rgba(27,143,77,.9)!important;background:#f3fbf6}
+.badborder{border-color:rgba(198,40,40,.9)!important;background:#fdf4f4}
+.lockNote{font-size:12px;color:var(--muted);margin-top:6px}
+@media(max-width:720px){
+  h1{font-size:20px}
+}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>ОГЭ Информатика — Задание 8</h1>
+    <div class="sub">Ученический режим. Заполните ответы и нажмите «Проверить работу».</div>
+    <div class="footer">
+      <select id="filterSel" class="select" title="Категория">
+        <option value="ALL">Все задания</option>
+      </select>
+      <button class="btn primary" id="checkBtn">Проверить работу</button>
+      <button class="btn" id="resetBtn">Сбросить</button>
+      <span class="pill" id="scorePill">Баллы: 0 / 0</span>
+    </div>
+  </header>
+
+  <div id="tasks"></div>
+</div>
+
+<script>
+const TASKS = [{"idx": 1, "variant": "Вариант", "promptHtml": "<p>Какое количество страниц в тысячах будет найдено по запросу</p><p>Суфле | Корзинка | Эклер?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Суфле</td><td>450</td></tr><tr><td>Корзинка</td><td>200</td></tr><tr><td>Эклер</td><td>490</td></tr><tr><td>Суфле &amp; Корзинка</td><td>70</td></tr><tr><td>Суфле &amp; Эклер</td><td>160</td></tr><tr><td>Корзинка &amp; Эклер</td><td>0</td></tr></tbody></table></div>", "answer": "910"}, {"idx": 2, "variant": "Вариант", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу</p><p>Чай &amp; Чашка | Кофе?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Чай</td><td>528</td></tr><tr><td>Чашка</td><td>436</td></tr><tr><td>Кофе</td><td>553</td></tr><tr><td>Чай | Чашка | Кофе</td><td>1120</td></tr><tr><td>Кофе &amp;Чашка</td><td>250</td></tr></tbody></table></div>", "answer": "147"}, {"idx": 3, "variant": "Вариант", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу</p><p>Мёд &amp; Блин &amp; Масленица ?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Мёд &amp; (Блин | Масленица)</td><td>285</td></tr><tr><td>Мёд &amp; | Масленица</td><td>174</td></tr><tr><td>Блин &amp; Мёд</td><td>163</td></tr></tbody></table></div>", "answer": "52"}, {"idx": 4, "variant": "Вариант", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу</p><p>Утро | День | Ночь ?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Утро</td><td>356</td></tr><tr><td>День</td><td>365</td></tr><tr><td>Ночь</td><td>287</td></tr><tr><td>Ночь &amp; (День | Утро)</td><td>120</td></tr><tr><td>Утро &amp; День</td><td>250</td></tr></tbody></table></div>", "answer": "638"}, {"idx": 5, "variant": "Вариант", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу</p><p>Крош | Пин | Бараш ?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Крош</td><td>283</td></tr><tr><td>Бараш</td><td>340</td></tr><tr><td>Пин</td><td>504</td></tr><tr><td>Крош &amp; Пин</td><td>278</td></tr><tr><td>Крош &amp; Бараш</td><td>0</td></tr><tr><td>Пин &amp; Бараш</td><td>89</td></tr></tbody></table></div>", "answer": "760"}, {"idx": 6, "variant": "Вариант", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу Шампунь &amp; Кондиционер | Бальзам &amp; Кондиционер ?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Шампунь &amp; Кондиционер &amp; Бальзам</td><td>245</td></tr><tr><td>Бальзам &amp; Кондиционер</td><td>443</td></tr><tr><td>Шампунь &amp; Кондиционер</td><td>528</td></tr></tbody></table></div>", "answer": "726"}, {"idx": 7, "variant": "Вариант", "promptHtml": "<p>Сколько страниц будет найдено по запросу</p><p>Атос &amp; (Портос | Арамис) ?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Атос &amp; Портос</td><td>335</td></tr><tr><td>Атос &amp; Арамис</td><td>235</td></tr><tr><td>Атос &amp; Портос &amp; Арамис</td><td>120</td></tr></tbody></table></div>", "answer": "450"}, {"idx": 8, "variant": "Вариант", "promptHtml": "<p>Сколько страниц будет найдено по запросу</p><p>ландыши &amp; васильки &amp; лютики ?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>васильки &amp; ландыши</td><td>650</td></tr><tr><td>ландыши &amp; лютики</td><td>230</td></tr><tr><td>ландыши &amp; (васильки | лютики)</td><td>740</td></tr></tbody></table></div>", "answer": "140"}, {"idx": 9, "variant": "Вариант", "promptHtml": "<p>Какое количество страниц (в тыс.) будет найдено по запросу</p><p>ОГЭ &amp; (ЕГЭ | Информатика) ?</p><p>«&amp;».В таблице выше приведены запросы и количество.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Информатика &amp; ОГЭ</td><td>110</td></tr><tr><td>ЕГЭ &amp; ОГЭ</td><td>80</td></tr><tr><td>ЕГЭ &amp; Информатика &amp; ОГЭ</td><td>30</td></tr></tbody></table></div>", "answer": "160"}, {"idx": 10, "variant": "Вариант", "promptHtml": "<p>Какое количество страниц (в тыс.) будет найдено по запросу</p><p>(Дневник &amp; Учебник) | (Дневник &amp; Тетрадь) ?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Дневник &amp; Учебник &amp; Тетрадь</td><td>49</td></tr><tr><td>Дневник &amp; Учебник</td><td>113</td></tr><tr><td>Дневник &amp; Тетрадь</td><td>186</td></tr></tbody></table></div>", "answer": "300"}, {"idx": 11, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу Шёлк | Китай?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Шёлк &amp; Китай</td><td>780</td></tr><tr><td>Шёлк</td><td>1230</td></tr><tr><td>Китай</td><td>3210</td></tr></tbody></table></div>", "answer": "3660"}, {"idx": 12, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу Берн?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>Цюрих &amp; Берн</td><td>1550</td></tr><tr><td>Цюрих</td><td>6400</td></tr><tr><td>Цюрих | Берн</td><td>7200</td></tr></tbody></table></div>", "answer": "2350"}, {"idx": 13, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу Соболь &amp; Куница?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>Соболь | Куница</td><td>6500</td></tr><tr><td>Куница</td><td>4300</td></tr><tr><td>Соболь</td><td>3780</td></tr></tbody></table></div>", "answer": "1580"}, {"idx": 14, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу Волга &amp; Ока &amp; Кама?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>Волга &amp; (Ока | Кама)</td><td>405</td></tr><tr><td>Волга &amp; Ока</td><td>215</td></tr><tr><td>Волга &amp; Кама</td><td>310</td></tr></tbody></table></div>", "answer": "120"}, {"idx": 15, "variant": "Вариант 1", "promptHtml": "<p>Компьютер печатает количество страниц (в тысячах), которое будет найдено по следующему запросу: Диана &amp; Паллада</p><p>Укажите целое число, которое напечатает компьютер</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>Диана &amp; (Аврора | Паллада)</td><td>800</td></tr><tr><td>Диана &amp; Аврора &amp; Паллада</td><td>220</td></tr><tr><td>Диана &amp; Аврора</td><td>550</td></tr></tbody></table></div>", "answer": "470"}, {"idx": 16, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу Динамо &amp; Спартак?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>Динамо &amp; (Зенит | Спартак)</td><td>840</td></tr><tr><td>Динамо &amp; Зенит</td><td>530</td></tr><tr><td>Динамо &amp; Зенит &amp; Спартак</td><td>130</td></tr></tbody></table></div>", "answer": "440"}, {"idx": 17, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу</p><p>Грибы &amp; (Рыбалка | Охота)?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>Грибы &amp; Рыбалка</td><td>134</td></tr><tr><td>Грибы &amp; Охота</td><td>243</td></tr><tr><td>Грибы &amp; Рыбалка &amp; Охота</td><td>78</td></tr></tbody></table></div>", "answer": "299"}, {"idx": 18, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в сотнях тысяч) будет найдено по запросу Апельсин &amp; Лимон?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц<br>(в сотнях тысяч)</th></tr></thead><tbody><tr><td>Прокофьев</td><td>87</td></tr><tr><td>Апельсин</td><td>39</td></tr><tr><td>Лимон</td><td>52</td></tr><tr><td>Прокофьев | Апельсин | Лимон</td><td>150</td></tr><tr><td>Прокофьев &amp; Апельсин</td><td>19</td></tr><tr><td>Прокофьев &amp; Лимон</td><td>0</td></tr></tbody></table></div>", "answer": "9"}, {"idx": 19, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в сотнях тысяч) будет найдено по запросу</p><p>Напряжённость | Поле | Пшеница?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц<br>(в сотнях тысяч)</th></tr></thead><tbody><tr><td>Поле</td><td>45</td></tr><tr><td>Пшеница</td><td>24</td></tr><tr><td>Напряжённость</td><td>44</td></tr><tr><td>Поле &amp; Пшеница</td><td>17</td></tr><tr><td>Напряжённость &amp; Поле</td><td>19</td></tr><tr><td>Напряжённость &amp; Пшеница</td><td>0</td></tr></tbody></table></div>", "answer": "77"}, {"idx": 20, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в сотнях тысяч) будет найдено по запросу Слон?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц<br>(в сотнях тысяч)</th></tr></thead><tbody><tr><td>Ладья</td><td>25</td></tr><tr><td>Хобот</td><td>28</td></tr><tr><td>Ладья | Слон | Хобот</td><td>66</td></tr><tr><td>Слон &amp; Хобот</td><td>20</td></tr><tr><td>Ладья &amp; Слон</td><td>12</td></tr><tr><td>Ладья &amp; Хобот</td><td>0</td></tr></tbody></table></div>", "answer": "45"}, {"idx": 21, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в сотнях тысяч) будет найдено по запросу</p><p>Музыка &amp; Баритон?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц<br>(в сотнях тысяч)</th></tr></thead><tbody><tr><td>Музыка</td><td>77</td></tr><tr><td>Шаляпин</td><td>23</td></tr><tr><td>Баритон</td><td>81</td></tr><tr><td>Музыка | Шаляпин | Баритон</td><td>131</td></tr><tr><td>Шаляпин &amp; Музыка</td><td>5</td></tr><tr><td>Шаляпин &amp; Баритон</td><td>0</td></tr></tbody></table></div>", "answer": "45"}, {"idx": 22, "variant": "Вариант 1", "promptHtml": "<p>В таблице приведены запросы к поисковому серверу. Расположите обозначения запросов в порядке возрастания количества страниц, которые нашёл поисковый сервер по каждому запросу. По всем запросам было найдено разное количество страниц.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Код</th><th>Запрос</th></tr></thead><tbody><tr><td>1</td><td>Франция | Испания | История</td></tr><tr><td>2</td><td>Франция &amp; Карта &amp; История</td></tr><tr><td>3</td><td>Франция | История</td></tr><tr><td>4</td><td>Франция &amp; История</td></tr></tbody></table></div>", "answer": "2431"}, {"idx": 23, "variant": "Вариант 1", "promptHtml": "<p>В таблице приведены запросы к поисковому серверу. Расположите обозначения запросов в порядке убывания количества страниц, которые нашёл поисковый сервер по каждому запросу. По всем запросам было найдено разное количество страниц.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Код</th><th>Запрос</th></tr></thead><tbody><tr><td>1</td><td>Рим &amp; Париж &amp; Лондон</td></tr><tr><td>2</td><td>Лондон | Рим</td></tr><tr><td>3</td><td>Рим &amp; Лондон</td></tr><tr><td>4</td><td>Рим | Париж | Лондон</td></tr></tbody></table></div>", "answer": "4231"}, {"idx": 24, "variant": "Вариант 1", "promptHtml": "<p>В таблице приведены запросы к поисковому серверу. Расположите обозначения запросов в порядке возрастания количества страниц, которые нашёл поисковый сервер по каждому запросу. По всем запросам было найдено разное количество страниц.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Код</th><th>Запрос</th></tr></thead><tbody><tr><td>1</td><td>Хоккей &amp; Волейбол</td></tr><tr><td>2</td><td>Футбол &amp; Хоккей &amp; Волейбол</td></tr><tr><td>3</td><td>Футбол | Хоккей | Волейбол</td></tr><tr><td>4</td><td>Футбол | (Хоккей &amp; Волейбол)</td></tr></tbody></table></div>", "answer": "4231"}, {"idx": 25, "variant": "Вариант 1", "promptHtml": "<p>В таблице приведены запросы к поисковому серверу. Расположите обозначения запросов в порядке убывания количества страниц, которые нашёл поисковый сервер по каждому запросу. По всем запросам было найдено разное количество страниц.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Код</th><th>Запрос</th></tr></thead><tbody><tr><td>1</td><td>Тюль | Карниз | Портьера</td></tr><tr><td>2</td><td>Тюль &amp; Карниз &amp; Портьера</td></tr><tr><td>3</td><td>Карниз | Портьера</td></tr><tr><td>4</td><td>Тюль &amp; (Карниз | Портьера)</td></tr></tbody></table></div>", "answer": "2143"}, {"idx": 26, "variant": "Вариант 1", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу Стихи | Книга?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц (в тысячах)</th></tr></thead><tbody><tr><td>Книга &amp; Стихи</td><td>540</td></tr><tr><td>Книга</td><td>1880</td></tr><tr><td>Стихи</td><td>3110</td></tr></tbody></table></div>", "answer": "1342"}, {"idx": 27, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу Скорпион?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>Скорпион | Козерог</td><td>3100</td></tr><tr><td>Козерог</td><td>1700</td></tr><tr><td>Скорпион &amp; Козерог</td><td>800</td></tr></tbody></table></div>", "answer": "4450"}, {"idx": 28, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу крейсер &amp; линкор?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>крейсер | линкор</td><td>7000</td></tr><tr><td>крейсер</td><td>4800</td></tr><tr><td>линкор</td><td>4500</td></tr></tbody></table></div>", "answer": "2200"}, {"idx": 29, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу ландыши &amp; васильки &amp; лютики?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>ландыши &amp; (васильки | лютики)</td><td>740</td></tr><tr><td>ландыши &amp; лютики</td><td>230</td></tr><tr><td>васильки &amp; ландыши</td><td>650</td></tr></tbody></table></div>", "answer": "2300"}, {"idx": 30, "variant": "Вариант 2", "promptHtml": "<p>Компьютер печатает количество страниц (в тысячах), которое будет найдено по следующему запросу: март &amp; июнь</p><p>Укажите целое число, которое напечатает компьютер</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>март &amp; (май | июнь)</td><td>520</td></tr><tr><td>март &amp; май &amp; июнь</td><td>150</td></tr><tr><td>март &amp; май</td><td>420</td></tr></tbody></table></div>", "answer": "140"}, {"idx": 31, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу бадминтон &amp; гольф?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>(теннис | бадминтон) &amp; гольф</td><td>790</td></tr><tr><td>теннис &amp; гольф</td><td>555</td></tr><tr><td>теннис &amp; бадминтон &amp; гольф</td><td>220</td></tr></tbody></table></div>", "answer": "250"}, {"idx": 32, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в тысячах) будет найдено по запросу</p><p>Хоккей &amp; (Россия | Канада)?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц <br>(в тысячах)</th></tr></thead><tbody><tr><td>Хоккей &amp; Россия</td><td>168</td></tr><tr><td>Хоккей &amp; Канада</td><td>237</td></tr><tr><td>Хоккей &amp; Россия &amp; Канада</td><td>79</td></tr></tbody></table></div>", "answer": "455"}, {"idx": 33, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в сотнях тысяч) будет найдено по запросу</p><p>Толстой &amp; Тютчев?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц<br>(в сотнях тысяч)</th></tr></thead><tbody><tr><td>Прозаик</td><td>68</td></tr><tr><td>Толстой</td><td>98</td></tr><tr><td>Тютчев</td><td>73</td></tr><tr><td>Прозаик | Толстой | Тютчев</td><td>184</td></tr><tr><td>Прозаик &amp; Толстой</td><td>14</td></tr><tr><td>Прозаик &amp; Тютчев</td><td>0</td></tr></tbody></table></div>", "answer": "326"}, {"idx": 34, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в сотнях тысяч) будет найдено по запросу</p><p>Марка | Автомобиль | Филателист?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц<br>(в сотнях тысяч)</th></tr></thead><tbody><tr><td>Марка</td><td>103</td></tr><tr><td>Автомобиль</td><td>102</td></tr><tr><td>Филателист</td><td>69</td></tr><tr><td>Филателист &amp; Марка</td><td>10</td></tr><tr><td>Марка &amp; Автомобиль</td><td>25</td></tr><tr><td>Филателист &amp; Автомобиль</td><td>0</td></tr></tbody></table></div>", "answer": "41"}, {"idx": 35, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в сотнях тысяч) будет найдено по запросу Нос?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц<br>(в сотнях тысяч)</th></tr></thead><tbody><tr><td>Горло</td><td>45</td></tr><tr><td>Корабль</td><td>38</td></tr><tr><td>Горло | Корабль | Нос</td><td>93</td></tr><tr><td>Корабль &amp; Нос</td><td>15</td></tr><tr><td>Горло &amp; Нос</td><td>25</td></tr><tr><td>Горло &amp; Корабль</td><td>0</td></tr></tbody></table></div>", "answer": "239"}, {"idx": 36, "variant": "Вариант 2", "promptHtml": "<p>Какое количество страниц (в сотнях тысяч) будет найдено по запросу</p><p>Шишкин &amp; Рафаэль?</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Запрос</th><th>Найдено страниц<br>(в сотнях тысяч)</th></tr></thead><tbody><tr><td>Передвижник</td><td>97</td></tr><tr><td>Шишкин</td><td>111</td></tr><tr><td>Рафаэль</td><td>87</td></tr><tr><td>Передвижник | Шишкин | Рафаэль</td><td>257</td></tr><tr><td>Передвижник &amp; Шишкин</td><td>15</td></tr><tr><td>Передвижник &amp; Рафаэль</td><td>0</td></tr></tbody></table></div>", "answer": "50"}, {"idx": 37, "variant": "Вариант 2", "promptHtml": "<p>В таблице приведены запросы к поисковому серверу. Расположите обозначения запросов в порядке возрастания количества страниц, которые нашёл поисковый сервер по каждому запросу. По всем запросам было найдено разное количество страниц.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Код</th><th>Запрос</th></tr></thead><tbody><tr><td>1</td><td>Литература | История | Экзамен</td></tr><tr><td>2</td><td>Экзамен &amp; Литература</td></tr><tr><td>3</td><td>Экзамен | История</td></tr><tr><td>4</td><td>История &amp; Литература &amp; Экзамен</td></tr></tbody></table></div>", "answer": "23"}, {"idx": 38, "variant": "Вариант 2", "promptHtml": "<p>В таблице приведены запросы к поисковому серверу. Расположите обозначения запросов в порядке убывания количества страниц, которые нашёл поисковый сервер по каждому запросу. По всем запросам было найдено разное количество страниц.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Код</th><th>Запрос</th></tr></thead><tbody><tr><td>1</td><td>(Париж &amp; Москва) | Прага</td></tr><tr><td>2</td><td>Париж &amp; Москва &amp; Прага</td></tr><tr><td>3</td><td>(Париж | Москва) &amp; Прага</td></tr><tr><td>4</td><td>Париж | Прага</td></tr></tbody></table></div>", "answer": "4231"}, {"idx": 39, "variant": "Вариант 2", "promptHtml": "<p>В таблице приведены запросы к поисковому серверу. Расположите обозначения запросов в порядке возрастания количества страниц, которые нашёл поисковый сервер по каждому запросу. По всем запросам было найдено разное количество страниц.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Код</th><th>Запрос</th></tr></thead><tbody><tr><td>1</td><td>логика &amp; (математика | программирование)</td></tr><tr><td>2</td><td>логика &amp; математика</td></tr><tr><td>3</td><td>логика &amp; математика &amp; программирование</td></tr><tr><td>4</td><td>логика | математика</td></tr></tbody></table></div>", "answer": "4132"}, {"idx": 40, "variant": "Вариант 2", "promptHtml": "<p>В таблице приведены запросы к поисковому серверу. Расположите обозначения запросов в порядке убывания количества страниц, которые нашёл поисковый сервер по каждому запросу. По всем запросам было найдено разное количество страниц.</p>", "tablesHtml": "<div class=\"tblWrap\"><table class=\"dataTable\"><thead><tr><th>Код</th><th>Запрос</th></tr></thead><tbody><tr><td>1</td><td>Солнце | Воздух | Вода</td></tr><tr><td>2</td><td>(Солнце &amp; Воздух) | Вода</td></tr><tr><td>3</td><td>Солнце &amp; Воздух</td></tr><tr><td>4</td><td>Солнце &amp; Воздух &amp; Вода</td></tr></tbody></table></div>", "answer": "3214"}];
+let checked = false;
+
+function fillFilter(){
+  const sel = document.getElementById("filterSel");
+  const variants = Array.from(new Set(TASKS.map(t=>t.variant)));
+  variants.forEach(v=>{
+    const o=document.createElement("option"); o.value=v; o.textContent=v; sel.appendChild(o);
+  });
+}
+
+function normalizeAnswer(s){
+  return String(s||"").trim().replace(/\s+/g," ").toLowerCase();
+}
+
+function currentList(){
+  const f=document.getElementById("filterSel").value;
+  return TASKS.filter(t=>f==="ALL" ? true : t.variant===f);
+}
+
+function render(){
+  const wrap=document.getElementById("tasks");
+  const list=currentList();
+  wrap.innerHTML = list.map(t=>`
+    <div class="taskCard" data-idx="${t.idx}">
+      <div class="taskHead">
+        <div class="left">
+          <div class="num">${t.idx}</div>
+          <div class="variant">${t.variant}</div>
+        </div>
+        <div id="mark-${t.idx}" class="mark"></div>
+      </div>
+      <div class="taskBody">
+        <div class="taskText">${t.promptHtml}</div>
+        ${t.tablesHtml}
+        <div class="answerRow">
+          <input class="in" id="ans-${t.idx}" placeholder="Введите ответ" autocomplete="off"/>
+        </div>
+        <div class="lockNote">После проверки редактирование ответов будет недоступно.</div>
+      </div>
+    </div>
+  `).join("");
+  updateScore(0, list.length);
+}
+
+function updateScore(score,total){
+  document.getElementById("scorePill").textContent = `Баллы: ${score} / ${total}`;
+}
+
+function checkAll(){
+  const list=currentList();
+  let score=0;
+  list.forEach(t=>{
+    const inp=document.getElementById("ans-"+t.idx);
+    const mark=document.getElementById("mark-"+t.idx);
+    const ok = normalizeAnswer(inp.value) && (normalizeAnswer(inp.value)===normalizeAnswer(t.answer));
+    inp.classList.remove("okborder","badborder");
+    if(ok){ score++; mark.textContent="✅ Верно"; mark.className="mark ok"; inp.classList.add("okborder"); }
+    else { mark.textContent="❌ Неверно"; mark.className="mark bad"; inp.classList.add("badborder"); }
+    inp.disabled=true;
+  });
+  checked=true;
+  document.getElementById("checkBtn").disabled=true;
+  updateScore(score, list.length);
+}
+
+function resetAll(){
+  checked=false;
+  document.getElementById("checkBtn").disabled=false;
+  const list=currentList();
+  list.forEach(t=>{
+    const inp=document.getElementById("ans-"+t.idx);
+    const mark=document.getElementById("mark-"+t.idx);
+    inp.value=""; inp.disabled=false;
+    inp.classList.remove("okborder","badborder");
+    mark.textContent=""; mark.className="mark";
+  });
+  updateScore(0, list.length);
+}
+
+document.getElementById("checkBtn").addEventListener("click", ()=>{ checkAll(); });
+document.getElementById("resetBtn").addEventListener("click", ()=>{ resetAll(); });
+document.getElementById("filterSel").addEventListener("change", ()=>{ render(); resetAll(); });
+
+fillFilter();
+render();
+</script>
+</body>
+</html>

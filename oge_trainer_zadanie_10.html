@@ -16,7 +16,7 @@
   .topbar{position:sticky;top:0;z-index:20;background:rgba(246,251,255,.92);
           backdrop-filter:blur(10px);border-bottom:1px solid var(--line);}
   .topbarInner{max-width:1200px;margin:0 auto;padding:10px 14px;
-      display:flex;align-items:center;gap:10px;flex-wrap:nowrap;overflow:hidden}
+      display:flex;align-items:center;gap:10px;flex-wrap:wrap;overflow:visible}
   .badge{width:38px;height:38px;border-radius:999px;display:grid;place-items:center;
     background:radial-gradient(circle at 30% 30%, #93c5fd, #1d4ed8);color:white;font-weight:700;}
   .titleWrap{min-width:0;display:flex;flex-direction:column;line-height:1.1}
@@ -89,7 +89,6 @@
     <select id="filterSel" class="select" title="Раздел">
       <option value="ALL">Все задания</option>
     </select>
-    <button class="btn" id="btnTeacher">Учитель</button>
     <button class="btn primary" id="btnCheck">Проверить</button>
     <button class="btn" id="btnReset">Сбросить</button>
     <button class="btn" id="btnPrint">Печать / PDF</button>
@@ -99,11 +98,7 @@
 <div class="wrap">
   <div class="main">
     <div class="notice card">
-      <div style="font-size:13px;line-height:1.45;color:var(--ink)">
-        <b>Важно:</b> нажимайте <b>«Проверить»</b> только после окончания работы.
-        После проверки <b>исправление уже введённых ответов и добавление новых</b> будет недоступно.
-        По итогам проверки тренажёр покажет <b>баллы</b> и <b>оценку</b>.
-      </div>
+      <div style="font-size:13px;line-height:1.45;color:var(--ink)"><b>Важно:</b> проверка ответов выполняется <b>автоматически</b> при вводе. Баллы и оценка считаются по выбранным заданиям в фильтре.</div>
     </div>
     <div id="tasks"></div>
   </div>
@@ -135,90 +130,12 @@
   </div>
 </div>
 
-<div class="modal" id="teacherModal" aria-hidden="true">
-  <div class="modalCard">
-    <div class="modalHead">
-      <div class="modalTitle">Режим учителя</div>
-      <button class="btn" id="btnCloseTeacher">Закрыть</button>
-    </div>
-    <div class="modalBody">
-      <div id="teacherLocked">
-        <div class="pinRow">
-          <div class="muted">Введите PIN-код:</div>
-          <input id="pinInput" type="password" inputmode="numeric" autocomplete="off" placeholder="PIN"/>
-          <button class="btn primary" id="btnPinEnter">Войти</button>
-        </div>
-        <div class="muted" style="font-size:12px">По умолчанию PIN: <b>1234</b> (можно изменить после входа).</div>
-      </div>
-
-      <div id="teacherUnlocked" style="display:none">
-        <div class="pinRow">
-          <div class="muted">Новый PIN:</div>
-          <input id="newPin" type="password" inputmode="numeric" autocomplete="off" placeholder="Новый PIN (4–8 цифр)"/>
-          <button class="btn" id="btnSavePin">Сохранить PIN</button>
-          <span class="muted" style="font-size:12px">PIN хранится в браузере (localStorage).</span>
-        </div>
-        <div class="muted" style="font-size:12px;margin-bottom:10px">
-          Здесь можно редактировать правильные ответы. Изменения сохраняются и применяются при проверке.
-        </div>
-        <div class="grid" id="teacherGrid"></div>
-        <div style="display:flex;gap:10px;justify-content:flex-end;margin-top:12px;flex-wrap:wrap">
-          <button class="btn" id="btnResetTeacherAnswers">Сбросить ответы к значениям из файла</button>
-          <button class="btn primary" id="btnSaveTeacherAnswers">Сохранить ответы</button>
-        </div>
-      </div>
-    </div>
-  </div>
-</div>
-
 <script>
 const TASKS = [{"idx": 1, "code": "01", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Переведи в десятичную систему счисления число 101<sub>2</sub>. В ответе основание системы счисления указывать не нужно.</p>", "answer": "5"}, {"idx": 2, "code": "02", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Переведи в десятичную систему счисления 1011<sub>2</sub>. В ответе основание системы счисления не указывай.</p>", "answer": "11"}, {"idx": 3, "code": "03", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Переведи в десятичную систему счисления число 10111<sub>2</sub>. В ответе основание системы счисления указывать не нужно.</p>", "answer": "23"}, {"idx": 4, "code": "04", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Переведи в десятичную систему счисления 110000<sub>2</sub>. В ответе основание системы счисления не указывай.</p>", "answer": "48"}, {"idx": 5, "code": "05", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Какому числу в десятичной системе счисления соответствует число 111001<sub>2</sub>? В ответе основание системы счисления указывать не нужно.</p>", "answer": "57"}, {"idx": 6, "code": "06", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Какому числу в десятичной системе счисления соответствует число 11100011<sub>2</sub>? В ответе основание системы счисления указывать не нужно.</p>", "answer": "227"}, {"idx": 7, "code": "07", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Некоторое число в двоичной системе счисления записывается как 101111. Запишите это</p><p>число в десятичной системе.</p>", "answer": "47"}, {"idx": 8, "code": "08", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Некоторое число в двоичной системе счисления записывается как 1001011. Запишите это</p><p>число в десятичной системе.</p>", "answer": "75"}, {"idx": 9, "code": "09", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Некоторое число в двоичной системе счисления записывается как 1010101. Запишите это</p><p>число в десятичной системе.</p>", "answer": "85"}, {"idx": 10, "code": "10", "category": "Перевод из двоичной системы счисления в десятичную", "promptHtml": "<p>Некоторое число в двоичной системе счисления записывается как 110100<sub>10</sub>. Запишите это число в десятичной системе.</p>", "answer": "210"}, {"idx": 11, "code": "11", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Переведите десятичное число 111 в двоичную систему счисления.</p>", "answer": "1101111"}, {"idx": 12, "code": "12", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Переведите десятичное число 189 в двоичную систему счисления.</p>", "answer": "10111101"}, {"idx": 13, "code": "13", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Запишите десятичное число 69 в двоичной системе счисления. В ответе укажите это</p><p>число.</p>", "answer": "1000101"}, {"idx": 14, "code": "14", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Запишите десятичное число 75 двоичной системе счисления. В ответе укажите это число.</p>", "answer": "1001011"}, {"idx": 15, "code": "15", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Переведите число 90 из десятичной системы счисления в двоичную систему счисления.</p><p>В ответе укажите полученное число.</p>", "answer": "1011010"}, {"idx": 16, "code": "16", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Переведите число 98 из десятичной системы счисления в двоичную систему счисления.</p><p>В ответе укажите полученное число.</p>", "answer": "1100010"}, {"idx": 17, "code": "17", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Переведите число 87 из десятичной системы счисления в двоичную систему счисления.</p><p>В ответе укажите двоичное число. Основание системы счисления указывать не нужно.</p>", "answer": "1010111"}, {"idx": 18, "code": "18", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Переведите число 199 из десятичной системы счисления в двоичную систему счисления.</p><p>В ответе укажите двоичное число. Основание системы счисления указывать не нужно.</p>", "answer": "11000111"}, {"idx": 19, "code": "19", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Переведите число 201 из десятичной системы счисления в двоичную систему счисления.</p><p>В ответе укажите двоичное число. Основание системы счисления указывать не нужно.</p>", "answer": "11001001"}, {"idx": 20, "code": "20", "category": "Перевод из десятичной системы счисления в двоичную", "promptHtml": "<p>Переведите число 359 из десятичной системы счисления в двоичную систему счисления. В ответе укажите двоичное число. Основание системы счисления указывать не нужно.</p>", "answer": "101100111"}, {"idx": 21, "code": "21", "category": "Перевод из десятичной системы счисления в двоичную, количество единиц", "promptHtml": "<p>Переведите число 68 из десятичной системы счисления в двоичную систему счисления. Сколько единиц содержит полученное число? В ответе укажите одно число – количество</p><p>единиц.</p>", "answer": "2"}, {"idx": 22, "code": "22", "category": "Перевод из десятичной системы счисления в двоичную, количество единиц", "promptHtml": "<p>Переведите число 100 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "3"}, {"idx": 23, "code": "23", "category": "единиц.", "promptHtml": "<p>Переведите число 130 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "2"}, {"idx": 24, "code": "24", "category": "единиц.", "promptHtml": "<p>Переведите число 134 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "3"}, {"idx": 25, "code": "25", "category": "единиц.", "promptHtml": "<p>Переведите число 141 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "4"}, {"idx": 26, "code": "26", "category": "единиц.", "promptHtml": "<p>Переведите число 14<sub>2</sub> из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "4"}, {"idx": 27, "code": "27", "category": "единиц.", "promptHtml": "<p>Переведите число 157 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "5"}, {"idx": 28, "code": "28", "category": "единиц.", "promptHtml": "<p>Переведите число 167 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "5"}, {"idx": 29, "code": "29", "category": "единиц.", "promptHtml": "<p>Переведите число 22<sub>2</sub> из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "6"}, {"idx": 30, "code": "30", "category": "единиц.", "promptHtml": "<p>Переведите число 516 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "2"}, {"idx": 31, "code": "31", "category": "Перевод из десятичной системы счисления в двоичную, количество нолей", "promptHtml": "<p>Переведите число 68 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "5"}, {"idx": 32, "code": "32", "category": "нолей.", "promptHtml": "<p>Переведите число 100 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "4"}, {"idx": 33, "code": "33", "category": "нолей.", "promptHtml": "<p>Переведите число 119 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "1"}, {"idx": 34, "code": "34", "category": "нолей.", "promptHtml": "<p>Переведите число 120 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "3"}, {"idx": 35, "code": "35", "category": "нолей.", "promptHtml": "<p>Переведите число 126 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "1"}, {"idx": 36, "code": "36", "category": "нолей.", "promptHtml": "<p>Переведите число 143 из десятичной системы счисления в двоичную систему счисления.</p>", "answer": "3"}, {"idx": 37, "code": "37", "category": "нолей.", "promptHtml": "<p>Переведите число 147 из десятичной системы счисления в двоичную систему счисления.</p><p>Сколько нолей содержит полученное число? В ответе укажите одно число – количество нолей.</p>", "answer": "4"}, {"idx": 38, "code": "38", "category": "нолей.", "promptHtml": "<p>Переведите число 259 из десятичной системы счисления в двоичную систему счисления. Сколько нолей содержит полученное число? В ответе укажите одно число – количество</p><p>нолей.</p>", "answer": "6"}, {"idx": 39, "code": "39", "category": "нолей.", "promptHtml": "<p>Переведите число 305 из десятичной системы счисления в двоичную систему счисления.</p><p>Сколько нолей содержит полученное число? В ответе укажите одно число – количество нолей.</p>", "answer": "5"}, {"idx": 40, "code": "40", "category": "нолей.", "promptHtml": "<p>Переведите число 516 из десятичной системы счисления в двоичную систему счисления. Сколько нолей содержит полученное число? В ответе укажите одно число – количество нолей.</p>", "answer": "8"}, {"idx": 41, "code": "41", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Переведи в десятичную систему счисления число 110111100<sub>2</sub>. В ответе основание системы счисления указывать не нужно.</p>", "answer": "444"}, {"idx": 42, "code": "42", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Какому числу в десятичной системе счисления соответствует число 101000001<sub>2</sub>? В ответе основание системы счисления указывать не нужно.</p>", "answer": "321"}, {"idx": 43, "code": "43", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Определи эквивалент числа 111111000<sub>2</sub> в десятичной системе счисления. В ответе основание системы счисления указывать не нужно.</p>", "answer": "504"}, {"idx": 44, "code": "44", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Переведи в десятичную систему счисления число 54<sub>8</sub>. В ответе основание системы счисления указывать не нужно.</p>", "answer": "44"}, {"idx": 45, "code": "45", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Переведи в десятичную систему счисления 205<sub>8</sub>. В ответе основание системы счисления указывать не нужно.</p>", "answer": "133"}, {"idx": 46, "code": "46", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Какому числу в десятичной системе счисления соответствует число 763<sub>8</sub>? В ответе основание системы счисления указывать не нужно.</p>", "answer": "499"}, {"idx": 47, "code": "47", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Определи эквивалент числа 105<sub>2</sub><sub>8</sub> в десятичной системе счисления. В ответе основание системы счисления указывать не нужно.</p>", "answer": "554"}, {"idx": 48, "code": "48", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Переведи в десятичную систему счисления число 19<sub>16</sub>. В ответе основание системы счисления указывать не нужно.</p>", "answer": "25"}, {"idx": 49, "code": "49", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Какому числу в десятичной системе счисления соответствует число 10A<sub>16</sub>? В ответе основание системы счисления указывать не нужно.</p>", "answer": "266"}, {"idx": 50, "code": "50", "category": "Перевод из различных систем счисления в десятичную", "promptHtml": "<p>Определи эквивалент числа 12С<sub>16</sub> в десятичной системе счисления. В ответе основание системы счисления указывать не нужно.</p>", "answer": "300"}, {"idx": 51, "code": "51", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Среди приведенных ниже трех чисел, записанных в различных системах счисления, найдите минимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.</p><p>58<sub>16</sub>, 107<sub>8</sub>, 10010110<sub>2</sub></p>", "answer": "71"}, {"idx": 52, "code": "52", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Среди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите минимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.</p><p>93<sub>16</sub>, 225<sub>8</sub>, 10010100<sub>2</sub></p>", "answer": "147"}, {"idx": 53, "code": "53", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Среди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите максимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.</p><p>58<sub>16</sub>, 13<sub>2</sub><sub>8</sub>, 1010111<sub>2</sub></p>", "answer": "90"}, {"idx": 54, "code": "54", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Среди приведённых ниже трёх чисел, записанных в различных системах счисления, найдите максимальное и запишите его в ответе в десятичной системе счисления. В ответе запишите только число, основание системы счисления указывать не нужно.</p><p>2А<sub>16</sub>, 51<sub>8</sub>, 101100<sub>2</sub></p>", "answer": "44"}, {"idx": 55, "code": "55", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Среди приведенных ниже трех чисел, записанных в десятичной системе счисления, найдите число, сумма цифр которого в восьмеричной записи наименьшая. В ответе запишите сумму цифр в восьмеричной записи этого числа.</p><p>510, 81<sub>10</sub>, 95<sub>10</sub>.</p>", "answer": "4"}, {"idx": 56, "code": "56", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Среди приведенных ниже трех чисел, записанных в десятичной системе счисления, найдите число, сумма цифр которого в восьмеричной записи наибольшая. В ответе запишите сумму цифр в восьмеричной записи этого числа.</p><p>11<sub>10</sub>, 245<sub>10</sub>, 98<sub>10</sub></p>", "answer": "14"}, {"idx": 57, "code": "57", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Среди приведенных ниже трех чисел, записанных в десятичной системе счисления, найдите число, в двоичной записи которого наименьшее количество единиц. В ответе запишите количество единиц в двоичной записи этого числа.</p><p>101<sub>10</sub>, 91<sub>10</sub>, 80<sub>10</sub>.</p>", "answer": "2"}, {"idx": 58, "code": "58", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Среди приведенных ниже трех чисел, записанных в десятичной системе счисления, найдите число, в двоичной записи которого наименьшее количество единиц. В ответе запишите количество единиц в двоичной записи этого числа.</p><p>115<sub>10</sub>, 95<sub>10</sub>, 84<sub>10</sub>.</p>", "answer": "3"}, {"idx": 59, "code": "59", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Выбери максимальное из чисел 1101111<sub>10</sub><sub>2</sub>, 14<sub>2</sub><sub>8</sub> и 12А1<sub>16</sub>. В ответе напиши десятичный</p>", "answer": "4769"}, {"idx": 60, "code": "60", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Выбери минимальное из чисел 1011111<sub>2</sub>, 257<sub>8</sub> и AC<sub>16</sub>. В ответе напиши десятичный</p>", "answer": "95"}, {"idx": 61, "code": "61", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 10101101<sub>2</sub> + 1101<sub>8</sub> + 111<sub>16</sub></p>", "answer": "1023"}, {"idx": 62, "code": "62", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 11011011<sub>2</sub> + 11<sub>10</sub><sub>8</sub> + 111<sub>16</sub></p>", "answer": "1076"}, {"idx": 63, "code": "63", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 11011111<sub>2</sub> + 1011<sub>8</sub> + 111<sub>16</sub></p>", "answer": "1017"}, {"idx": 64, "code": "64", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 10111111<sub>2</sub> + 11<sub>10</sub><sub>8</sub> + 101<sub>16</sub></p>", "answer": "1032"}, {"idx": 65, "code": "65", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 1110111<sub>2</sub> + 1101<sub>8</sub> + 101<sub>16</sub></p>", "answer": "953"}, {"idx": 66, "code": "66", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 10101111<sub>2</sub> + 1011<sub>8</sub> + 101<sub>16</sub></p>", "answer": "953"}, {"idx": 67, "code": "67", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 10111011<sub>2</sub> + 1011<sub>8</sub> + 101<sub>16</sub></p>", "answer": "965"}, {"idx": 68, "code": "68", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 110111<sub>2</sub> + 1101<sub>8</sub> + 110<sub>16</sub></p>", "answer": "904"}, {"idx": 69, "code": "69", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 11111011<sub>2</sub> + 1101<sub>8</sub> + 101<sub>16</sub></p>", "answer": "1085"}, {"idx": 70, "code": "70", "category": "Арифметическое выражение (сложение)", "promptHtml": "<p>Вычислите значение арифметического выражения: 101111<sub>10</sub><sub>2</sub> + 11<sub>10</sub><sub>8</sub> + 101<sub>16</sub></p>", "answer": "1031"}, {"idx": 71, "code": "71", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 10101101<sub>2</sub> + 1101<sub>8</sub> - 111<sub>16</sub></p>", "answer": "477"}, {"idx": 72, "code": "72", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 11011011<sub>2</sub> + 11<sub>10</sub><sub>8</sub> - 111<sub>16</sub></p>", "answer": "530"}, {"idx": 73, "code": "73", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 11011111<sub>2</sub> + 1011<sub>8</sub> - 111<sub>16</sub></p>", "answer": "471"}, {"idx": 74, "code": "74", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 10111111<sub>2</sub> + 11<sub>10</sub><sub>8</sub> - 101<sub>16</sub></p>", "answer": "518"}, {"idx": 75, "code": "75", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 1110111<sub>2</sub> + 1101<sub>8</sub> - 101<sub>16</sub></p>", "answer": "439"}, {"idx": 76, "code": "76", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 10101111<sub>2</sub> + 1011<sub>8</sub> - 101<sub>16</sub></p>", "answer": "439"}, {"idx": 77, "code": "77", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 10111011<sub>2</sub> + 1011<sub>8</sub> - 101<sub>16</sub></p>", "answer": "451"}, {"idx": 78, "code": "78", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 110111<sub>2</sub> + 1101<sub>8</sub> - 110<sub>16</sub></p>", "answer": "360"}, {"idx": 79, "code": "79", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 11111011<sub>2</sub> + 1101<sub>8</sub> - 101<sub>16</sub></p>", "answer": "571"}, {"idx": 80, "code": "80", "category": "Арифметическое выражение (вычитание)", "promptHtml": "<p>Вычислите значение арифметического выражения: 11101101<sub>2</sub> + 1101<sub>8</sub> - 111<sub>16</sub></p>", "answer": "541"}, {"idx": 81, "code": "81", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 140<sub>8</sub> &lt; x &lt; 6F<sub>16</sub> ?</p>", "answer": "14"}, {"idx": 82, "code": "82", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 40<sub>8</sub> ≤ x ≤ E6<sub>16</sub> ?</p>", "answer": "199"}, {"idx": 83, "code": "83", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 77<sub>16</sub> ≤ x &lt; 277<sub>8</sub> ?</p>", "answer": "72"}, {"idx": 84, "code": "84", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 6C<sub>16</sub> &lt; x ≤ 205<sub>8</sub> ?</p>", "answer": "25"}, {"idx": 85, "code": "85", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 7E<sub>16</sub> &lt; x ≤ 217<sub>8</sub> ?</p>", "answer": "17"}, {"idx": 86, "code": "86", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 41<sub>8</sub> ≤ x ≤ E5<sub>16</sub> ?</p>", "answer": "197"}, {"idx": 87, "code": "87", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 74<sub>8</sub> ≤ x ≤ AE<sub>16</sub>?</p>", "answer": "115"}, {"idx": 88, "code": "88", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 113<sub>8</sub> &lt; x &lt; 54<sub>16</sub>?</p>", "answer": "8"}, {"idx": 89, "code": "89", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 77<sub>16</sub> ≤ х &lt; 277<sub>8</sub> ?</p>", "answer": "72"}, {"idx": 90, "code": "90", "category": "Сравнение чисел в различных системах счисления", "promptHtml": "<p>Сколько натуральных чисел расположено в интервале 77<sub>16</sub> ≤ х ≤ 277<sub>8</sub> ?</p>", "answer": "73"}];
 
-const LS_KEY_STUDENT = "oge10_student_state_v1";
-const LS_KEY_TEACHER_PIN = "oge10_teacher_pin_v1";
-const LS_KEY_TEACHER_ANS = "oge10_teacher_answers_v1";
-
-// Не сохраняем ответы и результаты предыдущего ученика
-localStorage.removeItem(LS_KEY_STUDENT);
-
 function esc(s){return String(s||"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));}
-
-function gradeFromPercent(p) {
-  if (p>=80) return "5";
-  if (p>=60) return "4";
-  if (p>=40) return "3";
-  return "2";
-}
-
-function defaultTeacherAnswers() {
-  const m={};
-  for (const t of TASKS) m[t.idx]=String(t.answer||"").trim();
-  return m;
-}
-
-function getTeacherPin() {
-  return localStorage.getItem(LS_KEY_TEACHER_PIN) || "1234";
-}
-function setTeacherPin(pin) {
-  localStorage.setItem(LS_KEY_TEACHER_PIN, pin);
-}
-function getTeacherAnswers() {
-  const raw = localStorage.getItem(LS_KEY_TEACHER_ANS);
-  if (!raw) return defaultTeacherAnswers();
-  try {
-    const obj = JSON.parse(raw);
-    const def = defaultTeacherAnswers();
-    return Object.assign(def, obj);
-  } catch(e) {
-    return defaultTeacherAnswers();
-  }
-}
-function setTeacherAnswers(obj) {
-  localStorage.setItem(LS_KEY_TEACHER_ANS, JSON.stringify(obj));
-}
-
-let teacherAnswers = getTeacherAnswers();
-let checked = false;
+function gradeFromPercent(p) { if (p>=80) return "5"; if (p>=60) return "4"; if (p>=40) return "3"; return "2"; }
+function normalizeAnswer(s) { return String(s||"").trim().replace(/\s+/g,"").toUpperCase(); }
 
 function fillFilter() {
   const sel = document.getElementById("filterSel");
@@ -232,6 +149,69 @@ function getVisibleTasks() {
   return (selVal==="ALL") ? TASKS : TASKS.filter(t=>t.category===selVal);
 }
 
+function anyAnswered() {
+  const visible=getVisibleTasks();
+  return visible.some(t=>{
+    const input=document.getElementById("ans-"+t.idx);
+    return input && normalizeAnswer(input.value).length>0;
+  });
+}
+
+function updateScoreUI(score=0,total=null) {
+  const tot = total===null ? getVisibleTasks().length : total;
+  document.getElementById("score").textContent = String(score);
+  document.getElementById("total").textContent = String(tot);
+  const pct = tot>0 ? Math.round(score*100/tot) : 0;
+  document.getElementById("grade").textContent = (tot>0 && anyAnswered()) ? (gradeFromPercent(pct) + " ("+pct+"%)") : "—";
+}
+
+function recalcScore() {
+  const visible=getVisibleTasks();
+  let score=0;
+  for (const t of visible) {
+    const input=document.getElementById("ans-"+t.idx);
+    const student = normalizeAnswer(input?.value);
+    const correct = normalizeAnswer(t.answer||"");
+    if (student.length>0 && student===correct) score++;
+  }
+  updateScoreUI(score, visible.length);
+}
+
+function setMark(t, state) {
+  const mark=document.getElementById("mark-"+t.idx);
+  const input=document.getElementById("ans-"+t.idx);
+  if (!mark || !input) return;
+  mark.className="mark";
+  input.classList.remove("okborder","badborder");
+  if (state==="ok") {
+    mark.textContent="✅ Верно";
+    mark.classList.add("ok");
+    input.classList.add("okborder");
+  } else if (state==="bad") {
+    mark.textContent="❌ Неверно";
+    mark.classList.add("bad");
+    input.classList.add("badborder");
+  } else {
+    mark.textContent="";
+  }
+}
+
+function wireAutocheckForTask(t) {
+  const input=document.getElementById("ans-"+t.idx);
+  if (!input) return;
+  const handler = () => {
+    const student = normalizeAnswer(input.value);
+    if (!student) setMark(t, "");
+    else {
+      const correct = normalizeAnswer(t.answer||"");
+      setMark(t, student===correct ? "ok" : "bad");
+    }
+    recalcScore();
+  };
+  input.addEventListener("input", handler);
+  input.addEventListener("blur", handler);
+}
+
 function renderTasks() {
   const wrap=document.getElementById("tasks");
   wrap.innerHTML="";
@@ -241,8 +221,6 @@ function renderTasks() {
     const card=document.createElement("div");
     card.className="card";
     card.style.marginTop="14px";
-    card.dataset.idx=t.idx;
-
     const head=document.createElement("div");
     head.className="taskHead";
     head.innerHTML = `
@@ -252,7 +230,6 @@ function renderTasks() {
       </div>
       <div id="mark-${t.idx}" class="mark"></div>
     `;
-
     const body=document.createElement("div");
     body.className="taskBody";
     body.innerHTML = `
@@ -260,143 +237,30 @@ function renderTasks() {
       <div class="answerRow">
         <input class="in" id="ans-${t.idx}" placeholder="Введите ответ" autocomplete="off"/>
       </div>
-      <div class="lockNote">После проверки редактирование ответов будет недоступно.</div>
+      <div class="lockNote">Проверка выполняется автоматически при вводе ответа.</div>
     `;
-
     card.appendChild(head);
     card.appendChild(body);
     wrap.appendChild(card);
-
-    if (checked) {
-      const input=document.getElementById("ans-"+t.idx);
-      input.disabled=true;
-    }
   }
-  updateScoreUI(0, visible.length);
-}
-
-function normalizeAnswer(s) {
-  return String(s||"").trim().replace(/\s+/g,"").toUpperCase();
-}
-
-function updateScoreUI(score=0,total=null) {
-  const tot = total===null ? getVisibleTasks().length : total;
-  document.getElementById("score").textContent = String(score);
-  document.getElementById("total").textContent = String(tot);
-  const pct = tot>0 ? Math.round(score*100/tot) : 0;
-  document.getElementById("grade").textContent = checked ? (gradeFromPercent(pct) + " ("+pct+"%)") : "—";
-}
-
-function checkAll() {
-  const visible=getVisibleTasks();
-  let score=0;
-  for (const t of visible) {
-    const input=document.getElementById("ans-"+t.idx);
-    const mark=document.getElementById("mark-"+t.idx);
-    const student = normalizeAnswer(input.value);
-    const correct = normalizeAnswer(teacherAnswers[t.idx] || t.answer || "");
-    const ok = (student.length>0) && (student===correct);
-    if (ok) {
-      score++;
-      mark.textContent="✅ Верно";
-      mark.className="mark ok";
-    } else {
-      mark.textContent="❌ Неверно";
-      mark.className="mark bad";
-    }
-    input.disabled = true;
-  }
-  checked=true;
-  document.getElementById("btnCheck").disabled=true;
-  updateScoreUI(score, visible.length);
+  for (const t of visible) wireAutocheckForTask(t);
+  recalcScore();
 }
 
 function resetAll() {
-  checked=false;
-  document.getElementById("btnCheck").disabled=false;
   for (const t of TASKS) {
     const input=document.getElementById("ans-"+t.idx);
     const mark=document.getElementById("mark-"+t.idx);
-    if (input) { input.value=""; input.disabled=false; }
+    if (input) { input.value=""; input.classList.remove("okborder","badborder"); input.disabled=false; }
     if (mark) { mark.textContent=""; mark.className="mark"; }
   }
   updateScoreUI(0, getVisibleTasks().length);
 }
 
-function openTeacher() {
-  document.getElementById("teacherLocked").style.display = "block";
-  document.getElementById("teacherUnlocked").style.display = "none";
-  document.getElementById("pinInput").value = "";
-  document.getElementById("newPin").value = "";
-  document.getElementById("teacherModal").classList.add("open");
-  document.getElementById("teacherModal").setAttribute("aria-hidden","false");
-}
-function closeTeacher() {
-  document.getElementById("teacherModal").classList.remove("open");
-  document.getElementById("teacherModal").setAttribute("aria-hidden","true");
-}
+const btnCheck = document.getElementById("btnCheck");
+if (btnCheck) { btnCheck.textContent="Автопроверка"; btnCheck.disabled=true; btnCheck.title="Проверка выполняется автоматически"; }
 
-function unlockTeacher() {
-  document.getElementById("teacherLocked").style.display="none";
-  document.getElementById("teacherUnlocked").style.display="block";
-  renderTeacherGrid();
-}
-
-function renderTeacherGrid() {
-  teacherAnswers = getTeacherAnswers();
-  const grid=document.getElementById("teacherGrid");
-  grid.innerHTML="";
-  for (const t of TASKS) {
-    const div=document.createElement("div");
-    div.className="row";
-    div.innerHTML = `
-      <div class="h">
-        <div class="n">Задание ${t.idx}</div>
-        <div class="c">${esc(t.category)}</div>
-      </div>
-      <input id="tans-${t.idx}" value="${esc(teacherAnswers[t.idx]||"")}" placeholder="Правильный ответ"/>
-      <div class="muted" style="font-size:12px;margin-top:6px">Ответы доступны только учителю.</div>
-    `;
-    grid.appendChild(div);
-  }
-}
-
-document.getElementById("btnTeacher").addEventListener("click", openTeacher);
-document.getElementById("btnCloseTeacher").addEventListener("click", closeTeacher);
-document.getElementById("btnPinEnter").addEventListener("click", () => {
-  const pin=document.getElementById("pinInput").value.trim();
-  if (pin===getTeacherPin()) unlockTeacher();
-  else alert("Неверный PIN");
-});
-document.getElementById("btnSavePin").addEventListener("click", () => {
-  const np=document.getElementById("newPin").value.trim();
-  if (!/^\d{4,8}$/.test(np)) return alert("PIN должен содержать 4–8 цифр.");
-  setTeacherPin(np);
-  alert("PIN сохранён.");
-  document.getElementById("newPin").value="";
-});
-document.getElementById("btnSaveTeacherAnswers").addEventListener("click", () => {
-  const obj={};
-  for (const t of TASKS) {
-    const el=document.getElementById("tans-"+t.idx);
-    obj[t.idx]=String(el ? el.value : "").trim();
-  }
-  setTeacherAnswers(obj);
-  teacherAnswers=getTeacherAnswers();
-  alert("Ответы сохранены.");
-});
-document.getElementById("btnResetTeacherAnswers").addEventListener("click", () => {
-  if (!confirm("Сбросить ответы к значениям из файла?")) return;
-  setTeacherAnswers(defaultTeacherAnswers());
-  teacherAnswers=getTeacherAnswers();
-  renderTeacherGrid();
-});
-
-document.getElementById("btnCheck").addEventListener("click", () => {
-  if (!confirm("После проверки ответы нельзя будет изменить. Продолжить?")) return;
-  checkAll();
-});
-document.getElementById("btnReset").addEventListener("click", () => resetAll());
+document.getElementById("btnReset").addEventListener("click", resetAll);
 document.getElementById("btnPrint").addEventListener("click", () => window.print());
 
 fillFilter();

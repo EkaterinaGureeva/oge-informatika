@@ -1,0 +1,630 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<meta name="theme-color" content="#2f6df6" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="default" />
+<meta name="format-detection" content="telephone=no" />
+<title>Тренажёр ОГЭ • Информатика • Задание 10</title>
+<style>
+  :root{
+    --bg1:#f6fbff;
+    --bg2:#eaf4ff;
+    --card:#ffffffcc;
+    --ink:#0b2440;
+    --muted:#4f6b86;
+    --blue:#2f6df6;
+    --shadow: 0 18px 45px rgba(12,55,120,.12);
+    --shadow2: 0 10px 20px rgba(12,55,120,.10);
+    --radius: 22px;
+    --tableScale: 1;
+  }
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{
+    margin:0;
+    font-family: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Noto Sans", "Liberation Sans", sans-serif;
+    color:var(--ink);
+    background:
+      radial-gradient(1200px 700px at 10% 10%, #ffffff 0%, var(--bg2) 40%, rgba(234,244,255,0) 70%),
+      radial-gradient(900px 600px at 90% 20%, #ffffff 0%, var(--bg2) 45%, rgba(234,244,255,0) 75%),
+      linear-gradient(180deg, var(--bg1) 0%, #f2f8ff 60%, #eef6ff 100%);
+  }
+  .wrap{max-width:1200px;margin:28px auto;padding:
+  calc(0px + env(safe-area-inset-top))
+  calc(18px + env(safe-area-inset-right))
+  calc(26px + env(safe-area-inset-bottom))
+  calc(18px + env(safe-area-inset-left));}
+  .top{
+    display:flex;align-items:flex-end;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    margin-bottom:16px;
+  }
+  .title{font-weight:850;letter-spacing:.2px;font-size:clamp(22px,3.2vw,34px)}
+  .subtitle{color:var(--muted);font-weight:650;margin-top:6px}
+  .pillbar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+  .pill{
+    background:rgba(255,255,255,.75);
+    border:1px solid rgba(188,215,255,.75);
+    box-shadow:0 8px 18px rgba(12,55,120,.08);
+    padding:10px 12px;border-radius:999px;
+    display:flex;gap:10px;align-items:center;
+    font-weight:750;color:var(--muted);
+  }
+  .pill strong{color:var(--ink)}
+  .btn{
+    border:0; cursor:pointer;
+    background:rgba(255,255,255,.85);
+    border:1px solid rgba(188,215,255,.85);
+    box-shadow:0 10px 20px rgba(12,55,120,.10);
+    padding:12px 14px;border-radius:14px;
+    font-weight:800;color:var(--ink);
+    display:inline-flex;align-items:center;gap:10px;
+    transition:transform .08s ease, box-shadow .2s ease, background .2s ease;
+    user-select:none;
+  }
+  .btn:hover{transform:translateY(-1px); box-shadow:0 14px 26px rgba(12,55,120,.14)}
+  .btn:active{transform:translateY(0px) scale(.99)}
+  .btn.primary{background:linear-gradient(180deg, #4b84ff, var(--blue)); color:white; border-color:rgba(74,132,255,.55)}
+  .btn.danger{background:linear-gradient(180deg, #ff7e7e, #ff5e5e); color:white; border-color:rgba(255,115,115,.6)}
+  .btn.small{padding:10px 12px;border-radius:12px;font-weight:800}
+  .btn.ghost{background:rgba(255,255,255,.55)}
+  .grid{
+    display:grid;
+    grid-template-columns: 1.15fr .85fr;
+    gap:16px;
+    align-items:start;
+  }
+  @media (max-width: 980px){
+    .grid{grid-template-columns:1fr}
+  }
+  .card{
+    background:var(--card);
+    border:1px solid rgba(188,215,255,.7);
+    border-radius:var(--radius);
+    box-shadow:var(--shadow);
+    overflow:hidden;
+    backdrop-filter: blur(10px);
+  }
+  .cardHeader{
+    padding:16px 18px;
+    background:linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.55));
+    border-bottom:1px solid rgba(188,215,255,.55);
+    display:flex; align-items:center; justify-content:space-between; gap:12px;
+  }
+  .cardHeader h2{margin:0;font-size:22px;font-weight:900}
+  .badge{
+    padding:8px 12px;border-radius:999px;
+    background:rgba(255,255,255,.75);
+    border:1px solid rgba(188,215,255,.75);
+    font-weight:850;color:var(--muted);
+    white-space:nowrap;
+  }
+  .content{padding:18px}
+  .prompt{font-size:18px;line-height:1.45;font-weight:700;color:var(--ink);margin:0 0 14px}
+  .tableBox{
+    background:linear-gradient(180deg, rgba(255,255,255,.92), rgba(255,255,255,.72));
+    border:1px solid rgba(188,215,255,.75);
+    border-radius:18px;
+    box-shadow:var(--shadow2);
+    padding:12px;
+    overflow:auto;
+    min-height: 120px; height: auto;
+  }
+  .tableInner{
+    transform: scale(var(--tableScale));
+    transform-origin: top center;
+    min-width: 520px;
+    margin: 0 auto;
+    display:block;
+  }
+  table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:0;
+    overflow:hidden;
+    border-radius:16px;
+    border:1px solid rgba(188,215,255,.85);
+    background:white;
+  }
+  th,td{
+    padding:14px 14px;
+    border-bottom:1px solid rgba(188,215,255,.65);
+    vertical-align:top;
+  }
+  tr:last-child td{border-bottom:0}
+  th{
+    width:40%;
+    background:linear-gradient(180deg, #f2f8ff, #eaf4ff);
+    font-weight:900;
+    color:#103154;
+  }
+  td{
+    width:60%;
+    font-weight:800;
+    color:#0b2440;
+    word-break:break-word;
+    overflow-wrap:anywhere;
+  }
+  .answerRow{display:flex;gap:12px;align-items:center;margin-top:14px;flex-wrap:wrap}
+  .input{
+    flex:1 1 360px;
+    background:white;
+    border:2px solid rgba(188,215,255,.9);
+    border-radius:16px;
+    padding:14px 14px;
+    font-size:18px;
+    font-weight:800;
+    outline:none;
+    box-shadow:0 10px 18px rgba(12,55,120,.08);
+  }
+  .input:focus{border-color:#7bb0ff; box-shadow:0 16px 26px rgba(12,55,120,.12)}
+  .msg{
+    margin-top:12px;
+    padding:12px 14px;
+    border-radius:16px;
+    border:1px solid rgba(188,215,255,.8);
+    background:rgba(255,255,255,.7);
+    font-weight:800;
+    color:var(--muted);
+    white-space:pre-line;
+  }
+  .msg.good{border-color:rgba(85,200,140,.55); background:rgba(233,255,243,.8); color:#0e5a33}
+  .msg.bad{border-color:rgba(255,120,120,.55); background:rgba(255,238,238,.85); color:#8b1b1b}
+  .footerBtns{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px;align-items:center;justify-content:space-between}
+  .leftBtns,.rightBtns{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .progressCard .content{padding:16px 18px}
+  .kpis{display:flex;gap:10px;flex-wrap:wrap;margin:10px 0 12px}
+  .kpi{
+    background:rgba(255,255,255,.75);
+    border:1px solid rgba(188,215,255,.75);
+    border-radius:999px;
+    padding:10px 12px;
+    font-weight:900;color:var(--muted);
+  }
+  .bar{height:10px;border-radius:999px;background:rgba(188,215,255,.45); overflow:hidden; border:1px solid rgba(188,215,255,.6)}
+  .bar > div{height:100%; width:0%; background:linear-gradient(90deg, #67a5ff, var(--blue)); border-radius:999px}
+  .note{margin-top:12px;color:var(--muted);font-weight:750;line-height:1.35}
+  .tiny{font-size:13px;color:var(--muted);font-weight:750;margin-top:10px;text-align:center}
+
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(10,30,60,.35);
+    display:none; align-items:center; justify-content:center;
+    padding:18px;
+    z-index:50;
+  }
+  .modal{
+    width:min(760px, 100%);
+    background:white;
+    border-radius:24px;
+    border:1px solid rgba(188,215,255,.9);
+    box-shadow:0 30px 80px rgba(5,25,55,.35);
+    overflow:hidden;
+  }
+  .modalHead{
+    padding:16px 18px;
+    background:linear-gradient(180deg, #f2f8ff, #eaf4ff);
+    display:flex;justify-content:space-between;align-items:center;gap:10px;
+    border-bottom:1px solid rgba(188,215,255,.8);
+  }
+  .modalHead h3{margin:0;font-size:18px;font-weight:950}
+  .modalBody{padding:16px 18px}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:10px 0}
+  .row label{font-weight:900;color:var(--muted)}
+  .row .input{flex:1 1 260px}
+  .teacherList{max-height:360px; overflow:auto; border:1px solid rgba(188,215,255,.75); border-radius:16px; padding:10px; background:#f8fbff}
+  .tItem{background:white; border:1px solid rgba(188,215,255,.7); border-radius:16px; padding:12px; margin:10px 0; box-shadow:0 10px 18px rgba(12,55,120,.08)}
+  .tItem .tTop{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;align-items:center}
+  .tItem .tTop strong{font-weight:950}
+  .tItem .tAns{margin-top:10px; display:flex; gap:10px; flex-wrap:wrap; align-items:center}
+  .tItem .tAns input{padding:10px 12px;border-radius:12px;border:2px solid rgba(188,215,255,.9);font-weight:900;min-width:220px}
+  .hintSmall{margin-top:8px;color:var(--muted);font-weight:750;line-height:1.3}
+
+/* --- Student-only build (GitHub Pages): teacher mode hidden, autocheck kept --- */
+#teacherBtn, #teacherOverlay { display: none !important; }
+
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <div>
+        <div class="title">Тренажёр ОГЭ — Задание 10 «Системы счисления»</div>
+        <div class="subtitle">30 заданий • автопроверка • удобно для интерактивной доски</div>
+      </div>
+      <div class="pillbar">
+        <div class="pill">Задание <strong id="taskCounter">1/30</strong></div>
+        <div class="pill">Баллы <strong id="score">0</strong></div>
+        <button class="btn small ghost" id="zoomOutBtn" title="Уменьшить таблицу">🔎− Таблица</button>
+        <button class="btn small ghost" id="zoomInBtn" title="Увеличить таблицу">🔎+ Таблица</button>
+        <button class="btn small ghost" id="fsBtn" title="Полный экран">⛶ Полный экран</button>
+        <button class="btn small ghost" id="helpBtn" title="Инструкция">❓ Инструкция</button>
+        <button class="btn small ghost" id="teacherBtn" title="Режим учителя">🔒 Учитель</button>
+      </div>
+    </div>
+
+    <div class="grid">
+      <div class="card">
+        <div class="cardHeader">
+          <h2 id="taskTitle">Задание</h2>
+          <span class="badge">автопроверка</span>
+        </div>
+        <div class="content">
+          <p class="prompt" id="taskPrompt"></p>
+
+          <div class="tableBox">
+            <div class="tableInner">
+              <table><tbody id="taskTableBody"></tbody></table>
+            </div>
+          </div>
+
+          <div class="answerRow">
+            <input id="answerInput" class="input" placeholder="Введите ответ…" autocomplete="off" inputmode="text" />
+            <button class="btn primary" id="checkBtn">✅ Проверить</button>
+          </div>
+
+          <div id="msg" class="msg">Совет: вводите только ответ. Пробелы и лишние символы не учитываются.</div>
+
+          <div class="footerBtns">
+            <div class="leftBtns">
+              <button class="btn" id="hintBtn">💡 Подсказка</button>
+              <button class="btn" id="prevBtn">← Назад</button>
+              <button class="btn" id="nextBtn">Дальше →</button>
+            </div>
+            <div class="rightBtns">
+              <button class="btn danger" id="resetBtn">↺ Сброс</button>
+            </div>
+          </div>
+          <div class="tiny">Открывайте файл в браузере. Для доски используйте «Полный экран». Таблицу можно увеличивать кнопками «Таблица».</div>
+        </div>
+      </div>
+
+      <div class="card progressCard">
+        <div class="cardHeader">
+          <h2>Прогресс</h2>
+          <span class="badge" id="percentBadge">0%</span>
+        </div>
+        <div class="content">
+          <div class="kpis">
+            <div class="kpi">Решено: <span id="kSolved">0</span></div>
+            <div class="kpi">Верно: <span id="kCorrect">0</span></div>
+            <div class="kpi">Ошибок: <span id="kWrong">0</span></div>
+            <div class="kpi">Подсказок: <span id="kHints">0</span></div>
+          </div>
+          <div class="bar"><div id="barFill"></div></div>
+          <div class="note" id="note">Здесь отображается текущий прогресс. Можно решать задания по порядку или возвращаться назад.</div>
+          <div class="row" style="justify-content:flex-start;margin-top:12px">
+            <button class="btn small ghost" id="historyBtn">🕘 История попыток</button>
+          </div>
+          <div id="history" class="msg" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="helpOverlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modalHead">
+        <h3>Инструкция</h3>
+        <button class="btn small" id="helpClose">✕ Закрыть</button>
+      </div>
+      <div class="modalBody">
+        <div class="note" style="margin-top:0">
+          Этот тренажёр помогает отработать задание 10 ОГЭ по информатике по теме «Системы счисления». На экране показано условие и таблица с данными. Введите ответ в поле ниже и нажмите «Проверить» — результат появится сразу. Переходите между заданиями кнопками «Назад» и «Дальше». Если таблица кажется мелкой, увеличьте её кнопками «Таблица». Для работы на интерактивной доске включите «Полный экран». В тренажёре нет готовых переводов: все переводы выполняются учеником самостоятельно.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="overlay" id="teacherOverlay" role="dialog" aria-modal="true">
+    <div class="modal">
+      <div class="modalHead">
+        <h3>Режим учителя</h3>
+        <button class="btn small" id="teacherClose">✕ Закрыть</button>
+      </div>
+      <div class="modalBody">
+        <div id="teacherLocked">
+          <div class="note" style="margin-top:0">Введите PIN-код, чтобы открыть ответы и настройки. PIN-код хранится локально в браузере.</div>
+          <div class="row">
+            <label for="pinInput">PIN</label>
+            <input id="pinInput" class="input" type="password" placeholder="Введите PIN…" />
+            <button class="btn primary" id="pinEnterBtn">Войти</button>
+          </div>
+          <div id="pinMsg" class="msg" style="display:none"></div>
+        </div>
+
+        <div id="teacherUnlocked" style="display:none">
+          <div class="note" style="margin-top:0">Здесь можно посмотреть ответы, при необходимости отредактировать их и изменить PIN-код. Изменения сохраняются в этом браузере.</div>
+
+          <div class="row">
+            <label for="newPin">Новый PIN</label>
+            <input id="newPin" class="input" type="password" placeholder="Введите новый PIN…" />
+            <button class="btn" id="changePinBtn">🔁 Изменить PIN</button>
+          </div>
+
+          <div class="row" style="justify-content:space-between">
+            <div class="pill" style="gap:8px">Всего заданий: <strong id="tCount">30</strong></div>
+            <button class="btn danger" id="restoreBtn">↺ Восстановить ответы из файла</button>
+          </div>
+
+          <div class="teacherList" id="teacherList"></div>
+
+          <div class="row" style="justify-content:flex-end">
+            <button class="btn primary" id="saveEditsBtn">💾 Сохранить изменения</button>
+          </div>
+          <div class="msg" id="saveMsg" style="display:none"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const DEFAULT_TASKS = [{"title": "Задание 1", "prompt": "Даны четыре числа в разных системах счисления. Сколько среди них чисел, которые не больше, чем C9₁₆? В ответ запишите только число.", "tableRows": [["Дано", "306₈, 305₈, 11001001₂, 11001010₂"]], "answer": "3", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 2", "prompt": "Даны четыре числа в разных системах счисления. Сколько среди них чисел, которые не меньше, чем 6F₁₆? В ответ запишите только число.", "tableRows": [["Дано", "155₈, 154₈, 1101111₂, 1110000₂"]], "answer": "2", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 3", "prompt": "Среди трёх чисел, записанных в разных системах счисления, найдите минимальное и запишите его в ответ в десятичной системе счисления.", "tableRows": [["Дано", "28₁₆, 47₈, 101010₂"]], "answer": "39", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 4", "prompt": "Переведите число 4701₈ из восьмеричной системы в десятичную. В ответ запишите только число.", "tableRows": [["Дано", "4701₈"]], "answer": "2497", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 5", "prompt": "Переведите число 1455₁₀ из десятичной системы в двоичную. В ответ запишите двоичное число без пробелов.", "tableRows": [["Дано", "1455₁₀"]], "answer": "10110101111", "answerType": "text", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 6", "prompt": "Переведите число 1111000101101₂ из двоичной системы в шестнадцатеричную. В ответ запишите число (0–9, A–F).", "tableRows": [["Дано", "1111000101101₂"]], "answer": "1E2D", "answerType": "text", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 7", "prompt": "Даны четыре числа в разных системах счисления. Сколько среди них чисел, которые больше, чем DE₁₆? В ответ запишите только число.", "tableRows": [["Дано", "337₈, 336₈, 11011111₂, 11011101₂"]], "answer": "2", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 8", "prompt": "Переведите число 1871₁₉ из девятнадцатеричной системы в девятеричную. В ответ запишите число в системе с основанием 9.", "tableRows": [["Дано", "1871₁₉"]], "answer": "14488", "answerType": "text", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 9", "prompt": "Переведите число 20HJ₂₀ из двадцатеричной системы в троичную. В ответ запишите число в системе с основанием 3.", "tableRows": [["Дано", "20HJ₂₀"]], "answer": "211102220", "answerType": "text", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 10", "prompt": "Переведите число 865₁₀ из десятичной системы в семнадцатеричную. В ответ запишите число (0–9, A–G).", "tableRows": [["Дано", "865₁₀"]], "answer": "2GF", "answerType": "text", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 11", "prompt": "Из двух чисел, записанных в десятичной системе, выберите число, в двоичной записи которого наименьшее количество единиц. В ответ запишите это количество единиц.", "tableRows": [["Дано", "100₁₀, 80₁₀"]], "answer": "2", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 12", "prompt": "Из двух чисел, записанных в десятичной системе, выберите число, сумма цифр которого в восьмеричной записи наименьшая. В ответ запишите эту сумму цифр.", "tableRows": [["Дано", "55₁₀, 83₁₀"]], "answer": "6", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 13", "prompt": "Переведите число 306₈ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "306₈"]], "answer": "198", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 14", "prompt": "Переведите число 305₈ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "305₈"]], "answer": "197", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 15", "prompt": "Переведите число 11001001₂ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "11001001₂"]], "answer": "201", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 16", "prompt": "Переведите число 11001010₂ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "11001010₂"]], "answer": "202", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 17", "prompt": "Переведите число C9₁₆ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "C9₁₆"]], "answer": "201", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 18", "prompt": "Переведите число 155₈ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "155₈"]], "answer": "109", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 19", "prompt": "Переведите число 154₈ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "154₈"]], "answer": "108", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 20", "prompt": "Переведите число 1101111₂ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "1101111₂"]], "answer": "111", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 21", "prompt": "Переведите число 1110000₂ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "1110000₂"]], "answer": "112", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 22", "prompt": "Переведите число 6F₁₆ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "6F₁₆"]], "answer": "111", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 23", "prompt": "Переведите число 337₈ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "337₈"]], "answer": "223", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 24", "prompt": "Переведите число 336₈ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "336₈"]], "answer": "222", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 25", "prompt": "Переведите число 11011111₂ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "11011111₂"]], "answer": "223", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 26", "prompt": "Переведите число 11011101₂ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "11011101₂"]], "answer": "221", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 27", "prompt": "Переведите число DE₁₆ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "DE₁₆"]], "answer": "222", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 28", "prompt": "Переведите число 28₁₆ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "28₁₆"]], "answer": "40", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 29", "prompt": "Переведите число 47₈ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "47₈"]], "answer": "39", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}, {"title": "Задание 30", "prompt": "Переведите число 101010₂ в десятичную систему счисления. В ответ запишите только число.", "tableRows": [["Дано", "101010₂"]], "answer": "42", "answerType": "number", "hint": "Выполните перевод чисел самостоятельно и запишите ответ в требуемом формате."}];
+const STORAGE_KEY_TASKS = "oge10_tasks_v1";
+const STORAGE_KEY_STATE = "oge10_state_v1";
+const STORAGE_KEY_PIN = "oge10_pin_hash_v1";
+const DEFAULT_PIN = "1234";
+
+function normAnswer(s){ return (s??"").toString().trim().replace(/\s+/g,"").toUpperCase(); }
+function isNumericLike(s){ return /^-?\d+$/.test(s); }
+async function sha256Hex(str){
+  const data=new TextEncoder().encode(str);
+  const hash=await crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(hash)).map(b=>b.toString(16).padStart(2,"0")).join("");
+}
+
+function loadTasks(){
+  try{
+    const saved=localStorage.getItem(STORAGE_KEY_TASKS);
+    if(!saved) return structuredClone(DEFAULT_TASKS);
+    const parsed=JSON.parse(saved);
+    if(!Array.isArray(parsed) || parsed.length!==DEFAULT_TASKS.length) return structuredClone(DEFAULT_TASKS);
+    return parsed;
+  }catch{ return structuredClone(DEFAULT_TASKS); }
+}
+function saveTasks(ts){ localStorage.setItem(STORAGE_KEY_TASKS, JSON.stringify(ts)); }
+
+function loadState(){
+  try{ const s=localStorage.getItem(STORAGE_KEY_STATE); return s?JSON.parse(s):null; }catch{ return null; }
+}
+function saveState(st){ localStorage.setItem(STORAGE_KEY_STATE, JSON.stringify(st)); }
+
+let tasks=loadTasks();
+let state=loadState() || { index:0, solved:Array(tasks.length).fill(false), correct:Array(tasks.length).fill(false),
+  attempts:Array(tasks.length).fill(0), usedHint:Array(tasks.length).fill(false), history:[] };
+// Всегда начинаем показ с 1-го задания (индекс 0)
+state.index = 0;
+
+let tableScale=1;
+
+const el=(id)=>document.getElementById(id);
+const els={ taskCounter:el("taskCounter"), taskTitle:el("taskTitle"), taskPrompt:el("taskPrompt"),
+  taskTableBody:el("taskTableBody"), answerInput:el("answerInput"), msg:el("msg"),
+  score:el("score"), percentBadge:el("percentBadge"), kSolved:el("kSolved"), kCorrect:el("kCorrect"),
+  kWrong:el("kWrong"), kHints:el("kHints"), barFill:el("barFill"), historyBtn:el("historyBtn"),
+  history:el("history"), note:el("note") };
+
+function setMsg(text, kind=""){
+  els.msg.textContent=text;
+  els.msg.className="msg"+(kind?" "+kind:"");
+}
+function updateProgress(){
+  const correctCount=state.correct.filter(Boolean).length;
+  els.kSolved.textContent=state.solved.filter(Boolean).length;
+  els.kCorrect.textContent=correctCount;
+  els.kWrong.textContent=state.history.filter(h=>h.result==="wrong").length;
+  els.kHints.textContent=state.usedHint.filter(Boolean).length;
+  const percent=Math.round((correctCount/tasks.length)*100);
+  els.percentBadge.textContent=percent+"%";
+  els.barFill.style.width=percent+"%";
+  els.score.textContent=correctCount;
+  if(state.history.length){
+    const last=state.history[state.history.length-1];
+    els.note.textContent=`Последняя попытка: ${last.title} — ${last.result==="ok"?"верно":"ошибка"}.`;
+  }else{
+    els.note.textContent="Здесь отображается текущий прогресс. Можно решать задания по порядку или возвращаться назад.";
+  }
+  saveState(state);
+}
+function render(){
+  const i=state.index, t=tasks[i];
+  els.taskCounter.textContent=`${i+1}/${tasks.length}`;
+  els.taskTitle.textContent=t.title;
+  els.taskPrompt.textContent=t.prompt;
+  els.taskTableBody.innerHTML="";
+  for(const row of t.tableRows){
+    const tr=document.createElement("tr");
+    const th=document.createElement("th"); th.textContent=row[0];
+    const td=document.createElement("td"); td.textContent=row[1];
+    tr.appendChild(th); tr.appendChild(td);
+    els.taskTableBody.appendChild(tr);
+  }
+  els.answerInput.value="";
+  els.answerInput.focus();
+  if(state.solved[i]){
+    setMsg(state.correct[i] ? "Это задание уже решено верно. Можно перейти дальше." : "Это задание уже решалось. Попробуйте ещё раз или откройте подсказку.", state.correct[i] ? "good" : "");
+  }else{
+    setMsg("Совет: вводите только ответ. Пробелы и лишние символы не учитываются.");
+  }
+  updateProgress();
+}
+function checkAnswer(){
+  const i=state.index, t=tasks[i];
+  const user=normAnswer(els.answerInput.value);
+  const right=normAnswer(t.answer);
+  if(!user){ setMsg("Введите ответ в поле.","bad"); return; }
+  state.attempts[i]=(state.attempts[i]||0)+1;
+  let ok=false;
+  if(t.answerType==="number"){ ok=isNumericLike(user) && user===right; }
+  else ok=user===right;
+
+  state.solved[i]=true; state.correct[i]=ok;
+  state.history.push({ ts:Date.now(), index:i, title:t.title, user, right, result: ok?"ok":"wrong" });
+
+  setMsg(ok ? "Верно! Отлично." : "Пока неверно. Проверьте перевод/сравнение и попробуйте снова.", ok ? "good":"bad");
+  updateProgress();
+}
+function next(){ state.index=Math.min(tasks.length-1, state.index+1); render(); }
+function prev(){ state.index=Math.max(0, state.index-1); render(); }
+function resetAll(){
+  if(!confirm("Сбросить прогресс?")) return;
+  state={ index:0, solved:Array(tasks.length).fill(false), correct:Array(tasks.length).fill(false),
+    attempts:Array(tasks.length).fill(0), usedHint:Array(tasks.length).fill(false), history:[] };
+  saveState(state); render();
+}
+function showHint(){
+  const i=state.index; state.usedHint[i]=true;
+  const t=tasks[i];
+  setMsg("Подсказка: "+(t.hint || "Сначала приведите числа к одной системе счисления (обычно к 10-й), затем выполните требуемое действие."));
+  updateProgress();
+}
+function toggleHistory(){
+  els.history.style.display = (els.history.style.display==="none") ? "block" : "none";
+  if(els.history.style.display==="block"){
+    const last=state.history.slice(-8).reverse().map(h=>{
+      const when=new Date(h.ts).toLocaleTimeString([], {hour:"2-digit", minute:"2-digit"});
+      return `${when} • ${h.title} • ${h.result==="ok"?"верно":"ошибка"}`;
+    }).join("\n");
+    els.history.textContent=last || "Пока попыток нет.";
+  }
+}
+function setScale(s){
+  tableScale=Math.max(0.8, Math.min(1.6, s));
+  document.documentElement.style.setProperty("--tableScale", tableScale.toFixed(2));
+}
+function toggleFullscreen(){
+  if(!document.fullscreenElement) document.documentElement.requestFullscreen?.();
+  else document.exitFullscreen?.();
+}
+
+// help
+const helpOverlay=el("helpOverlay");
+el("helpBtn").addEventListener("click", ()=>helpOverlay.style.display="flex");
+el("helpClose").addEventListener("click", ()=>helpOverlay.style.display="none");
+helpOverlay.addEventListener("click",(e)=>{ if(e.target===helpOverlay) helpOverlay.style.display="none"; });
+
+// teacher
+const teacherOverlay=el("teacherOverlay");
+const teacherLocked=el("teacherLocked");
+const teacherUnlocked=el("teacherUnlocked");
+const pinInput=el("pinInput");
+const pinEnterBtn=el("pinEnterBtn");
+const pinMsg=el("pinMsg");
+const teacherList=el("teacherList");
+const saveMsg=el("saveMsg");
+
+el("teacherBtn").addEventListener("click", async ()=>{
+  teacherOverlay.style.display="flex";
+  pinMsg.style.display="none";
+  teacherLocked.style.display="block";
+  teacherUnlocked.style.display="none";
+  pinInput.value=""; pinInput.focus();
+  if(!localStorage.getItem(STORAGE_KEY_PIN)){
+    localStorage.setItem(STORAGE_KEY_PIN, await sha256Hex(DEFAULT_PIN));
+  }
+});
+el("teacherClose").addEventListener("click", ()=>teacherOverlay.style.display="none");
+teacherOverlay.addEventListener("click",(e)=>{ if(e.target===teacherOverlay) teacherOverlay.style.display="none"; });
+
+pinEnterBtn.addEventListener("click", async ()=>{
+  const enteredHash=await sha256Hex(pinInput.value||"");
+  const stored=localStorage.getItem(STORAGE_KEY_PIN)||"";
+  if(enteredHash!==stored){
+    pinMsg.textContent="Неверный PIN-код.";
+    pinMsg.className="msg bad";
+    pinMsg.style.display="block";
+    return;
+  }
+  teacherLocked.style.display="none";
+  teacherUnlocked.style.display="block";
+  el("tCount").textContent=tasks.length;
+  renderTeacherList();
+  saveMsg.style.display="none";
+});
+pinInput.addEventListener("keydown",(e)=>{ if(e.key==="Enter") pinEnterBtn.click(); });
+
+function renderTeacherList(){
+  teacherList.innerHTML="";
+  tasks.forEach((t, idx)=>{
+    const wrap=document.createElement("div"); wrap.className="tItem";
+    const top=document.createElement("div"); top.className="tTop";
+    const left=document.createElement("div");
+    left.innerHTML = `<strong>${t.title}</strong> <span style="color:#5b7a98;font-weight:850">(${idx+1}/${tasks.length})</span>`;
+    const right=document.createElement("div"); right.innerHTML=`<span class="badge">ответ</span>`;
+    top.appendChild(left); top.appendChild(right);
+
+    const ans=document.createElement("div"); ans.className="tAns";
+    const type=document.createElement("span"); type.className="badge";
+    type.textContent = t.answerType==="number" ? "число" : "текст";
+    const inp=document.createElement("input");
+    inp.value=t.answer;
+    inp.dataset.idx=idx;
+    ans.appendChild(type); ans.appendChild(inp);
+
+    const hint=document.createElement("div"); hint.className="hintSmall";
+    hint.textContent = t.hint ? ("Подсказка: "+t.hint) : "Подсказка: —";
+
+    wrap.appendChild(top); wrap.appendChild(ans); wrap.appendChild(hint);
+    teacherList.appendChild(wrap);
+  });
+}
+
+el("saveEditsBtn").addEventListener("click", ()=>{
+  teacherList.querySelectorAll("input[data-idx]").forEach(inp=>{
+    const idx=Number(inp.dataset.idx);
+    if(!Number.isNaN(idx) && tasks[idx]) tasks[idx].answer = inp.value;
+  });
+  saveTasks(tasks);
+  saveMsg.textContent="Изменения сохранены.";
+  saveMsg.className="msg good";
+  saveMsg.style.display="block";
+});
+
+el("changePinBtn").addEventListener("click", async ()=>{
+  const np=el("newPin").value||"";
+  if(np.length<4){
+    saveMsg.textContent="PIN должен быть не короче 4 символов.";
+    saveMsg.className="msg bad";
+    saveMsg.style.display="block";
+    return;
+  }
+  localStorage.setItem(STORAGE_KEY_PIN, await sha256Hex(np));
+  el("newPin").value="";
+  saveMsg.textContent="PIN-код изменён.";
+  saveMsg.className="msg good";
+  saveMsg.style.display="block";
+});
+
+el("restoreBtn").addEventListener("click", ()=>{
+  if(!confirm("Восстановить ответы из исходного файла тренажёра? Локальные правки будут потеряны.")) return;
+  tasks=structuredClone(DEFAULT_TASKS);
+  saveTasks(tasks);
+  state={ index:0, solved:Array(tasks.length).fill(false), correct:Array(tasks.length).fill(false),
+    attempts:Array(tasks.length).fill(0), usedHint:Array(tasks.length).fill(false), history:[] };
+  saveState(state);
+  renderTeacherList();
+  render();
+  saveMsg.textContent="Восстановлено.";
+  saveMsg.className="msg good";
+  saveMsg.style.display="block";
+});
+
+// buttons
+el("checkBtn").addEventListener("click", checkAnswer);
+el("nextBtn").addEventListener("click", next);
+el("prevBtn").addEventListener("click", prev);
+el("resetBtn").addEventListener("click", resetAll);
+el("hintBtn").addEventListener("click", showHint);
+el("historyBtn").addEventListener("click", toggleHistory);
+el("zoomInBtn").addEventListener("click", ()=>setScale(tableScale+0.1));
+el("zoomOutBtn").addEventListener("click", ()=>setScale(tableScale-0.1));
+el("fsBtn").addEventListener("click", toggleFullscreen);
+els.answerInput.addEventListener("keydown",(e)=>{ if(e.key==="Enter") checkAnswer(); });
+
+setScale(1);
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ОГЭ Информатика — интерактивный вариант 2</title>
+<style>
+  :root{--bg:#eef3fb;--card:#fff;--ink:#1f2a44;--muted:#5b6785;--accent:#3c5ccf;--border:#d9e1f2;--ok:#1b8f4d;--bad:#c62828;--focus:#dfe8ff}
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.55}
+  .container{max-width:1020px;margin:28px auto;padding:0 16px}
+  header{background:linear-gradient(180deg,#f7f9ff 0%,#eef3fb 100%);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 3px 12px rgba(0,0,0,.04)}
+  h1{margin:0 0 6px;font-size:24px}
+  .sub{color:var(--muted);font-size:14px}
+  .toolbar{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:10px 14px;cursor:pointer;border:1px solid #c9d3ef;background:#fff;border-radius:12px;font-weight:600;font-size:14px;text-decoration:none;color:inherit;min-height:44px}
+  .btn.primary{background:#29335c;color:#fff;border-color:#29335c}
+  .badge{font-size:12px;padding:4px 9px;border:1px solid #d0d9f5;background:#fff;color:#4b5574;border-radius:999px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 2px 10px rgba(0,0,0,.03);margin-top:18px}
+  .q{padding-top:10px;margin-top:16px;border-top:1px dashed #d8e1f4}
+  .q:first-child{margin-top:0;padding-top:0;border-top:none}
+  .qid{color:var(--accent);font-weight:800;font-size:19px}
+  .qtext{margin:8px 0 10px}
+  .input{width:min(100%,48ch);padding:10px 12px;border:1px solid #cfd7f2;border-radius:12px;background:#fff;font-size:16px;outline:none;min-height:44px}
+  .input:focus{box-shadow:0 0 0 3px var(--focus);border-color:#b7c7ff}
+  .okborder{border-color:rgba(27,143,77,.95)!important;background:#f3fbf6}
+  .badborder{border-color:rgba(198,40,40,.95)!important;background:#fff4f4}
+  table{border-collapse:collapse;width:100%;background:#fff}
+  th,td{border:1px solid #cfd7ea;padding:6px 8px;text-align:center}
+  .tblwrap{overflow:auto;max-width:100%;background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px;-webkit-overflow-scrolling:touch}
+  code{background:#f8faff;border:1px solid #dde4fa;border-radius:8px;padding:2px 6px;word-break:break-word}
+  pre{background:#f8faff;border:1px solid #dde4fa;border-radius:12px;padding:12px;overflow:auto;font-size:13px;white-space:pre;line-height:1.5;max-width:100%;-webkit-overflow-scrolling:touch}
+  pre code{background:transparent;border:none;border-radius:0;padding:0;word-break:normal}
+  .imgwrap{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px;overflow:auto;margin:8px 0;-webkit-overflow-scrolling:touch}
+  .imgwrap img{display:block;max-width:none;width:auto;height:auto;min-width:min(100%,520px);margin:0 auto}
+  .small{color:var(--muted);font-size:13px}
+  @media (max-width:780px){
+    .container{margin:14px auto;padding:0 10px}
+    header,.card{padding:14px}
+    h1{font-size:21px}
+    .toolbar{gap:8px}
+    .toolbar .btn{flex:1 1 100%}
+    .toolbar .badge{width:100%;text-align:center}
+    .input{width:100%}
+    .imgwrap img{min-width:640px}
+  }
+  @media print{.toolbar,.no-print{display:none!important}body{background:#fff}.card,header{box-shadow:none}}
+</style>
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>ОГЭ Информатика — интерактивный вариант</h1>
+    <div class="sub">Задания 1–10. <span class="badge" id="timer">время: 00:00</span></div>
+    <div class="toolbar no-print">
+      <button class="btn primary" id="checkBtn">Проверить</button>
+      <button class="btn" id="exportBtn">Выгрузить ответы</button>
+      <button class="btn" id="printBtn">Печать</button>
+      <span class="badge" id="scorePill">Баллы: 0 / 10</span>
+    </div>
+  </header>
+
+  <section class="card">
+    <div class="q"><div class="qid">1</div><div class="qtext">
+      В одной из кодировок Unicode каждый символ кодируется 2 байтами.
+      Ученик решил записать следующий текст (в нём нет лишних пробелов):<br><br>
+      <em>«Берёза, клён, дуб, осина, гвоздика, василёк – деревья, растущие в умеренном климате».</em><br><br>
+      При этом он случайно дважды подряд написал одно и то же слово, добавив запятую и пробел.
+      В результате итоговая строка увеличилась на 160 бит по сравнению с правильной.
+      Укажите слово, которое он повторил.
+    </div><input class="input" id="q1" placeholder="слово"></div>
+
+    <div class="q"><div class="qid">2</div><div class="qtext">
+      Сообщение закодировано с использованием двоичных кодов. Для кодирования применяются только буквы, указанные в таблице ниже:
+    </div>
+    <div class="tblwrap" style="max-width:560px">
+      <table>
+        <tr><th>И</th><th>М</th><th>Н</th><th>О</th><th>Р</th><th>Т</th></tr>
+        <tr><td>01001</td><td>01101</td><td>01110</td><td>01111</td><td>10001</td><td>10011</td></tr>
+      </table>
+    </div>
+    <div class="qtext">
+      Расшифруйте данную последовательность и определите, какие буквы встречаются в ней более одного раза.
+      Запишите эти буквы подряд, без пробелов и в любом порядке:<br><br>
+      <code>10011010011001110001010010110101110</code>
+    </div><input class="input" id="q2" placeholder="буквы"></div>
+
+    <div class="q"><div class="qid">3</div><div class="qtext">
+      Найдите наибольшее трёхзначное число <em>x</em>, при котором истинно следующее логическое выражение:<br><br>
+      <strong>¬(Первая цифра чётная) ∧ ¬(x делится на 9) ∧ ¬(x ≥ 700)</strong>
+    </div><input class="input" id="q3" placeholder="число"></div>
+
+    <div class="q"><div class="qid">4</div><div class="qtext">
+      Дана сеть дорог между населёнными пунктами A, B, C, D, E, F с указанием их протяжённости в километрах.
+      Требуется найти длину кратчайшего пути из пункта A в пункт F, который обязательно проходит через пункт C.
+      Движение разрешено только по указанным дорогам, и каждый пункт можно посетить только один раз.
+    </div>
+    <div class="tblwrap">
+      <table>
+        <tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+        <tr><th>A</th><td>—</td><td>4</td><td>8</td><td>—</td><td>—</td><td>18</td></tr>
+        <tr><th>B</th><td>4</td><td>—</td><td>2</td><td>5</td><td>—</td><td>—</td></tr>
+        <tr><th>C</th><td>8</td><td>2</td><td>—</td><td>—</td><td>—</td><td>9</td></tr>
+        <tr><th>D</th><td>—</td><td>5</td><td>—</td><td>—</td><td>3</td><td>7</td></tr>
+        <tr><th>E</th><td>—</td><td>—</td><td>—</td><td>3</td><td>—</td><td>6</td></tr>
+        <tr><th>F</th><td>18</td><td>—</td><td>9</td><td>7</td><td>6</td><td>—</td></tr>
+      </table>
+    </div><input class="input" id="q4" placeholder="число"></div>
+
+    <div class="q"><div class="qid">5</div><div class="qtext">
+      Исполнитель «Вычислитель» выполняет две команды:<br>
+      <strong>1.</strong> Умножить число на 3<br>
+      <strong>2.</strong> Вычесть из числа 2<br><br>
+      Требуется составить последовательность из не более чем 5 команд, преобразующую число 3 в число 17.
+      В ответе нужно указать только номера команд в порядке их выполнения.
+    </div><input class="input" id="q5" placeholder="например: 12112"></div>
+
+    <div class="q"><div class="qid">6</div><div class="qtext">
+      Дана программа, которая выводит <code>"yes"</code>, если <code>s &gt; A</code> или <code>t &gt; 13</code>, иначе выводит <code>"no"</code>.
+    </div><pre>s = int(input())
+t = int(input())
+A = int(input())
+if (s > A) or (t > 13):
+    print("yes")
+else:
+    print("no")</pre>
+    <div class="qtext">
+      Программа была запущена 9 раз со следующими парами значений <code>(s, t)</code>:<br>
+      (-5, 13), (12, 9), (10, 15), (2, -6), (4, 16), (14, 8), (4, -11), (8, 13), (11, -9).<br>
+      Требуется найти <strong>наименьшее</strong> целое значение A, при котором программа выведет "no" ровно для трёх из девяти указанных пар.
+    </div><input class="input" id="q6" placeholder="число"></div>
+
+    <div class="q"><div class="qid">7</div><div class="qtext">
+      Требуется составить корректный URL-адрес для доступа к файлу <code>ftp.tiff</code>, расположенному на сервере <code>image.net</code>, используя протокол <code>ftp</code>.
+      Фрагменты адреса закодированы цифрами от 1 до 7. Необходимо записать последовательность этих цифр, соответствующую правильному формату адреса.<br><br>
+      1) ftp.<br>
+      2) ftp:<br>
+      3) tiff<br>
+      4) /<br>
+      5) image<br>
+      6) //<br>
+      7) .net
+    </div><input class="input" id="q7" placeholder="последовательность цифр"></div>
+
+    <div class="q"><div class="qid">8</div><div class="qtext">
+      В языке запросов поискового сервера используются следующие обозначения:<br>
+      «|» обозначает логическое «ИЛИ»<br>
+      «&amp;» обозначает логическое «И»
+    </div>
+    <div class="tblwrap" style="max-width:560px">
+      <table>
+        <tr><th>Запрос</th><th>Найдено страниц</th></tr>
+        <tr><td>Рябина &amp; Калина</td><td>250</td></tr>
+        <tr><td>Рябина &amp; Боярышник</td><td>290</td></tr>
+        <tr><td>Рябина &amp; (Калина | Боярышник)</td><td>460</td></tr>
+      </table>
+    </div>
+    <div class="qtext">
+      Требуется определить, сколько страниц (в тысячах) будет найдено по запросу:
+      <strong>Рябина &amp; Калина &amp; Боярышник</strong>
+    </div><input class="input" id="q8" placeholder="число"></div>
+
+    <div class="q"><div class="qid">9</div><div class="qtext">
+      Дана схема односторонних дорог между городами А, Б, В, Г, Д, Е и К.
+      Требуется определить количество различных маршрутов из города А в город К, которые <strong>не проходят</strong> через город В.
+    </div>
+    <div class="imgwrap"><img src="data:image/jpeg;base64,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" alt="Схема дорог для задания 9"></div>
+    <input class="input" id="q9" placeholder="число"></div>
+
+    <div class="q"><div class="qid">10</div><div class="qtext">
+      Требуется вычислить значение арифметического выражения, представленного в разных системах счисления:<br><br>
+      <strong>10101101<sub>2</sub> + 1001<sub>8</sub> + 111<sub>16</sub></strong><br><br>
+      Записать итоговую сумму в десятичной системе.
+    </div><input class="input" id="q10" placeholder="число"></div>
+  </section>
+</div>
+
+<script>
+const DEFAULT_ANSWERS = {
+  "q1": [
+    "гвоздика"
+  ],
+  "q2": [
+    "ти",
+    "ит",
+    "«ти»",
+    "«ит»",
+    "\"ти\"",
+    "\"ит\""
+  ],
+  "q3": [
+    "599"
+  ],
+  "q4": [
+    "15"
+  ],
+  "q5": [
+    "12112"
+  ],
+  "q6": [
+    "4"
+  ],
+  "q7": [
+    "2657413"
+  ],
+  "q8": [
+    "80"
+  ],
+  "q9": [
+    "4"
+  ],
+  "q10": [
+    "959"
+  ]
+};
+const LS_STUDENT = "oge_variant2_student_answers_github";
+
+function normalize(s){
+  return String(s ?? "").trim().toLowerCase().replace(/ё/g,"е").replace(/[«»"']/g,"").replace(/\s+/g," ");
+}
+function qids(){ return Array.from({length:10}, (_,i)=>"q"+(i+1)); }
+function asArray(v){ return Array.isArray(v) ? v : [v]; }
+
+function checkAll(){
+  let score=0;
+  for (const id of qids()){
+    const el=document.getElementById(id);
+    const user=normalize(el.value);
+    const keys=asArray(DEFAULT_ANSWERS[id] || []).map(normalize).filter(Boolean);
+    el.classList.remove("okborder","badborder");
+    if (!keys.length) {
+      el.classList.add("badborder");
+      continue;
+    }
+    const ok=keys.includes(user);
+    el.classList.add(ok ? "okborder" : "badborder");
+    if (ok) score++;
+  }
+  document.getElementById("scorePill").textContent=`Баллы: ${score} / 10`;
+}
+
+function exportAnswers(){
+  const data={};
+  for (const id of qids()) data[id]=document.getElementById(id).value.trim();
+  const blob=new Blob([JSON.stringify(data,null,2)],{type:"application/json;charset=utf-8"});
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(blob);
+  a.download="answers_oge_variant2_1_10.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(a.href);
+}
+
+function printPage(){ window.print(); }
+
+function loadStudentAnswers(){
+  try {
+    const obj=JSON.parse(localStorage.getItem(LS_STUDENT));
+    if(!obj) return;
+    for (const id of qids()) if (id in obj) document.getElementById(id).value=obj[id];
+  } catch(e) {}
+}
+
+function saveStudentAnswers(){
+  const obj={};
+  for (const qid of qids()) obj[qid]=document.getElementById(qid).value;
+  localStorage.setItem(LS_STUDENT, JSON.stringify(obj));
+}
+
+function hookAutosave(){
+  for (const id of qids()) {
+    document.getElementById(id).addEventListener("input", saveStudentAnswers);
+  }
+}
+
+function resetAnswers(){
+  for (const id of qids()) {
+    const el=document.getElementById(id);
+    el.value="";
+    el.classList.remove("okborder","badborder");
+  }
+  localStorage.removeItem(LS_STUDENT);
+  document.getElementById("scorePill").textContent="Баллы: 0 / 10";
+}
+
+function startTimer(){
+  const start=Date.now();
+  const t=document.getElementById("timer");
+  setInterval(()=>{
+    const s=Math.floor((Date.now()-start)/1000);
+    const mm=String(Math.floor(s/60)).padStart(2,"0");
+    const ss=String(s%60).padStart(2,"0");
+    t.textContent=`время: ${mm}:${ss}`;
+  },1000);
+}
+
+document.getElementById("checkBtn").addEventListener("click", checkAll);
+document.getElementById("exportBtn").addEventListener("click", exportAnswers);
+document.getElementById("printBtn").addEventListener("click", printPage);
+
+const resetBtn = document.createElement("button");
+resetBtn.className = "btn";
+resetBtn.id = "resetBtn";
+resetBtn.textContent = "Сбросить ответы";
+document.querySelector(".toolbar").insertBefore(resetBtn, document.getElementById("scorePill"));
+resetBtn.addEventListener("click", resetAnswers);
+
+startTimer();
+loadStudentAnswers();
+hookAutosave();
+</script>
+</body>
+</html>

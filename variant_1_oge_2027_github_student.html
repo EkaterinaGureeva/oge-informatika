@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang='ru'>
+<head>
+<meta charset='UTF-8'>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<title>Интерактивный вариант для подготовки к ОГЭ</title>
+<style>
+:root{--bg:#eef3fb;--card:#fff;--ink:#1f2a44;--muted:#5b6785;--accent:#3556c7;--dark:#29335c;--border:#d9e1f2;--ok:#168349;--bad:#c62828}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,"Segoe UI",sans-serif;line-height:1.55}
+.container{max-width:1060px;margin:24px auto;padding:0 16px}
+header{background:linear-gradient(180deg,#f7f9ff,#eef3fb);border:1px solid var(--border);border-radius:18px;padding:18px;box-shadow:0 3px 12px #0001;position:sticky;top:8px;z-index:10}
+h1{margin:0 0 6px;font-size:24px}.sub,.small{color:var(--muted);font-size:14px}
+.toolbar{margin-top:14px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+button,.btn{display:inline-flex;align-items:center;justify-content:center;padding:10px 14px;cursor:pointer;border:1px solid #c9d3ef;background:#fff;border-radius:12px;font-weight:700;font-size:14px;color:var(--ink);text-decoration:none}
+button.primary{background:var(--dark);color:#fff;border-color:var(--dark)}
+.badge{font-size:12px;padding:5px 10px;border:1px solid #d0d9f5;background:#fff;color:#4b5574;border-radius:999px}
+.card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:18px;box-shadow:0 2px 10px #00000008;margin-top:18px}
+.q{padding-top:14px;margin-top:18px;border-top:1px dashed #d8e1f4}.q:first-child{padding-top:0;margin-top:0;border-top:0}
+.qid{color:var(--accent);font-weight:800;font-size:20px}.qtext{margin:8px 0 12px}
+.input{width:min(100%,54ch);padding:10px 12px;border:1px solid #cfd7f2;border-radius:12px;background:#fff;font-size:15px;outline:none}
+.input:focus{box-shadow:0 0 0 3px #dfe8ff;border-color:#b7c7ff}
+.okborder{border-color:var(--ok)!important;background:#f2fbf6}.badborder{border-color:var(--bad)!important;background:#fff3f3}
+.feedback{margin-top:7px;min-height:21px;font-weight:700}.feedback.ok{color:var(--ok)}.feedback.bad{color:var(--bad)}
+table{border-collapse:collapse;width:100%;background:#fff}th,td{border:1px solid #cfd7ea;padding:6px 8px;text-align:center;vertical-align:middle}
+.tblwrap{overflow:auto;max-width:900px;background:#fff;border:1px solid var(--border);border-radius:12px;padding:8px;margin:8px 0}.smalltbl{max-width:720px}
+pre{background:#f8faff;border:1px solid #dde4fa;border-radius:10px;padding:10px;overflow:auto;font-size:14px;white-space:pre-wrap}
+.codeword{font-family:Consolas,monospace;font-size:20px;font-weight:700;background:#f8faff;border:1px solid #dde4fa;border-radius:10px;padding:10px;display:inline-block;margin:6px 0}
+.imgwrap{background:#fff;border:1px solid var(--border);border-radius:12px;padding:10px;overflow:auto;margin:8px 0}.imgwrap svg{display:block;max-width:100%;height:auto;margin:0 auto}
+.modal{position:fixed;inset:0;display:none;align-items:center;justify-content:center;background:#07132759;z-index:50}
+.dialog{width:min(980px,94vw);max-height:90vh;overflow:auto;background:#fff;border:1px solid var(--border);border-radius:18px;padding:18px}
+.row2,.row3{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}.row3{grid-template-columns:repeat(3,1fr)}
+.notice{background:#f8faff;border:1px solid #dde4fa;border-radius:12px;padding:10px;margin:10px 0}
+@media(max-width:780px){.row2,.row3{grid-template-columns:1fr}header{position:static}}
+@media print{.toolbar,.modal,.no-print{display:none!important}body{background:#fff}.card,header{box-shadow:none}header{position:static}}
+
+/* GitHub Pages student-only fixes */
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{min-width:320px}.student-input{font-size:16px}.imgwrap{max-width:100%;overflow:auto;-webkit-overflow-scrolling:touch}.imgwrap svg{display:block;width:100%;min-width:520px;height:auto;margin:0 auto}@media(max-width:780px){.container{max-width:100%;margin:8px auto;padding:0 8px}header{position:static;padding:14px;border-radius:14px}h1{font-size:21px;line-height:1.2}.toolbar{display:grid;grid-template-columns:1fr;gap:8px}.toolbar button,.toolbar .badge{width:100%;min-height:42px}.toolbar .badge{display:flex;align-items:center;justify-content:center}.card{padding:14px}.input{width:100%;max-width:none;font-size:16px}.tblwrap{max-width:100%;-webkit-overflow-scrolling:touch}.imgwrap{padding:6px}}
+</style>
+</head>
+<body>
+<div class='container'>
+<header>
+<h1>Интерактивный вариант для подготовки к ОГЭ</h1>
+<div class='sub'>Задания 1–12. <span class='badge' id='timer'>время: 00:00</span></div>
+<div class='toolbar no-print'>
+<button type='button' class='primary' id='checkBtn'>Проверить</button>
+<button type='button' id='exportBtn'>Выгрузить ответы</button>
+<button type='button' id='printBtn'>Печать</button>
+
+<span class='badge' id='scorePill'>Баллы: 0 / 12</span>
+</div>
+</header>
+<section class='card'>
+<div class='notice'><b>Часть 1.</b> Ответами к заданиям 1–12 являются число, слово, последовательность букв или цифр. Ответы записывайте без пробелов, запятых и других дополнительных символов.</div>
+<div class='q'><div class='qid'>1</div><div class='qtext'>В одной из кодировок Unicode каждый символ кодируется 16 битами. Даша написала текст (в нём нет лишних пробелов):<br><br>
+<em>«Жук, богомол, бабочка, светлячок, муха, комар, шмель, слепень, шершень, сверчок, стрекоза, кузнечик, оса – насекомые мира».</em><br><br>
+Затем она вычеркнула название одного насекомого, а также лишние знаки, а именно пробел и запятую. Размер получившегося текста оказался на 18 байт меньше размера исходного текста. Напишите в ответе название насекомого, которое было вычеркнуто Дашей. Известно, что из названий насекомых с одинаковым количеством букв Даша вычеркнула первое слово из текста.</div><input class='input student-input' id='q1' placeholder='Ответ' autocomplete='new-password' name='q1_fresh' value=''><div class='feedback' id='f1'></div></div>
+<div class='q'><div class='qid'>2</div><div class='qtext'>Ваня использует специальный язык шифрования. Ниже приведена кодовая таблица с использованием этого языка.
+<div class="tblwrap smalltbl"><table>
+<tr><th>К</th><th>Т</th><th>А</th><th>В</th><th>О</th><th>Р</th></tr>
+<tr><td>00</td><td>110</td><td>111</td><td>10</td><td>01</td><td>000</td></tr>
+</table></div>
+Ваня зашифровал сообщение:
+<div class="codeword">001001110111</div>
+Расшифруйте сообщение. Запишите в ответе искомую последовательность букв.</div><input class='input student-input' id='q2' placeholder='Ответ' autocomplete='new-password' name='q2_fresh' value=''><div class='feedback' id='f2'></div></div>
+<div class='q'><div class='qid'>3</div><div class='qtext'>Напишите наименьшее натуральное число <em>x</em>, для которого истинно высказывание:<br><br>
+<strong>НЕ (x &lt; 8) И (x &gt; 5)</strong><br><br>
+Запишите в ответ целое число.</div><input class='input student-input' id='q3' placeholder='Ответ' autocomplete='new-password' name='q3_fresh' value=''><div class='feedback' id='f3'></div></div>
+<div class='q'><div class='qid'>4</div><div class='qtext'>Между населёнными пунктами A, B, C, D, E, F построены дороги, протяжённость которых (в километрах) приведена в таблице. Определите длину кратчайшего пути из пункта A в пункт F. Передвигаться можно только по дорогам, протяжённость которых указана в таблице. Каждый пункт можно посетить только один раз.
+<div class="tblwrap smalltbl"><table>
+<tr><th></th><th>A</th><th>B</th><th>C</th><th>D</th><th>E</th><th>F</th></tr>
+<tr><th>A</th><td>—</td><td>4</td><td></td><td>3</td><td></td><td></td></tr>
+<tr><th>B</th><td>4</td><td>—</td><td>2</td><td></td><td>1</td><td></td></tr>
+<tr><th>C</th><td></td><td>2</td><td>—</td><td>5</td><td></td><td>3</td></tr>
+<tr><th>D</th><td>3</td><td></td><td>5</td><td>—</td><td>6</td><td>7</td></tr>
+<tr><th>E</th><td></td><td>1</td><td></td><td>6</td><td>—</td><td>2</td></tr>
+<tr><th>F</th><td></td><td></td><td>3</td><td>7</td><td>2</td><td>—</td></tr>
+</table></div></div><input class='input student-input' id='q4' placeholder='Ответ' autocomplete='new-password' name='q4_fresh' value=''><div class='feedback' id='f4'></div></div>
+<div class='q'><div class='qid'>5</div><div class='qtext'>Исполнитель «Алгоритмик» умеет выполнять две команды:<br>
+<strong>1. Умножить на 4</strong><br>
+<strong>2. Прибавить 5</strong><br><br>
+Выполняя первую команду, исполнитель увеличивает число в 4 раза; выполняя вторую команду, исполнитель увеличивает число на 5. Программой называется последовательность номеров команд, например, 1221 или 12122. Напишите программу, состоящую не более чем из 5 команд, которая преобразует число –3 в число 133. Если таких команд несколько, выпишите любую из них.</div><input class='input student-input' id='q5' placeholder='Ответ' autocomplete='new-password' name='q5_fresh' value=''><div class='feedback' id='f5'></div></div>
+<div class='q'><div class='qid'>6</div><div class='qtext'>Было проведено 9 запусков программы, при которых в качестве значений переменных x и y вводились следующие пары чисел:<br><br>
+<strong>(5, 7); (9, 5); (7, 3); (8, 6); (4, 8); (10, 4); (6, 2); (3, 9); (7, 5).</strong><br><br>
+Сколько было запусков, при которых программа напечатала «НЕТ»?
+<pre>x = int(input())
+y = int(input())
+if x &lt; 8 and y &gt; 3:
+    print("ДА")
+else:
+    print("НЕТ")</pre></div><input class='input student-input' id='q6' placeholder='Ответ' autocomplete='new-password' name='q6_fresh' value=''><div class='feedback' id='f6'></div></div>
+<div class='q'><div class='qid'>7</div><div class='qtext'>Катя сохранила файл на компьютере <strong>E:\mama\happy\slava.doc</strong>. В папке happy она создала папку «sun», переместила в новую папку файл «slava.doc» и загрузила его на сервер «stud.su» вместе с каталогом, в котором оказался после перемещения файл. Доступ к серверу выполняется по протоколу ftp. Запишите в ответе последовательность русских строчных букв, которая отображает адрес этого файла в сети. Буквы в ответе могут повторяться или не использоваться.
+<div class="tblwrap smalltbl"><table>
+<tr><th>А</th><td>slava</td></tr>
+<tr><th>Б</th><td>stud</td></tr>
+<tr><th>В</th><td>ftp</td></tr>
+<tr><th>Г</th><td>.su</td></tr>
+<tr><th>Д</th><td>://</td></tr>
+<tr><th>Е</th><td>.doc</td></tr>
+<tr><th>Ж</th><td>mama</td></tr>
+<tr><th>З</th><td>sun</td></tr>
+<tr><th>И</th><td>/</td></tr>
+</table></div></div><input class='input student-input' id='q7' placeholder='Ответ' autocomplete='new-password' name='q7_fresh' value=''><div class='feedback' id='f7'></div></div>
+<div class='q'><div class='qid'>8</div><div class='qtext'>Валентина составляет логические запросы. По этим запросам специальная поисковая система находит определённое количество страниц. Все данные представлены ниже в таблице. Определите количество страниц (в тысячах), которое выдаст поисковая система по запросу <strong>«загадки | шарады»</strong>.
+<div class="tblwrap"><table>
+<tr><th>Запрос</th><th>Количество страниц (в тысячах)</th></tr>
+<tr><td>загадки &amp; шарады</td><td>465</td></tr>
+<tr><td>загадки</td><td>1245</td></tr>
+<tr><td>шарады</td><td>1355</td></tr>
+</table></div></div><input class='input student-input' id='q8' placeholder='Ответ' autocomplete='new-password' name='q8_fresh' value=''><div class='feedback' id='f8'></div></div>
+<div class='q'><div class='qid'>9</div><div class='qtext'>На рисунке — схема дорог, связывающих города. По каждой дороге можно двигаться только в одном направлении, указанном стрелкой. Сколько существует различных путей из города В в город П?
+<div class="imgwrap">
+<svg viewBox="0 0 820 420" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Схема дорог для задания 9">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3.5" orient="auto" markerUnits="strokeWidth">
+      <path d="M0,0 L0,7 L8,3.5 z" fill="#111"/>
+    </marker>
+  </defs>
+  <rect width="820" height="420" fill="#fff"/>
+  <g fill="none" stroke="#111" stroke-width="4" marker-end="url(#arrow)">
+    <line x1="95" y1="210" x2="285" y2="95"/>
+    <line x1="95" y1="210" x2="385" y2="210"/>
+    <line x1="95" y1="210" x2="275" y2="330"/>
+    <line x1="285" y1="95" x2="565" y2="95"/>
+    <line x1="285" y1="95" x2="385" y2="210"/>
+    <line x1="385" y1="210" x2="720" y2="200"/>
+    <line x1="385" y1="210" x2="575" y2="340"/>
+    <line x1="275" y1="330" x2="575" y2="340"/>
+    <line x1="565" y1="95" x2="720" y2="200"/>
+    <line x1="575" y1="340" x2="720" y2="200"/>
+  </g>
+  <g fill="#7c3aed" stroke="#7c3aed">
+    <circle cx="95" cy="210" r="14"/>
+    <circle cx="285" cy="95" r="14"/>
+    <circle cx="385" cy="210" r="14"/>
+    <circle cx="275" cy="330" r="14"/>
+    <circle cx="565" cy="95" r="14"/>
+    <circle cx="575" cy="340" r="14"/>
+    <circle cx="720" cy="200" r="14"/>
+  </g>
+  <g font-family="Arial, sans-serif" font-size="38" fill="#111">
+    <text x="46" y="220">В</text>
+    <text x="285" y="62">Е</text>
+    <text x="370" y="175">Д</text>
+    <text x="260" y="388">Г</text>
+    <text x="560" y="58">Р</text>
+    <text x="560" y="405">А</text>
+    <text x="738" y="208">П</text>
+  </g>
+</svg>
+</div></div><input class='input student-input' id='q9' placeholder='Ответ' autocomplete='new-password' name='q9_fresh' value=''><div class='feedback' id='f9'></div></div>
+<div class='q'><div class='qid'>10</div><div class='qtext'>Переведите число <strong>420<sub>5</sub></strong> в десятичную систему счисления.</div><input class='input student-input' id='q10' placeholder='Ответ' autocomplete='new-password' name='q10_fresh' value=''><div class='feedback' id='f10'></div></div>
+<div class='q'><div class='qid'>11</div><div class='qtext'>В одном из произведений Достоевского, текст которого приведён в подкаталоге <strong>Достоевский</strong> подкаталога <strong>Проза</strong> каталога <strong>DEMO-12</strong>, упоминается «царь Горох». С помощью поисковых средств операционной системы и текстового редактора выясните фамилию персонажа, который думал об этом «царе Горохе».
+<div class="toolbar no-print"><a class="btn" target="_blank" rel="noopener" href="https://cloud.mail.ru/public/zsQ1/zobZxMrXp">Скачать файлы для заданий 11–12</a></div></div><input class='input student-input' id='q11' placeholder='Ответ' autocomplete='new-password' name='q11_fresh' value=''><div class='feedback' id='f11'></div></div>
+<div class='q'><div class='qid'>12</div><div class='qtext'>Сколько файлов с расширением <strong>.rtf</strong> содержится в подкаталогах каталога <strong>Num-12</strong>? В ответе запишите только одно число — количество файлов.
+<div class="toolbar no-print"><a class="btn" target="_blank" rel="noopener" href="https://cloud.mail.ru/public/zsQ1/zobZxMrXp">Скачать файлы для заданий 11–12</a></div></div><input class='input student-input' id='q12' placeholder='Ответ' autocomplete='new-password' name='q12_fresh' value=''><div class='feedback' id='f12'></div></div>
+</section>
+</div>
+
+<script>
+const TOTAL=12;
+const ANSWERS={"q1": ["богомол"], "q2": ["КВОТА"], "q3": ["8"], "q4": ["7"], "q5": ["21112"], "q6": ["5"], "q7": ["ЕАГДБЖВ"], "q8": ["2135"], "q9": ["6"], "q10": ["110"], "q11": ["Раскольников"], "q12": ["30"]};
+let seconds=0;
+let sessionToken=String(Date.now())+'_'+Math.random().toString(36).slice(2);
+function byId(id){return document.getElementById(id);}
+function norm(value){return String(value??'').trim().toLowerCase().replace(/ё/g,'е').replace(/\s+/g,'');}
+function accepted(n){const list=ANSWERS['q'+n]||[];return Array.isArray(list)?list.filter(v=>String(v).trim()!==''):[];}
+function clearStudentFields(){for(let i=1;i<=TOTAL;i++){const input=byId('q'+i),fb=byId('f'+i);if(input){input.value='';input.defaultValue='';input.classList.remove('okborder','badborder');input.setAttribute('autocomplete','new-password');input.setAttribute('name','oge_answer_'+i+'_'+sessionToken);}if(fb){fb.textContent='';fb.classList.remove('ok','bad');}}const score=byId('scorePill');if(score)score.textContent='Баллы: 0 / '+TOTAL;}
+function checkAnswers(){let score=0;for(let i=1;i<=TOTAL;i++){const input=byId('q'+i),fb=byId('f'+i);if(!input||!fb)continue;const value=String(input.value||'').trim(),keys=accepted(i);input.classList.remove('okborder','badborder');fb.classList.remove('ok','bad');if(value===''){input.classList.add('badborder');fb.classList.add('bad');fb.textContent='Ответ не введён';continue;}const ok=keys.some(key=>norm(value)===norm(key));if(ok){score++;input.classList.add('okborder');fb.classList.add('ok');fb.textContent='Верно';}else{input.classList.add('badborder');fb.classList.add('bad');fb.textContent='Неверно';}}const scoreEl=byId('scorePill');if(scoreEl)scoreEl.textContent='Баллы: '+score+' / '+TOTAL;return score;}
+function exportAnswers(){const lines=['Интерактивный вариант для подготовки к ОГЭ','Дата выгрузки: '+new Date().toLocaleString('ru-RU'),''];for(let i=1;i<=TOTAL;i++){const input=byId('q'+i);lines.push('Задание '+i+': '+(input?input.value:''));}const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});const url=URL.createObjectURL(blob);const a=document.createElement('a');a.href=url;a.download='answers_oge_variant.txt';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(url),500);}
+function bindControls(){const c=byId('checkBtn'),e=byId('exportBtn'),p=byId('printBtn');if(c)c.onclick=checkAnswers;if(e)e.onclick=exportAnswers;if(p)p.onclick=()=>window.print();for(let i=1;i<=TOTAL;i++){const input=byId('q'+i),fb=byId('f'+i);if(input)input.addEventListener('input',()=>{input.classList.remove('okborder','badborder');if(fb){fb.textContent='';fb.classList.remove('ok','bad');}});}}
+window.checkAnswers=checkAnswers;window.exportAnswers=exportAnswers;
+document.addEventListener('DOMContentLoaded',()=>{sessionToken=String(Date.now())+'_'+Math.random().toString(36).slice(2);clearStudentFields();bindControls();setInterval(()=>{seconds++;const m=String(Math.floor(seconds/60)).padStart(2,'0'),s=String(seconds%60).padStart(2,'0');const t=byId('timer');if(t)t.textContent='время: '+m+':'+s;},1000);});
+window.addEventListener('pageshow',e=>{if(e.persisted){sessionToken=String(Date.now())+'_'+Math.random().toString(36).slice(2);clearStudentFields();bindControls();}});
+</script>
+</body>
+</html>
